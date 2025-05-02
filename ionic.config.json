@@ -1,0 +1,7 @@
+{
+  "name": "Locana",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
