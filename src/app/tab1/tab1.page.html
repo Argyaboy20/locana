@@ -1,17 +1,93 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="locana-primary">
+    <ion-buttons slot="start">
+      <ion-button>
+        <img src="/assets/logo.png" alt="Locana Logo" class="header-logo">
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="title-logo">Locana</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="outline" class="login-button" href="/tabs/tab3">Masuk</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+<ion-content>
+  <!-- Mobile View -->
+  <div class="mobile-view">
+    <div class="logo-section">
+      <img src="/assets/logoLocana.png" alt="Locana Logo" class="main-logo">
+    </div>
+    
+    <div class="action-buttons">
+      <ion-button expand="block" class="register-button" href="/tabs/tab2">Daftar</ion-button>
+      <ion-button expand="block" class="google-button">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Google
+      </ion-button>
+    </div>
+    
+    <div class="message-section">
+      <div class="slide" [ngClass]="{'active': currentSlide === 0}">
+        <h2>Melacak nomor di mana saja</h2>
+      </div>
+      <div class="slide" [ngClass]="{'active': currentSlide === 1}">
+        <h2>Secara realtime</h2>
+      </div>
+      <div class="slide" [ngClass]="{'active': currentSlide === 2}">
+        <h2>Dan akurat posisinya!</h2>
+      </div>
+      <div class="slide" [ngClass]="{'active': currentSlide === 3}">
+        <h2>Cobain sekarang juga!</h2>
+      </div>
+      
+      <div class="indicator-dots">
+        <div class="dot" [ngClass]="{'active': currentSlide === 0}"></div>
+        <div class="dot" [ngClass]="{'active': currentSlide === 1}"></div>
+        <div class="dot" [ngClass]="{'active': currentSlide === 2}"></div>
+        <div class="dot" [ngClass]="{'active': currentSlide === 3}"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Desktop/Tablet View -->
+  <div class="desktop-view">
+    <div class="left-section">
+      <div class="logo-section">
+        <img src="/assets/logoLocana.png" alt="Locana Logo" class="main-logo">
+      </div>
+      
+      <div class="action-buttons">
+        <ion-button expand="block" class="register-button" href="/tabs/tab2">Daftar</ion-button>
+        <ion-button expand="block" class="google-button">
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+          Google
+        </ion-button>
+      </div>
+    </div>
+    
+    <div class="right-section">
+      <div class="slide-container">
+        <div class="slide" [ngClass]="{'active': currentSlide === 0}">
+          <h2>Melacak nomor di mana saja</h2>
+        </div>
+        <div class="slide" [ngClass]="{'active': currentSlide === 1}">
+          <h2>Secara realtime</h2>
+        </div>
+        <div class="slide" [ngClass]="{'active': currentSlide === 2}">
+          <h2>Dan akurat posisinya!</h2>
+        </div>
+        <div class="slide" [ngClass]="{'active': currentSlide === 3}">
+          <h2>Cobain sekarang juga!</h2>
+        </div>
+      </div>
+      
+      <div class="indicator-dots">
+        <div class="dot" [ngClass]="{'active': currentSlide === 0}"></div>
+        <div class="dot" [ngClass]="{'active': currentSlide === 1}"></div>
+        <div class="dot" [ngClass]="{'active': currentSlide === 2}"></div>
+        <div class="dot" [ngClass]="{'active': currentSlide === 3}"></div>
+      </div>
+    </div>
+  </div>
 </ion-content>

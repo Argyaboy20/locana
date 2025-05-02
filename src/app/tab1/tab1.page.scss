@@ -1,0 +1,255 @@
+/* Define custom colors */
+:host {
+    --locana-primary: #5a8de1; /* Complementary to #417cdb */
+    --locana-accent: #417cdb;
+    --locana-text: #333333;
+    --locana-light-bg: #f5f5f5;
+    --locana-white: #ffffff;
+  }
+  
+  /* Register Ionic color */
+  ion-toolbar[color="locana-primary"] {
+    --background: var(--locana-primary);
+    --color: var(--locana-white);
+  }
+  
+  /* Header styles */
+  .header-logo {
+    height: 30px;
+    margin-left: 8px;
+  }
+  
+  .title-logo {
+    margin-left: -30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 1.3rem;
+  }
+  
+  .login-button {
+    --color: var(--locana-white);
+    --border-color: var(--locana-white);
+    --border-radius: 20px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    margin-right: 12px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      --background: rgba(255, 255, 255, 0.2);
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  ion-content {
+    --background: var(--locana-white);
+    --color: var(--locana-text);
+  }
+  
+  /* Common styles */
+  .main-logo {
+    width: 160px; /* Increased from 120px */
+    height: 160px; /* Increased from 120px */
+    object-fit: contain;
+  }
+  
+  .logo-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .register-button {
+    --background: var(--locana-accent);
+    --color: var(--locana-white);
+    font-weight: 500;
+    height: 48px;
+    --box-shadow: 0 4px 8px rgba(65, 124, 219, 0.3);
+    --border-radius: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      --background: #3670ca;
+      --box-shadow: 0 6px 12px rgba(65, 124, 219, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+  
+  .google-button {
+    --background: var(--locana-white);
+    --color: var(--locana-text);
+    --border-color: #dddddd;
+    --border-style: solid;
+    --border-width: 1px;
+    height: 48px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --border-radius: 24px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+  }
+  
+  .indicator-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #dddddd;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .dot.active {
+    background-color: var(--locana-accent);
+    transform: scale(1.3);
+  }
+  
+  /* Mobile view styles */
+  .mobile-view {
+    display: flex;
+    flex-direction: column;
+    padding: 36px 24px;
+    height: 100%;
+  }
+  
+  .message-section {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 20px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    h2 {
+      margin: 4px 0;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--locana-text);
+      transition: opacity 0.5s ease-in-out;
+    }
+    
+    .slide {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
+    }
+    
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .indicator-dots {
+      margin-top: 30px;
+    }
+  }
+  
+  /* Desktop view styles */
+  .desktop-view {
+    display: none;
+    flex-direction: row;
+    height: 100%;
+  }
+  
+  .left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 36px;
+    background-color: var(--locana-white);
+  }
+  
+  .right-section {
+    flex: 1;
+    background-color: var(--locana-light-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slide-container {
+    position: relative;
+    width: 100%;
+    height: 80%; /* Reduced to make room for dots */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slide {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    padding: 0 36px;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+    
+    h2 {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--locana-text);
+      margin: 0;
+    }
+  }
+  
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .right-section .indicator-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+  }
+  
+  /* Responsive layout */
+  @media (min-width: 768px) {
+    .mobile-view {
+      display: none;
+    }
+    
+    .desktop-view {
+      display: flex;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .mobile-view {
+      display: flex;
+    }
+    
+    .desktop-view {
+      display: none;
+    }
+  }
