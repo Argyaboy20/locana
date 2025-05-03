@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "locana-74f96",
+    "production": "locana-74f96"
+  },
+  "targets": {},
+  "etags": {}
+}

@@ -1,4 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -10,23 +13,40 @@ export class Tab1Page implements OnInit, OnDestroy {
   currentSlide = 0;
   private slideTimer: any;
   
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastController: ToastController
+  ) {}
   
   ngOnInit() {
     // Define the custom Ionic color for the toolbar
     const style = document.documentElement.style;
-    style.setProperty('--ion-color-locana-primary', '#5a8de1');
-    style.setProperty('--ion-color-locana-primary-rgb', '90,141,225');
+    style.setProperty('--ion-color-locana-primary', '#417cdb');
+    style.setProperty('--ion-color-locana-primary-rgb', '65,124,219');
     style.setProperty('--ion-color-locana-primary-contrast', '#ffffff');
     style.setProperty('--ion-color-locana-primary-contrast-rgb', '255,255,255');
-    style.setProperty('--ion-color-locana-primary-shade', '#4f7cc6');
-    style.setProperty('--ion-color-locana-primary-tint', '#6b99e4');
+    style.setProperty('--ion-color-locana-primary-shade', '#3a6ec1');
+    style.setProperty('--ion-color-locana-primary-tint', '#5489df');
+
+    // Apply important CSS fixes directly
+    document.documentElement.style.setProperty('--ion-toolbar-background', '#417cdb');
+    document.documentElement.style.setProperty('--ion-toolbar-color', '#ffffff');
 
     // Load the Montserrat font for the title
     this.loadFont('Montserrat', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
     // Start the automatic slide rotation
     this.startSlideRotation();
+    
+    // Force toolbar background once DOM is loaded
+    setTimeout(() => {
+      const toolbar = document.querySelector('ion-toolbar');
+      if (toolbar) {
+        toolbar.style.setProperty('--background', '#417cdb');
+        toolbar.style.setProperty('background', '#417cdb');
+      }
+    }, 100);
   }
   
   /**
@@ -107,11 +127,38 @@ export class Tab1Page implements OnInit, OnDestroy {
   /**
    * Handle Google SSO login
    */
-  loginWithGoogle() {
-    console.log('Google SSO requested');
-    // Implement Google SSO functionality
-    // This would typically integrate with Google Auth
-    // and automatically capture username and password
+  async loginWithGoogle() {
+    try {
+      console.log('Google SSO requested');
+      const result = await this.authService.loginWithGoogle();
+      
+      if (result && result.user) {
+        console.log('Login berhasil:', result.user);
+        
+        // Tampilkan toast pesan sukses
+        const toast = await this.toastController.create({
+          message: 'Login berhasil dengan akun Google',
+          duration: 2000,
+          position: 'bottom',
+          color: 'success'
+        });
+        toast.present();
+        
+        // Navigasi ke halaman utama/dashboard
+        this.router.navigate(['/dashboard']);
+      }
+    } catch (error) {
+      console.error('Error login Google:', error);
+      
+      // Tampilkan toast pesan error
+      const toast = await this.toastController.create({
+        message: 'Gagal login dengan Google. Silakan coba lagi.',
+        duration: 3000,
+        position: 'bottom',
+        color: 'danger'
+      });
+      toast.present();
+    }
   }
   
   /**
