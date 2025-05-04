@@ -1,0 +1,212 @@
+.login-page {
+    --background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .login-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  // Common styles
+  .logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    
+    .logo {
+      width: 120px; /* Increased size from 80px to 120px */
+      height: auto; /* Changed to auto to maintain aspect ratio */
+      object-fit: contain; /* Ensures the logo maintains its proportions */
+      margin-bottom: 0.5rem;
+    }
+    
+    .app-name {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #417cdb;
+      margin: 0;
+      letter-spacing: 2px;
+    }
+  }
+  
+  .form-container {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 20px rgba(65, 124, 219, 0.15);
+    transition: all 0.3s ease;
+    width: 90%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    &.expanded {
+      height: auto;
+    }
+  }
+  
+  .input-fields {
+    width: 100%;
+    color: #000000;
+  }
+  
+  .input-field {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #6863f2;
+    
+    ion-icon {
+      color: #417cdb;
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+    
+    ion-input {
+      --padding-start: 0.5rem;
+      --placeholder-color: #000000;
+      --placeholder-opacity: 0.8;
+      width: 100%;
+    }
+  }
+  
+  .password-field {
+    position: relative;
+    
+    .toggle-password {
+      position: absolute;
+      right: 0.5rem;
+      color: #6863f2;
+      cursor: pointer;
+      font-size: 1.5rem; /* Increase size for better clickability */
+      padding: 5px; /* Add padding to increase click area */
+      z-index: 10; /* Ensure it's above other elements */
+    }
+  }
+  
+  .password-requirements {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: #718096;
+    
+    p {
+      margin: 0.2rem 0;
+      position: relative;
+      padding-left: 1.2rem;
+      
+      &:before {
+        content: "•";
+        position: absolute;
+        left: 0.5rem;
+        color: #cbd5e0;
+      }
+      
+      &.valid {
+        color: #38a169;
+        
+        &:before {
+          content: "✓";
+          color: #38a169;
+        }
+      }
+    }
+  }
+  
+  .signin-btn {
+    --background: linear-gradient(135deg, #417cdb, #6863f2);
+    --background-hover: linear-gradient(135deg, #366bc8, #574deb);
+    --border-radius: 10px;
+    --color: white;
+    font-weight: 600;
+    height: 45px;
+    margin: 1rem 0;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(104, 99, 242, 0.25);
+    
+    &.expanded-btn {
+      margin-top: 1.5rem;
+    }
+  }
+  
+  .forgot-password {
+    text-align: center;
+    margin: 0.5rem 0;
+    
+    a {
+      color: #6863f2;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .signup-text {
+    text-align: center;
+    margin-top: 1rem;
+    color: #718096;
+    font-size: 0.9rem;
+    
+    a {
+      color: #417cdb;
+      font-weight: 500;
+      text-decoration: none;
+    }
+  }
+  
+  // Mobile View Specific
+  .mobile-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+  
+  // Desktop View Specific
+  .desktop-view {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    
+    @media (min-width: 768px) {
+      display: flex;
+    }
+    
+    .form-container {
+      max-width: 420px;
+      padding: 2rem;
+    }
+    
+    .logo-section {
+      .logo {
+        width: 150px; /* Increased size from 100px to 150px */
+        height: auto; /* Changed to auto to maintain aspect ratio */
+        object-fit: contain; /* Ensures the logo maintains its proportions */
+      }
+      
+      .app-name {
+        font-size: 2.5rem;
+      }
+    }
+  }
