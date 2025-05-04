@@ -15,6 +15,16 @@
 <ion-content>
   <!-- Mobile View -->
   <div class="mobile-view">
+    <div class="location-pin"></div>
+    
+    <div class="tracking-decoration">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    
     <div class="logo-section">
       <img src="/assets/logoLocana.png" alt="Locana Logo" class="main-logo">
     </div>
@@ -53,6 +63,7 @@
   <!-- Desktop/Tablet View -->
   <div class="desktop-view">
     <div class="left-section">
+      
       <div class="logo-section">
         <img src="/assets/logoLocana.png" alt="Locana Logo" class="main-logo">
       </div>
@@ -67,6 +78,14 @@
     </div>
     
     <div class="right-section">
+      <div class="tracking-decoration">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      
       <div class="slide-container">
         <div class="slide" [ngClass]="{'active': currentSlide === 0}">
           <h2>MELACAK NOMOR DI MANA SAJA</h2>
