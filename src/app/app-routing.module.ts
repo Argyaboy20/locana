@@ -5,7 +5,15 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },  {
+    path: 'lupapassword',
+    loadChildren: () => import('./lupapassword/lupapassword.module').then( m => m.LupapasswordPageModule)
+  },
+  {
+    path: 'support',
+    loadChildren: () => import('./support/support.module').then( m => m.SupportPageModule)
   }
+
 ];
 @NgModule({
   imports: [
