@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/support"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="logo-container">
+        <img src="/assets/logo.png" alt="Locana Logo" class="header-logo">
+        <span>Locana</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="faq-content">
+  <div class="page-header">
+    <h1>Frequently Asked Questions</h1>
+    <p>Temukan jawaban untuk pertanyaan umum tentang Locana</p>
+  </div>
+
+  <ion-searchbar placeholder="Cari pertanyaan..." class="faq-search" (ionChange)="onSearchChange($event)"></ion-searchbar>
+
+  <ion-list class="faq-list" *ngIf="filteredFaqItems.length > 0">
+    <ion-accordion-group>
+      <ion-accordion *ngFor="let item of filteredFaqItems" [value]="item.id">
+        <ion-item slot="header" color="light">
+          <ion-label>{{ item.question }}</ion-label>
+        </ion-item>
+        <div slot="content" class="faq-answer">
+          <p>{{ item.answer }}</p>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-list>
+  
+  <div class="no-results" *ngIf="searchQuery && filteredFaqItems.length === 0">
+    <ion-icon name="search-outline" size="large"></ion-icon>
+    <h3>Tidak ada hasil</h3>
+    <p>Tidak menemukan pertanyaan yang cocok dengan "{{ searchQuery }}"</p>
+  </div>
+
+  <div class="contact-support">
+    <h2>Masih Punya Pertanyaan?</h2>
+    <p>Jika Anda tidak menemukan jawaban yang Anda cari, tim dukungan kami siap membantu.</p>
+    <ion-button expand="block" color="primary" (click)="contactSupport()">
+      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+      Hubungi Dukungan
+    </ion-button>
+  </div>
+</ion-content>
