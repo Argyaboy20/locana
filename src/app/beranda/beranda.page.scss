@@ -1,0 +1,298 @@
+ion-menu-button {
+  --color: #6863f2;
+} 
+
+// Global styles
+ion-toolbar {
+  --background: white;
+}
+
+ion-content {
+  --background: white;
+}
+
+// Header logo styles
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -85px;
+}
+
+.header-logo {
+  height: 32px;
+  margin-right: 4px;
+}
+
+.logo-title {
+  font-weight: bold;
+  color: #6863f2;
+}
+
+.logo-text {
+  margin-left: -15px;
+}
+
+// Menu styles
+ion-menu {
+  --background: #6863f2;
+  --width: 250px;
+}
+
+ion-menu ion-toolbar {
+  --background: #6863f2;
+  --color: white;
+}
+
+ion-menu ion-content {
+  --background: #6863f2;
+}
+
+ion-menu ion-list {
+  background: #6863f2;
+  padding: 0;
+}
+
+ion-menu ion-item {
+  --background: #6863f2;
+  --color: white;
+  --border-color: rgba(255, 255, 255, 0.2);
+  --border-width: 0 0 1px 0;
+  --border-style: solid;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 50px;
+}
+
+ion-menu ion-icon {
+  color: white;
+  margin-right: 8px;
+}
+
+// Tab bar styles
+.tab-bar {
+  --background: #17262a;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+ion-tab-button {
+  --color: #888;
+  --color-selected: #6863f2;
+}
+
+// Tracking container styles
+.tracking-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.tracking-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6863f2;
+  margin-bottom: 8px;
+}
+
+.tracking-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.input-container {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.rounded-input {
+  --background: white;
+  --color: #333;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 25px;
+  --border-color: #d1d1d1;
+  --border-style: solid;
+  --border-width: 1px;
+  margin-right: 8px;
+  flex: 1;
+  box-shadow: 0 2px 10px rgba(104, 99, 242, 0.2);
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.process-button {
+  --background: #6863f2;
+  --border-radius: 25px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --box-shadow: 0 4px 8px rgba(104, 99, 242, 0.3);
+  height: 46px;
+  transition: transform 0.2s ease;
+}
+
+.process-button:active {
+  transform: scale(0.97);
+}
+
+// Enhanced input effect
+ion-input.animated-input {
+  --border-color: #6863f2;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    box-shadow: 0 0 5px rgba(104, 99, 242, 0.3);
+  }
+  to {
+    box-shadow: 0 0 12px rgba(104, 99, 242, 0.6);
+  }
+}
+
+// Modal styles
+.location-modal .modal-wrapper {
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.location-modal-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.location-icon {
+  font-size: 48px;
+  color: #6863f2;
+  margin-bottom: 16px;
+}
+
+.location-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.location-details {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+  text-align: left;
+  padding: 0 10px;
+}
+
+.location-detail-item {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-weight: bold;
+  min-width: 120px;
+}
+
+// Map container for location visualization
+.map-container {
+  width: 100%;
+  height: 180px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e1e1e1;
+}
+
+.map-placeholder {
+  background-color: #f7f7f7;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  background-image: linear-gradient(to bottom, rgba(104, 99, 242, 0.1), rgba(104, 99, 242, 0.2));
+}
+
+.coordinates {
+  font-size: 14px;
+  color: #888;
+  font-family: monospace;
+  margin-top: 5px;
+}
+
+.close-button {
+  --background: #6863f2;
+  --border-radius: 25px;
+  --padding-start: 30px;
+  --padding-end: 30px;
+}
+
+// Signal strength indicators
+.signal-strong {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.signal-medium {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.signal-weak {
+  color: #f44336;
+  font-weight: bold;
+}
+
+// Responsive styles
+.mobile-view {
+  display: block;
+}
+
+.desktop-view {
+  display: none;
+}
+
+// Desktop styles (for screens larger than 768px)
+@media (min-width: 768px) {
+  .mobile-view {
+    display: none;
+  }
+  
+  .desktop-view {
+    display: block;
+  }
+  
+  .tracking-title {
+    font-size: 32px;
+  }
+  
+  .tracking-subtitle {
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+  
+  .input-container {
+    max-width: 600px;
+  }
+  
+  .process-button {
+    --padding-start: 20px;
+    --padding-end: 20px;
+  }
+  
+  .map-container {
+    height: 240px;
+  }
+}

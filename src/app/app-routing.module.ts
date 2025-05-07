@@ -16,6 +16,14 @@ const routes: Routes = [
   {
     path: 'faq',
     loadChildren: () => import('./faq/faq.module').then( m => m.FaqPageModule)
+  },
+  {
+    path: 'beranda',
+    loadChildren: () => import('./beranda/beranda.module').then( m => m.BerandaPageModule)
+  },
+  {
+    path: 'akun',
+    loadChildren: () => import('./akun/akun.module').then( m => m.AkunPageModule)
   }
 
 ];
