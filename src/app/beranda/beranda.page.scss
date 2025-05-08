@@ -1,6 +1,6 @@
 ion-menu-button {
   --color: #6863f2;
-} 
+}
 
 // Global styles
 ion-toolbar {
@@ -46,11 +46,41 @@ ion-menu ion-toolbar {
 
 ion-menu ion-content {
   --background: #6863f2;
+  display: flex;
+  flex-direction: column;
 }
 
 ion-menu ion-list {
   background: #6863f2;
   padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+ion-menu .logout-item {
+  --background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 5px;
+  --min-height: 56px;
+  margin-top: 360px;
+}
+
+ion-menu .logout-item ion-icon {
+  color: #ff4961;
+}
+
+// Style untuk tombol di alert konfirmasi - tambahkan di bagian modal styles
+.custom-alert .primary-button {
+  background: #6863f2;
+  color: white;
+  font-weight: bold;
+}
+
+.custom-alert .secondary-button {
+  background: rgba(104, 99, 242, 0.2);
+  color: white;
+  font-weight: bold;
 }
 
 ion-menu ion-item {
@@ -79,6 +109,34 @@ ion-menu ion-icon {
 ion-tab-button {
   --color: #888;
   --color-selected: #6863f2;
+}
+
+ion-tab-button.tab-selected {
+  --color: #6863f2;
+  position: relative;
+  overflow: hidden;
+}
+
+ion-tab-button.tab-selected::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 3px;
+  background-color: #6863f2;
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%) translateX(50%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 // Tracking container styles
@@ -156,6 +214,7 @@ ion-input.animated-input {
   from {
     box-shadow: 0 0 5px rgba(104, 99, 242, 0.3);
   }
+
   to {
     box-shadow: 0 0 12px rgba(104, 99, 242, 0.6);
   }
@@ -258,7 +317,15 @@ ion-input.animated-input {
 // Responsive styles
 .mobile-view {
   display: block;
+
+  ion-menu .logout-item {
+    align-items: center;
+    justify-content: center;
+    margin-bottom: auto;
+    margin-top: auto;
+  }
 }
+
 
 .desktop-view {
   display: none;
@@ -269,29 +336,29 @@ ion-input.animated-input {
   .mobile-view {
     display: none;
   }
-  
+
   .desktop-view {
     display: block;
   }
-  
+
   .tracking-title {
     font-size: 32px;
   }
-  
+
   .tracking-subtitle {
     font-size: 18px;
     margin-bottom: 32px;
   }
-  
+
   .input-container {
     max-width: 600px;
   }
-  
+
   .process-button {
     --padding-start: 20px;
     --padding-end: 20px;
   }
-  
+
   .map-container {
     height: 240px;
   }

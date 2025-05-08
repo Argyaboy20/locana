@@ -24,6 +24,14 @@ const routes: Routes = [
   {
     path: 'akun',
     loadChildren: () => import('./akun/akun.module').then( m => m.AkunPageModule)
+  },
+  {
+    path: 'ubahpassword',
+    loadChildren: () => import('./ubahpassword/ubahpassword.module').then( m => m.UbahpasswordPageModule)
+  },
+  {
+    path: 'security',
+    loadChildren: () => import('./security/security.module').then( m => m.SecurityPageModule)
   }
 
 ];

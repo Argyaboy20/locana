@@ -1,5 +1,6 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MenuController, AlertController, ModalController } from '@ionic/angular';
+import { MenuController, AlertController, ModalController, AnimationController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -117,10 +118,131 @@ export class BerandaPage implements OnInit {
   constructor(
     private menuCtrl: MenuController,
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private animationCtrl: AnimationController,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.addAlertCustomStyles();
+  }
+
+  addAlertCustomStyles() {
+    // Create style element if it doesn't exist
+    let style = document.getElementById('custom-alert-styles');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'custom-alert-styles';
+      style.innerHTML = `
+        .custom-alert .alert-wrapper {
+          border-radius: 20px;
+          background: linear-gradient(135deg, #6863f2 0%, #6863f2 100%);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .custom-alert .alert-head {
+          background: rgba(104, 99, 242, 0.8);
+          backdrop-filter: blur(5px);
+          padding-bottom: 15px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .custom-alert .alert-title {
+          color: white;
+          font-weight: 600;
+          font-size: 1.2rem;
+          text-align: center;
+        }
+        
+        .custom-alert .alert-message {
+          color: rgba(255, 255, 255, 0.9);
+          padding: 10px;
+          text-align: center;
+          margin-top: 20px;
+        }
+        
+        .custom-alert .alert-button-group {
+          display: flex;
+          justify-content: center;
+        }
+        
+        .custom-alert .alert-button {
+          color: white;
+          background: rgba(104, 99, 242, 0.7);
+          border-radius: 15px;
+          margin: 10px;
+          min-width: 100px;
+          font-weight: 600;
+          transition: transform 0.3s ease, background 0.3s ease;
+        }
+        
+        .custom-alert .alert-button:hover {
+          transform: translateY(-2px);
+          background: rgba(104, 99, 242, 0.9);
+        }
+        
+        .custom-alert .alert-button-inner {
+          justify-content: center;
+        }
+        
+        .custom-alert .alert-button:active {
+          transform: translateY(0px);
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  enterAnimation() {
+    return (baseEl: HTMLElement) => {
+      const baseAnimation = this.animationCtrl.create();
+      const backdropAnimation = this.animationCtrl.create();
+      const wrapperAnimation = this.animationCtrl.create();
+      
+      backdropAnimation
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', 0.01, 'var(--backdrop-opacity)');
+      
+      wrapperAnimation
+        .addElement(baseEl.querySelector('.alert-wrapper')!)
+        .keyframes([
+          { offset: 0, opacity: '0', transform: 'scale(0.8)' },
+          { offset: 1, opacity: '1', transform: 'scale(1)' }
+        ]);
+      
+      return baseAnimation
+        .addElement(baseEl)
+        .easing('cubic-bezier(0.34, 1.56, 0.64, 1)')
+        .duration(300)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    };
+  }
+  
+  leaveAnimation() {
+    return (baseEl: HTMLElement) => {
+      const baseAnimation = this.animationCtrl.create();
+      const backdropAnimation = this.animationCtrl.create();
+      const wrapperAnimation = this.animationCtrl.create();
+      
+      backdropAnimation
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', 'var(--backdrop-opacity)', 0);
+      
+      wrapperAnimation
+        .addElement(baseEl.querySelector('.alert-wrapper')!)
+        .keyframes([
+          { offset: 0, opacity: '1', transform: 'scale(1)' },
+          { offset: 1, opacity: '0', transform: 'scale(0.9)' }
+        ]);
+      
+      return baseAnimation
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(200)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    };
   }
 
   openMenu() {
@@ -153,9 +275,11 @@ export class BerandaPage implements OnInit {
       header: 'Peringatan',
       message: 'Masukkan hanya angka untuk nomor telepon',
       buttons: ['OK'],
-      cssClass: 'alert-warning'
+      cssClass: 'custom-alert',
+      enterAnimation: this.enterAnimation(),
+      leaveAnimation: this.leaveAnimation()
     });
-
+  
     await alert.present();
   }
 
@@ -165,7 +289,9 @@ export class BerandaPage implements OnInit {
         header: 'Peringatan',
         message: 'Silakan masukkan nomor telepon terlebih dahulu',
         buttons: ['OK'],
-        cssClass: 'alert-warning'
+        cssClass: 'custom-alert',
+        enterAnimation: this.enterAnimation(),
+        leaveAnimation: this.leaveAnimation()
       });
       await alert.present();
       return;
@@ -176,17 +302,23 @@ export class BerandaPage implements OnInit {
         header: 'Nomor Tidak Valid',
         message: 'Masukkan nomor telepon Indonesia yang valid (10-13 digit)',
         buttons: ['OK'],
-        cssClass: 'alert-warning'
+        cssClass: 'custom-alert',
+        enterAnimation: this.enterAnimation(),
+        leaveAnimation: this.leaveAnimation()
       });
       await alert.present();
       return;
     }
+  
     
     // Show loading before displaying results
     const loadingAlert = await this.alertController.create({
       header: 'Melacak Nomor',
       message: 'Sedang memproses permintaan...',
-      backdropDismiss: false
+      backdropDismiss: false,
+      cssClass: 'custom-alert',
+      enterAnimation: this.enterAnimation(),
+      leaveAnimation: this.leaveAnimation()
     });
     await loadingAlert.present();
     
@@ -284,6 +416,96 @@ export class BerandaPage implements OnInit {
     });
     
     await modal.present();
+  }
+
+  ionViewDidEnter() {
+    // Ketika kembali ke halaman Beranda (home), pastikan tab yang aktif adalah 'home'
+    this.activeTab = 'home';
+  }
+
+  activeTab: string = 'home';
+
+  navigateToTab(tabName: string) {
+    // Set tab yang aktif
+    this.activeTab = tabName;
+  
+    if (tabName === 'home') {
+      // Jika sudah di halaman home, hanya perlu mengubah indikator tab aktif
+      if (this.router.url !== '/beranda') {
+        this.router.navigate(['/beranda'], {
+          state: { animation: 'tab-transition' }
+        });
+      }
+    } else if (tabName === 'security') {
+      // Navigasi ke halaman security
+      this.router.navigate(['/security'], {
+        state: { animation: 'tab-transition' }
+      });
+    }
+  }
+  
+  selectTab(tabName: string) {
+    // Hapus selected dari semua tab
+    const tabButtons = document.querySelectorAll('ion-tab-button');
+    tabButtons.forEach(button => {
+      button.removeAttribute('selected');
+    });
+    
+    // Tambahkan selected ke tab yang dipilih
+    const selectedTab = document.querySelector(`ion-tab-button[tab="${tabName}"]`);
+    if (selectedTab) {
+      selectedTab.setAttribute('selected', 'true');
+    }
+  }
+
+  async confirmLogout() {
+    // Tutup menu terlebih dahulu
+    this.menuCtrl.close();
+  
+    const alert = await this.alertController.create({
+      header: 'Konfirmasi Logout',
+      message: 'Apakah Anda yakin ingin keluar dari aplikasi?',
+      buttons: [
+        {
+          text: 'TIDAK',
+          role: 'cancel',
+          cssClass: 'secondary-button'
+        },
+        {
+          text: 'IYA',
+          cssClass: 'primary-button',
+          handler: () => {
+            this.logout();
+          }
+        }
+      ],
+      cssClass: 'custom-alert',
+      enterAnimation: this.enterAnimation(),
+      leaveAnimation: this.leaveAnimation()
+    });
+  
+    await alert.present();
+  }
+  
+  // Metode untuk menangani proses logout
+  logout() {
+    // Di sini Anda bisa menambahkan logika untuk menghapus token atau session storage
+    
+    // Bersihkan form data
+    this.phoneNumber = '';
+    
+    // Navigasi ke /tabs/tab1 dengan replaceUrl: true
+    this.router.navigate(['/tabs/tab1'], { 
+      replaceUrl: true 
+    });
+    
+    // Menghapus history navigasi sehingga tidak bisa kembali
+    setTimeout(() => {
+      history.pushState(null, '', location.href);
+      window.onpopstate = function() {
+        history.pushState(null, '', location.href);
+      };
+    }, 100);
   }
 }
 
