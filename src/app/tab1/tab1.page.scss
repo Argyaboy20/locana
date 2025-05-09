@@ -16,40 +16,32 @@ ion-toolbar[color="locana-primary"] {
 
 /* Header styles */
 .header-logo {
-  height: 30px;
-  margin-left: 8px;
+  height: 25px;
+  margin-left: 5px;
 }
 
 .title-logo {
-  margin-left: -30px;
-  font-family: 'Montserrat', sans-serif;
+  margin-left: -35px;
+  font-family: 'Montserrat';
   font-weight: 600;
   letter-spacing: 1px;
   font-size: 1.3rem;
 }
 
-.login-button {
+/* New simple toolbar button style */
+.toolbar-button {
   --color: var(--locana-white);
-  --border-color: var(--locana-white);
-  --border-radius: 24px;
-  --padding-start: 20px;
-  --padding-end: 20px;
-  margin-right: 12px;
+  margin-right: 4px;
   font-weight: 500;
   letter-spacing: 0.5px;
   
   &::part(native) {
-    border-radius: 24px;
-    padding: 10px 18px;
-    border: 2px solid white;
-    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
   
   &:hover::part(native) {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
   }
 }
@@ -75,33 +67,6 @@ ion-content {
   margin-bottom: 30px;
   margin-top: 20px;
   position: relative;
-}
-
-/* Decorative elements */
-.location-pin {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: #417cdb;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  left: 50%;
-  top: 50%;
-  margin: -60px 0 0 -60px;
-  z-index: 1;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  
-  &:after {
-    content: '';
-    width: 30px;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: -15px 0 0 -15px;
-  }
 }
 
 .action-buttons {
@@ -504,5 +469,25 @@ ion-content {
   
   .desktop-view {
     display: none;
+  }
+  
+  /* Mobile specific tweaks */
+  .header-logo {
+    height: 22px;
+    margin-left: 2px;
+  }
+  
+  .title-logo {
+    font-size: 1.1rem;
+    margin-left: -40px;
+  }
+  
+  .toolbar-button {
+    font-size: 0.9rem;
+    margin-right: 2px;
+    
+    &::part(native) {
+      padding: 8px 6px;
+    }
   }
 }

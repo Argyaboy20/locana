@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, AnimationController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-lupapassword',
@@ -16,16 +17,17 @@ export class LupapasswordPage implements OnInit {
 
   constructor(
     private alertController: AlertController,
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.addAlertCustomStyles();
   }
 
-  // Method to add custom alert styles
+  /* Method to add custom alert styles */
   addAlertCustomStyles() {
-    // Create style element if it doesn't exist
+    /* Create style element if it doesn't exist */
     let style = document.getElementById('custom-alert-styles');
     if (!style) {
       style = document.createElement('style');
@@ -107,7 +109,7 @@ export class LupapasswordPage implements OnInit {
       return;
     }
     
-    // Regular expression for email validation
+    /* Regular expression for email validation */
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     
     if (!emailRegex.test(this.email)) {
@@ -118,7 +120,7 @@ export class LupapasswordPage implements OnInit {
       return;
     }
     
-    // Check if it's a Gmail address
+    /* Check if it's a Gmail address */
     if (!this.email.toLowerCase().includes('@gmail.com')) {
       this.emailStatus = {
         message: 'Hanya email Gmail yang dapat digunakan',
@@ -127,18 +129,18 @@ export class LupapasswordPage implements OnInit {
       return;
     }
     
-    // Simulate checking if email is registered
+    /* Simulate checking if email is registered */
     this.isChecking = true;
     this.emailStatus = {
       message: 'Memeriksa email...',
       class: 'checking'
     };
     
-    // Simulate API call with timeout
+    /* Simulate API call with timeout */
     setTimeout(() => {
       this.isChecking = false;
       
-      // For demo purposes, we'll consider emails with "test" in them as registered
+      /* For demo purposes, we'll consider emails with "test" in them as registered */
       if (this.email.toLowerCase().includes('test')) {
         this.isEmailValid = true;
         this.isEmailRegistered = true;
@@ -154,7 +156,7 @@ export class LupapasswordPage implements OnInit {
           class: 'invalid'
         };
       }
-    }, 1500); // Simulate a 1.5 second delay
+    }, 1500); /* Simulate a 1.5 second delay */
   }
 
   async sendResetLink() {
@@ -163,11 +165,11 @@ export class LupapasswordPage implements OnInit {
       return;
     }
     
-    // Validate email first if not done yet
+    /* Validate email first if not done yet */
     if (!this.emailStatus) {
       this.validateEmail();
       
-      // Simulate waiting for validation to complete
+      /* Simulate waiting for validation to complete */
       setTimeout(() => {
         this.checkAndSendResetLink();
       }, 2000);
@@ -189,17 +191,23 @@ export class LupapasswordPage implements OnInit {
       return;
     }
     
-    // Simulate sending reset link
+    /* Simulate sending reset link */
     await this.presentAlert('Email Terkirim', 'Instruksi reset password telah dikirim ke email Anda. Silakan periksa kotak masuk atau folder spam Anda.', true);
     
-    // Reset form
+    /* Reset form */
     this.email = '';
     this.emailStatus = null;
     this.isEmailValid = false;
     this.isEmailRegistered = false;
+
+    this.navigateToLupaPassword();
+  }
+
+  navigateToLupaPassword() {
+    this.router.navigate(['/lupapassword']);
   }
   
-  // Custom enter animation using AnimationController
+  /* Custom enter animation using AnimationController */
   enterAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
@@ -225,7 +233,7 @@ export class LupapasswordPage implements OnInit {
     };
   }
   
-  // Custom leave animation using AnimationController
+  /* Custom leave animation using AnimationController */
   leaveAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
@@ -257,7 +265,13 @@ export class LupapasswordPage implements OnInit {
       message: message,
       buttons: [{
         text: 'OK',
-        cssClass: isSuccess ? 'success-button' : ''
+        cssClass: isSuccess ? 'success-button' : '',
+        handler: () => {
+          /* Jika alert sukses, navigasi ke beranda saat tombol OK diklik */
+          if (isSuccess) {
+            this.navigateToLupaPassword();
+          }
+        }
       }],
       cssClass: ['custom-alert', isSuccess ? 'success-alert' : ''],
       backdropDismiss: false,

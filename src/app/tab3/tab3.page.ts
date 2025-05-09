@@ -28,22 +28,22 @@ export class Tab3Page {
     private animationCtrl: AnimationController
   ) {}
 
-  // Keep track of form interaction state
+  /* Keep track of form interaction state */
   private firstInteraction: boolean = true;
 
   ngOnInit() {
-    // Reset form when component initializes
+    /* Reset form when component initializes */
     this.isExpanded = false;
     this.username = '';
     this.password = '';
     
-    // Add global styles for alert customization
+    /* Add global styles for alert customization */
     this.addAlertCustomStyles();
   }
 
-  // Method to add custom alert styles
+  /* Method to add custom alert styles */
   addAlertCustomStyles() {
-    // Create style element if it doesn't exist
+    /* Create style element if it doesn't exist */
     let style = document.getElementById('custom-alert-styles');
     if (!style) {
       style = document.createElement('style');
@@ -110,29 +110,29 @@ export class Tab3Page {
     }
   }
 
-  // Listen for clicks on the document
+  /* Listen for clicks on the document */
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     const loginContainer = document.querySelector('.form-container');
     
-    // Check if click was on expand button - if so reset first interaction flag
+    /* Check if click was on expand button - if so reset first interaction flag */
     if (target.classList.contains('signin-btn') && !this.isExpanded) {
       this.firstInteraction = true;
       return;
     }
     
-    // If clicking inside the form container, mark first interaction as done
+    /* If clicking inside the form container, mark first interaction as done */
     if (loginContainer && loginContainer.contains(target)) {
       this.firstInteraction = false;
       return;
     }
     
-    // If clicking outside container and form is expanded
+    /* If clicking outside container and form is expanded */
     if (loginContainer && !loginContainer.contains(target) && this.isExpanded) {
-      // First interaction with form is complete, so can check for minimize
+      /* First interaction with form is complete, so can check for minimize */
       if (!this.firstInteraction) {
-        // Only minimize if no data has been entered
+        /* Only minimize if no data has been entered */
         if (!this.username && !this.password) {
           this.isExpanded = false;
         }
@@ -146,7 +146,7 @@ export class Tab3Page {
   
   expandForm() {
     this.isExpanded = true;
-    this.firstInteraction = true; // Reset first interaction flag when expanding
+    this.firstInteraction = true; /* Reset first interaction flag when expanding */
   }
   
   validatePassword() {
@@ -157,14 +157,14 @@ export class Tab3Page {
     this.passwordRequirements.hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(this.password);
   }
   
-  // Watch for changes to the password and validate
+  /* Watch for changes to the password and validate */
   ngDoCheck() {
     if (this.password) {
       this.validatePassword();
     }
   }
   
-  // Display alert message with optional success animation
+  /* Display alert message with optional success animation */
   async presentAlert(header: string, message: string, isSuccess: boolean = false) {
     const alert = await this.alertController.create({
       header: header,
@@ -184,7 +184,7 @@ export class Tab3Page {
     await alert.present();
   }
   
-  // Custom enter animation using AnimationController
+  /* Custom enter animation using AnimationController */
   enterAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
@@ -210,7 +210,7 @@ export class Tab3Page {
     };
   }
   
-  // Custom leave animation using AnimationController
+  /* Custom leave animation using AnimationController */
   leaveAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
@@ -237,19 +237,19 @@ export class Tab3Page {
   }
   
   async signIn() {
-    // Check if username is empty
+    /* Check if username is empty */
     if (!this.username) {
       await this.presentAlert('Username diperlukan', 'Harap isi username!');
       return;
     }
     
-    // Check if password is empty
+    /* Check if password is empty */
     if (!this.password) {
       await this.presentAlert('Password diperlukan', 'Harap isi password!');
       return;
     }
     
-    // Check if all password requirements are met
+    /* Check if all password requirements are met */
     const allRequirementsMet = Object.values(this.passwordRequirements).every(value => value === true);
     
     if (!allRequirementsMet) {
@@ -257,10 +257,10 @@ export class Tab3Page {
       return;
     }
     
-    // If all validations pass
+    /* If all validations pass */
     console.log('Sign in successful!');
     await this.presentAlert('Berhasil', 'Login berhasil!', true);
-    // Redirect to home or dashboard page
-    // this.router.navigate(['/tabs/tab1']);
+    /* Redirect to home or dashboard page */
+    this.router.navigate(['/beranda']);
   }
 }

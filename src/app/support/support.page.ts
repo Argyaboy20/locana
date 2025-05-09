@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-support',
@@ -24,7 +25,10 @@ export class SupportPage implements OnInit {
     'test@test.com'
   ];
 
-  constructor(private toastController: ToastController) { }
+  constructor(
+    private toastController: ToastController,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -60,7 +64,7 @@ export class SupportPage implements OnInit {
       return false;
     }
 
-    // Cek apakah email terdaftar (simulasi)
+    /* Cek apakah email terdaftar (simulasi) */
     if (!this.registeredEmails.includes(this.email)) {
       this.emailStatus = {
         message: 'Email tidak terdaftar dalam sistem',
@@ -101,13 +105,13 @@ export class SupportPage implements OnInit {
     const file = event.target.files[0];
     
     if (file) {
-      // Validasi ukuran file (max 5MB)
+      /* Validasi ukuran file (max 5MB) */
       if (file.size > 5 * 1024 * 1024) {
         this.presentToast('Ukuran file terlalu besar. Maksimal 5MB.');
         return;
       }
       
-      // Validasi tipe file (hanya gambar)
+      /* Validasi tipe file (hanya gambar) */
       if (!file.type.startsWith('image/')) {
         this.presentToast('Hanya file gambar yang diizinkan.');
         return;
@@ -122,7 +126,7 @@ export class SupportPage implements OnInit {
   }
 
   async submitReport() {
-    // Validasi form sebelum submit
+    /* Validasi form sebelum submit */
     const isEmailValid = this.validateEmail();
     const isKendalaValid = this.validateKendala();
     
@@ -131,26 +135,32 @@ export class SupportPage implements OnInit {
       return;
     }
     
-    // Simulasi pengiriman laporan
+    /* Simulasi pengiriman laporan */
     try {
-      // Di sini Anda bisa menambahkan kode untuk mengirim data ke API
+      // Di sini bisa menambahkan kode untuk mengirim data ke API
       console.log('Mengirim laporan:');
       console.log('Email:', this.email);
       console.log('Kendala:', this.kendalaText);
       console.log('File:', this.selectedFile ? this.selectedFile.name : 'Tidak ada file');
       
-      // Simulasi proses pengiriman
+      /* Simulasi proses pengiriman */
       await this.delay(1500);
       
-      // Tampilkan pesan sukses
+      /* Tampilkan pesan sukses */
       this.presentToast('Laporan kendala berhasil dikirim! Tim kami akan segera menindaklanjuti.', 'success');
       
-      // Reset form setelah berhasil
+      /* Reset form setelah berhasil */
       this.resetForm();
+
+      this.navigateToSupport();
     } catch (error) {
       this.presentToast('Terjadi kesalahan saat mengirim laporan. Silakan coba lagi.', 'danger');
       console.error('Error submitting report:', error);
     }
+  }
+
+  navigateToSupport() {
+    this.router.navigate(['/support']);
   }
   
   private delay(ms: number): Promise<void> {

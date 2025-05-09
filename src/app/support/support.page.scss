@@ -35,7 +35,7 @@
             width: 130px;
             height: 130px;
             margin-bottom: -30px;
-            object-fit: contain; // Menjaga aspek rasio logo
+            object-fit: contain; /* Menjaga aspek rasio logo */
           }
           
           .app-name {
@@ -238,7 +238,7 @@
         }
         
         .desktop-content {
-          max-width: 680px; // Memperlebar container
+          max-width: 680px; /* Memperlebar container */
           width: 90%;
           
           .logo-section {
@@ -252,7 +252,7 @@
               height: 130px;
               margin-top: -40px;
               margin-bottom: -30px;
-              object-fit: contain; // Menjaga aspek rasio logo
+              object-fit: contain; /* Menjaga aspek rasio logo */
             }
             
             .app-name {
@@ -270,7 +270,6 @@
             width: 100%;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             box-sizing: border-box;
-            // Menghapus max-height dan overflow untuk mencegah scrolling internal
             
             .form-title {
               font-size: 22px;
@@ -386,7 +385,7 @@
                 .kendala-textarea {
                   width: 100%;
                   --padding-start: 5px;
-                  height: 120px; // Tetapkan ketinggian yang tetap
+                  height: 120px;
                   --color: #000000;
                   color: #000000;
                   

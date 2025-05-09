@@ -41,47 +41,49 @@
 </ion-menu>
 
 <ion-content [fullscreen]="true" id="main-content">
-  <!-- Mobile View -->
-  <div class="mobile-view">
-    <div class="tracking-container">
-      <h1 class="tracking-title">Pelacakan Nomor</h1>
-      <p class="tracking-subtitle">Silakan masukkan nomor yang aktif</p>
-      
-      <div class="input-container">
-        <ion-input 
-          class="rounded-input" 
-          placeholder="Masukkan nomor" 
-          type="tel" 
-          [(ngModel)]="phoneNumber"
-          (ionInput)="validateNumber($event)"
-          maxlength="13"
-        ></ion-input>
-        <ion-button class="process-button" (click)="trackNumber()">
-          <ion-icon name="search-outline"></ion-icon>
-        </ion-button>
+  <div class="beranda-container">
+    <!-- Mobile View -->
+    <div class="mobile-view">
+      <div class="tracking-container">
+        <h1 class="tracking-title">Pelacakan Nomor</h1>
+        <p class="tracking-subtitle">Silakan masukkan nomor yang aktif</p>
+        
+        <div class="input-container">
+          <ion-input 
+            class="rounded-input" 
+            placeholder="Masukkan nomor" 
+            type="tel" 
+            [(ngModel)]="phoneNumber"
+            (ionInput)="validateNumber($event)"
+            maxlength="13"
+          ></ion-input>
+          <ion-button class="process-button" (click)="trackNumber()">
+            <ion-icon name="search-outline"></ion-icon>
+          </ion-button>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <!-- Desktop View -->
-  <div class="desktop-view">
-    <div class="tracking-container">
-      <h1 class="tracking-title">Pelacakan Nomor</h1>
-      <p class="tracking-subtitle">Silakan masukkan nomor yang aktif</p>
-      
-      <div class="input-container">
-        <ion-input 
-          class="rounded-input" 
-          placeholder="Masukkan nomor" 
-          type="tel" 
-          [(ngModel)]="phoneNumber"
-          (ionInput)="validateNumber($event)"
-          maxlength="13"
-        ></ion-input>
-        <ion-button class="process-button" (click)="trackNumber()">
-          <ion-icon name="search-outline"></ion-icon>
-          <span>Lacak</span>
-        </ion-button>
+    
+    <!-- Desktop View -->
+    <div class="desktop-view">
+      <div class="tracking-container">
+        <h1 class="tracking-title">Pelacakan Nomor</h1>
+        <p class="tracking-subtitle">Silakan masukkan nomor yang aktif</p>
+        
+        <div class="input-container">
+          <ion-input 
+            class="rounded-input" 
+            placeholder="Masukkan nomor" 
+            type="tel" 
+            [(ngModel)]="phoneNumber"
+            (ionInput)="validateNumber($event)"
+            maxlength="13"
+          ></ion-input>
+          <ion-button class="process-button" (click)="trackNumber()">
+            <ion-icon name="search-outline"></ion-icon>
+            <span>Lacak</span>
+          </ion-button>
+        </div>
       </div>
     </div>
   </div>

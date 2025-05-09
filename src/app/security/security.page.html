@@ -1,13 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>security</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">security</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" id="main-content">
+  <div class="security-container">
+    <!-- Mobile View -->
+    <div class="mobile-view">
+      <div class="content-container">
+        <h1 class="page-title">Security</h1>
+        <p class="page-subtitle">Halaman Security</p>
+        
+        <!-- Content goes here -->
+        <div class="content-box">
+          <p>Ini adalah halaman security yang sudah terintegrasi dengan tab bar.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Desktop View -->
+    <div class="desktop-view">
+      <div class="content-container">
+        <h1 class="page-title">Security</h1>
+        <p class="page-subtitle">Halaman Security</p>
+        
+        <!-- Content goes here -->
+        <div class="content-box">
+          <p>Ini adalah halaman security yang sudah terintegrasi dengan tab bar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
+<ion-tab-bar slot="bottom" class="tab-bar">
+  <ion-tab-button tab="home" [class.tab-selected]="activeTab === 'home'" (click)="navigateToTab('home')">
+    <ion-icon name="home-outline"></ion-icon>
+    <ion-label>Home</ion-label>
+  </ion-tab-button>
+  <ion-tab-button tab="security" [class.tab-selected]="activeTab === 'security'" (click)="navigateToTab('security')">
+    <ion-icon name="shield-checkmark-outline"></ion-icon>
+    <ion-label>Security</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>

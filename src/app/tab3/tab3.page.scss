@@ -15,7 +15,7 @@
     align-items: center;
   }
   
-  // Common styles
+  /* Common styles */
   .logo-section {
     display: flex;
     flex-direction: column;
@@ -23,8 +23,8 @@
     margin-bottom: 2rem;
     
     .logo {
-      width: 120px; /* Increased size from 80px to 120px */
-      height: auto; /* Changed to auto to maintain aspect ratio */
+      width: 120px; 
+      height: auto; 
       object-fit: contain; /* Ensures the logo maintains its proportions */
       margin-bottom: 0.5rem;
     }
@@ -91,8 +91,8 @@
       right: 0.5rem;
       color: #6863f2;
       cursor: pointer;
-      font-size: 1.5rem; /* Increase size for better clickability */
-      padding: 5px; /* Add padding to increase click area */
+      font-size: 1.5rem; 
+      padding: 5px; 
       z-index: 10; /* Ensure it's above other elements */
     }
   }
@@ -165,7 +165,7 @@
     }
   }
   
-  // Mobile View Specific
+  /* Mobile View Specific */
   .mobile-view {
     display: flex;
     flex-direction: column;
@@ -180,7 +180,7 @@
     }
   }
   
-  // Desktop View Specific
+  /* Desktop View Specific */
   .desktop-view {
     display: none;
     flex-direction: column;
@@ -200,8 +200,8 @@
     
     .logo-section {
       .logo {
-        width: 150px; /* Increased size from 100px to 150px */
-        height: auto; /* Changed to auto to maintain aspect ratio */
+        width: 150px; 
+        height: auto; 
         object-fit: contain; /* Ensures the logo maintains its proportions */
       }
       

@@ -20,7 +20,7 @@ export class Tab1Page implements OnInit, OnDestroy {
   ) {}
   
   ngOnInit() {
-    // Define the custom Ionic color for the toolbar
+    /* Define the custom Ionic color for the toolbar */
     const style = document.documentElement.style;
     style.setProperty('--ion-color-locana-primary', '#417cdb');
     style.setProperty('--ion-color-locana-primary-rgb', '65,124,219');
@@ -29,17 +29,17 @@ export class Tab1Page implements OnInit, OnDestroy {
     style.setProperty('--ion-color-locana-primary-shade', '#3a6ec1');
     style.setProperty('--ion-color-locana-primary-tint', '#5489df');
 
-    // Apply important CSS fixes directly
+    /* Apply important CSS fixes directly */
     document.documentElement.style.setProperty('--ion-toolbar-background', '#417cdb');
     document.documentElement.style.setProperty('--ion-toolbar-color', '#ffffff');
 
-    // Load the Montserrat font for the title
+    /* Load the Montserrat font for the title */
     this.loadFont('Montserrat', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
-    // Start the automatic slide rotation
+    /* Start the automatic slide rotation */
     this.startSlideRotation();
     
-    // Force toolbar background once DOM is loaded
+    /* Force toolbar background once DOM is loaded */
     setTimeout(() => {
       const toolbar = document.querySelector('ion-toolbar');
       if (toolbar) {
@@ -49,9 +49,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     }, 100);
   }
   
-  /**
-   * Load external font
-   */
+  /* Load external font */
   loadFont(fontName: string, fontUrl: string) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -59,74 +57,46 @@ export class Tab1Page implements OnInit, OnDestroy {
     document.head.appendChild(link);
   }
   
-  /**
-   * Start automatic slide rotation (every 5 seconds)
-   */
+  /* Start automatic slide rotation (every 5 seconds) */
   startSlideRotation() {
     this.slideTimer = setInterval(() => {
       this.currentSlide = (this.currentSlide + 1) % 4;
       
-      // Update the active class on slides manually for better compatibility
+      /* Update the active class on slides manually for better compatibility */
       this.updateActiveSlide();
     }, 5000);
   }
   
-  /**
-   * Update active slide in the DOM (used as a fallback for Angular binding)
-   */
+  /* Update active slide in the DOM (used as a fallback for Angular binding) */
   updateActiveSlide() {
-    // Update desktop slides
-    const desktopSlides = document.querySelectorAll('.desktop-view .slide');
-    desktopSlides.forEach((slide, index) => {
-      if (index === this.currentSlide) {
-        slide.classList.add('active');
-      } else {
-        slide.classList.remove('active');
-      }
+    /* Hapus semua kelas active terlebih dahulu */
+    document.querySelectorAll('.slide').forEach(slide => {
+      slide.classList.remove('active');
     });
     
-    // Update mobile slides
-    const mobileSlides = document.querySelectorAll('.mobile-view .slide');
-    mobileSlides.forEach((slide, index) => {
-      if (index === this.currentSlide) {
-        slide.classList.add('active');
-      } else {
-        slide.classList.remove('active');
-      }
+    document.querySelectorAll('.dot').forEach(dot => {
+      dot.classList.remove('active');
     });
     
-    // Update desktop indicators
-    const desktopDots = document.querySelectorAll('.desktop-view .dot');
-    desktopDots.forEach((dot, index) => {
-      if (index === this.currentSlide) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
-    });
+    /* Tambahkan kelas active hanya ke slide dan dot yang aktif */
+    const desktopActiveSlide = document.querySelector(`.desktop-view .slide:nth-child(${this.currentSlide + 1})`);
+    const mobileActiveSlide = document.querySelector(`.mobile-view .slide:nth-child(${this.currentSlide + 1})`);
+    const desktopActiveDot = document.querySelector(`.desktop-view .dot:nth-child(${this.currentSlide + 1})`);
+    const mobileActiveDot = document.querySelector(`.mobile-view .dot:nth-child(${this.currentSlide + 1})`);
     
-    // Update mobile indicators
-    const mobileDots = document.querySelectorAll('.mobile-view .dot');
-    mobileDots.forEach((dot, index) => {
-      if (index === this.currentSlide) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
-    });
+    if (desktopActiveSlide) desktopActiveSlide.classList.add('active');
+    if (mobileActiveSlide) mobileActiveSlide.classList.add('active');
+    if (desktopActiveDot) desktopActiveDot.classList.add('active');
+    if (mobileActiveDot) mobileActiveDot.classList.add('active');
   }
   
-  /**
-   * Handle registration button click
-   */
+  /* Handle registration button click */
   register() {
     console.log('Registration requested');
-    // Implement registration functionality
+    /* Implement registration functionality */
   }
   
-  /**
-   * Handle Google SSO login
-   */
+  /* Handle Google SSO login */
   async loginWithGoogle() {
     try {
       console.log('Google SSO requested');
@@ -135,7 +105,7 @@ export class Tab1Page implements OnInit, OnDestroy {
       if (result && result.user) {
         console.log('Login berhasil:', result.user);
         
-        // Tampilkan toast pesan sukses
+        /* Tampilkan toast pesan sukses */
         const toast = await this.toastController.create({
           message: 'Login berhasil dengan akun Google',
           duration: 2000,
@@ -144,13 +114,13 @@ export class Tab1Page implements OnInit, OnDestroy {
         });
         toast.present();
         
-        // Navigasi ke halaman utama/dashboard
+        /* Navigasi ke halaman utama/dashboard */
         this.router.navigate(['/dashboard']);
       }
     } catch (error) {
       console.error('Error login Google:', error);
       
-      // Tampilkan toast pesan error
+      /* Tampilkan toast pesan error */
       const toast = await this.toastController.create({
         message: 'Gagal login dengan Google. Silakan coba lagi.',
         duration: 3000,
@@ -161,9 +131,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     }
   }
   
-  /**
-   * Clean up resources on component destruction
-   */
+  /* Clean up resources on component destruction */
   ngOnDestroy() {
     if (this.slideTimer) {
       clearInterval(this.slideTimer);

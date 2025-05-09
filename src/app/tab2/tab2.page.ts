@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, AnimationController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-tab2',
@@ -23,11 +24,12 @@ export class Tab2Page implements OnInit {
 
   constructor(
     private alertController: AlertController,
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
+    private router: Router 
   ) {}
 
   ngOnInit() {
-    // Check screen size on init
+    /* Check screen size on init */
     this.checkScreenSize();
     
     // Add resize event listener
@@ -35,13 +37,13 @@ export class Tab2Page implements OnInit {
       this.checkScreenSize();
     });
     
-    // Add global styles for alert customization
+    /* Add global styles for alert customization */
     this.addAlertCustomStyles();
   }
 
-  // Method to add custom alert styles
+  /* Method to add custom alert styles */
   addAlertCustomStyles() {
-    // Create style element if it doesn't exist
+    /* Create style element if it doesn't exist */
     let style = document.getElementById('custom-alert-styles');
     if (!style) {
       style = document.createElement('style');
@@ -108,7 +110,7 @@ export class Tab2Page implements OnInit {
     }
   }
 
-  // Method to check screen size and toggle views
+  /* Method to check screen size and toggle views */
   checkScreenSize() {
     const mobileView = document.querySelector('.mobile-view');
     const desktopView = document.querySelector('.desktop-view');
@@ -126,19 +128,19 @@ export class Tab2Page implements OnInit {
     }
   }
   
-  // Toggle password visibility
+  /* Toggle password visibility */
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
   
-  // Check password requirements whenever password changes
+  /* Check password requirements whenever password changes */
   ngDoCheck() {
     if (this.password) {
       this.checkPasswordRequirements();
     }
   }
   
-  // Validate password against requirements
+  /* Validate password against requirements */
   checkPasswordRequirements() {
     this.passwordRequirements = {
       minLength: this.password.length >= 6,
@@ -149,18 +151,18 @@ export class Tab2Page implements OnInit {
     };
   }
   
-  // Check if all password requirements are met
+  /*/ Check if all password requirements are met */
   isPasswordValid() {
     return Object.values(this.passwordRequirements).every(requirement => requirement === true);
   }
 
-  // Method to validate email
+  /* Method to validate email */
   validateEmail(email: string) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   }
 
-  // Method to handle sign up
+  /* Method to handle sign up */
   async signUp() {
     // Validate all fields
     if (!this.username) {
@@ -199,25 +201,39 @@ export class Tab2Page implements OnInit {
       return;
     }
     
-    // If all validations pass, proceed with registration
+    /* If all validations pass, proceed with registration */
     console.log('Signing up with:', {
       username: this.username,
       email: this.email,
       password: this.password
     });
     
-    // Here you would typically call your authentication service
+    /* Here you would typically call your authentication service */
     await this.presentAlert('Pendaftaran Berhasil', 'Akun Anda telah berhasil didaftarkan!', true);
+    
+    /* Navigasi ke halaman beranda setelah alert ditutup */
+    this.navigateToBeranda();
   }
   
-  // Display alert message with optional success animation
+  /* Metode untuk navigasi ke halaman beranda */
+  navigateToBeranda() {
+    this.router.navigate(['/beranda']);
+  }
+  
+  /* Display alert message with optional success animation */
   async presentAlert(header: string, message: string, isSuccess: boolean = false) {
     const alert = await this.alertController.create({
       header: header,
       message: message,
       buttons: [{
         text: 'OK',
-        cssClass: isSuccess ? 'success-button' : ''
+        cssClass: isSuccess ? 'success-button' : '',
+        handler: () => {
+          /* Jika alert sukses, navigasi ke beranda saat tombol OK diklik */
+          if (isSuccess) {
+            this.navigateToBeranda();
+          }
+        }
       }],
       cssClass: ['custom-alert', isSuccess ? 'success-alert' : ''],
       backdropDismiss: false,
@@ -230,7 +246,7 @@ export class Tab2Page implements OnInit {
     await alert.present();
   }
   
-  // Custom enter animation using AnimationController
+  /* Custom enter animation using AnimationController */
   enterAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
@@ -256,7 +272,7 @@ export class Tab2Page implements OnInit {
     };
   }
   
-  // Custom leave animation using AnimationController
+  /* Custom leave animation using AnimationController */
   leaveAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
