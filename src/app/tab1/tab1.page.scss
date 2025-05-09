@@ -16,12 +16,12 @@ ion-toolbar[color="locana-primary"] {
 
 /* Header styles */
 .header-logo {
-  height: 25px;
+  height: 30px;
   margin-left: 5px;
 }
 
 .title-logo {
-  margin-left: -35px;
+  margin-left: -20px;
   font-family: 'Montserrat';
   font-weight: 600;
   letter-spacing: 1px;
@@ -473,13 +473,13 @@ ion-content {
   
   /* Mobile specific tweaks */
   .header-logo {
-    height: 22px;
-    margin-left: 2px;
+    height: 30px;
+    margin-left: 5px;
   }
   
   .title-logo {
     font-size: 1.1rem;
-    margin-left: -40px;
+    margin-left: -20px;
   }
   
   .toolbar-button {

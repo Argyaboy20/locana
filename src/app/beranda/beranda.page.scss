@@ -1,14 +1,14 @@
 // Main container
 ion-content {
   --background: white;
-  
+
   .beranda-container {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  
+
   // Shared styles
   .tracking-container {
     display: flex;
@@ -19,27 +19,27 @@ ion-content {
     padding: 0 20px;
     text-align: center;
   }
-  
+
   .tracking-title {
     font-size: 24px;
     font-weight: bold;
     color: #6863f2;
     margin-bottom: 8px;
   }
-  
+
   .tracking-subtitle {
     font-size: 16px;
     color: #666;
     margin-bottom: 24px;
   }
-  
+
   .input-container {
     display: flex;
     width: 100%;
     max-width: 500px;
     margin-bottom: 20px;
   }
-  
+
   .rounded-input {
     --background: white;
     --color: #333;
@@ -55,7 +55,7 @@ ion-content {
     font-size: 16px;
     letter-spacing: 0.5px;
   }
-  
+
   .process-button {
     --background: #6863f2;
     --border-radius: 25px;
@@ -64,7 +64,7 @@ ion-content {
     --box-shadow: 0 4px 8px rgba(104, 99, 242, 0.3);
     height: 46px;
     transition: transform 0.2s ease;
-    
+
     &:active {
       transform: scale(0.97);
     }
@@ -75,12 +75,12 @@ ion-content {
     --border-color: #6863f2;
     animation: pulse 1.5s infinite alternate;
   }
-  
+
   @keyframes pulse {
     from {
       box-shadow: 0 0 5px rgba(104, 99, 242, 0.3);
     }
-  
+
     to {
       box-shadow: 0 0 12px rgba(104, 99, 242, 0.6);
     }
@@ -96,7 +96,7 @@ ion-content {
     justify-content: center;
     padding: 20px;
   }
-  
+
   // Desktop view specific styles
   .desktop-view {
     display: none;
@@ -105,42 +105,42 @@ ion-content {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
+
     .tracking-title {
       font-size: 32px;
     }
-    
+
     .tracking-subtitle {
       font-size: 18px;
       margin-bottom: 32px;
     }
-    
+
     .input-container {
       max-width: 600px;
     }
-    
+
     .process-button {
       --padding-start: 20px;
       --padding-end: 20px;
     }
   }
-  
+
   // Responsive Design
   @media (min-width: 768px) {
     .mobile-view {
       display: none;
     }
-    
+
     .desktop-view {
       display: flex;
     }
   }
-  
+
   @media (max-width: 767px) {
     .mobile-view {
       display: flex;
     }
-    
+
     .desktop-view {
       display: none;
     }
@@ -161,7 +161,7 @@ ion-toolbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: -85px;
+  margin-left: -50px;
 }
 
 .header-logo {
@@ -175,7 +175,7 @@ ion-toolbar {
 }
 
 .logo-text {
-  margin-left: -15px;
+  margin-left: 5px;
   font-family: 'Montserrat';
 }
 
@@ -183,28 +183,30 @@ ion-toolbar {
 ion-menu {
   --background: #6863f2;
   --width: 250px;
-  
+
   ion-toolbar {
     --background: #6863f2;
     --color: white;
   }
-  
+
   ion-content {
     --background: #6863f2;
     display: flex;
     flex-direction: column;
   }
-  
+
   ion-list {
     background: #6863f2;
     padding: 0;
     flex: 1;
     display: flex;
     flex-direction: column;
-    position: relative; /* tambahkan ini */
-    height: 100%; /* tambahkan ini */
+    position: relative;
+    /* tambahkan ini */
+    height: 100%;
+    /* tambahkan ini */
   }
-  
+
   ion-item {
     --background: #6863f2;
     --color: white;
@@ -215,26 +217,31 @@ ion-menu {
     --inner-padding-end: 16px;
     --min-height: 50px;
   }
-  
+
   ion-icon {
     color: white;
     margin-right: 8px;
   }
-  
+
   // Logout button positioning - pushed to bottom
   .logout-item {
     --background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     margin: 5px;
     --min-height: 56px;
-    position: absolute; /* ubah dari margin-top: auto */
-    bottom: 0px; /* posisi pasti di bawah */
+    position: absolute;
+    /* ubah dari margin-top: auto */
+    bottom: 0px;
+    /* posisi pasti di bawah */
     left: 0;
     right: 0;
-    width: calc(100% - 10px); /* pertahankan margin 5px di kedua sisi */
-    border-top: 1px solid rgba(255, 255, 255, 0.3); /* garis pembatas */
-    padding-top: 8px; /* Sedikit ruang di atas border */
-    
+    width: calc(100% - 10px);
+    /* pertahankan margin 5px di kedua sisi */
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    /* garis pembatas */
+    padding-top: 8px;
+    /* Sedikit ruang di atas border */
+
     ion-icon {
       color: #ff4961;
     }
@@ -251,12 +258,12 @@ ion-menu {
 ion-tab-button {
   --color: #888;
   --color-selected: #6863f2;
-  
+
   &.tab-selected {
     --color: #6863f2;
     position: relative;
     overflow: hidden;
-    
+
     &::after {
       content: '';
       position: absolute;
@@ -331,7 +338,7 @@ ion-tab-button {
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #e1e1e1;
-  
+
   @media (min-width: 768px) {
     height: 240px;
   }
