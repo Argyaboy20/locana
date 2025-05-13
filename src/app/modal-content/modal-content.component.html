@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Hasil Pelacakan</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="location-modal-content">
+    <ion-icon name="location" class="location-icon"></ion-icon>
+    <h2 class="location-title">Lokasi Ditemukan</h2>
+    
+    <div class="location-details">
+      <div class="location-detail-item">
+        <span class="detail-label">Nomor:</span>
+        <span>{{phoneNumber}}</span>
+      </div>
+      <div class="location-detail-item">
+        <span class="detail-label">Provider:</span>
+        <span>{{provider}}</span>
+      </div>
+      <div class="location-detail-item">
+        <span class="detail-label">Provinsi:</span>
+        <span>{{region}}</span>
+      </div>
+      <div class="location-detail-item">
+        <span class="detail-label">Kota:</span>
+        <span>{{city}}</span>
+      </div>
+      <div class="location-detail-item">
+        <span class="detail-label">Status:</span>
+        <span>Aktif</span>
+      </div>
+      <div class="location-detail-item">
+        <span class="detail-label">Kekuatan Sinyal:</span>
+        <span>{{signalStrength}}</span>
+      </div>
+      <div *ngIf="coordinates" class="location-detail-item">
+        <span class="detail-label">Koordinat:</span>
+        <span>{{coordinates?.lat?.toFixed(6)}}, {{coordinates?.lng?.toFixed(6)}}</span>
+      </div>
+    </div>
+
+    <div *ngIf="coordinates" class="map-container">
+      <div class="map-placeholder">
+        <p>Peta Lokasi BTS Terdekat</p>
+        <p class="coordinates">{{coordinates?.lat?.toFixed(6)}}, {{coordinates?.lng?.toFixed(6)}}</p>
+      </div>
+    </div>
+    
+    <ion-button expand="block" class="close-button" (click)="dismissModal()">
+      Tutup
+    </ion-button>
+  </div>
+</ion-content>

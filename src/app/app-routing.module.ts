@@ -32,6 +32,10 @@ const routes: Routes = [
   {
     path: 'security',
     loadChildren: () => import('./security/security.module').then( m => m.SecurityPageModule)
+  },
+  {
+    path: 'contact',
+    loadChildren: () => import('./contact/contact.module').then( m => m.ContactPageModule)
   }
 
 ];
