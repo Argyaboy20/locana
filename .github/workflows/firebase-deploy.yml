@@ -27,7 +27,7 @@ jobs:
       run: npm install
     
     - name: Build project
-      run: npm run build  # sesuaikan dengan build command project kamu
+      run: npm run build --configuration=production
     
     - name: Deploy to Firebase
       uses: FirebaseExtended/action-hosting-deploy@v0
