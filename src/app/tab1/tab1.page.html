@@ -16,7 +16,7 @@
 <ion-content>
   <!-- Mobile View -->
   <div class="mobile-view">
-    
+
     <div class="tracking-decoration">
       <div class="circle"></div>
       <div class="circle"></div>
@@ -24,19 +24,19 @@
       <div class="dot"></div>
       <div class="dot"></div>
     </div>
-    
+
     <div class="logo-section">
       <img src="/assets/logoLocana.png" alt="Locana Logo" class="main-logo">
     </div>
-    
+
     <div class="action-buttons">
       <ion-button expand="block" class="register-button" href="/signup">Sign Up</ion-button>
-      <ion-button expand="block" class="google-button">
+      <ion-button expand="block" class="google-button" (click)="loginWithGoogle()">
         <ion-icon name="logo-google" slot="start"></ion-icon>
         Google
       </ion-button>
     </div>
-    
+
     <div class="message-section">
       <div class="slide" [ngClass]="{'active': currentSlide === 0}">
         <h2>MELACAK NOMOR DI MANA SAJA</h2>
@@ -50,7 +50,7 @@
       <div class="slide" [ngClass]="{'active': currentSlide === 3}">
         <h2>COBAIN SEKARANG JUGA!</h2>
       </div>
-      
+
       <div class="indicator-dots">
         <div class="dot" [ngClass]="{'active': currentSlide === 0}"></div>
         <div class="dot" [ngClass]="{'active': currentSlide === 1}"></div>
@@ -59,24 +59,24 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Desktop/Tablet View -->
   <div class="desktop-view">
     <div class="left-section">
-      
+
       <div class="logo-section">
         <img src="/assets/logoLocana.png" alt="Locana Logo" class="main-logo">
       </div>
-      
+
       <div class="action-buttons">
         <ion-button expand="block" class="register-button" href="/signup">Sign Up</ion-button>
-        <ion-button expand="block" class="google-button">
+        <ion-button expand="block" class="google-button" (click)="loginWithGoogle()">
           <ion-icon name="logo-google" slot="start"></ion-icon>
           Google
         </ion-button>
       </div>
     </div>
-    
+
     <div class="right-section">
       <div class="tracking-decoration">
         <div class="circle"></div>
@@ -85,7 +85,7 @@
         <div class="dot"></div>
         <div class="dot"></div>
       </div>
-      
+
       <div class="slide-container">
         <div class="slide" [ngClass]="{'active': currentSlide === 0}">
           <h2>MELACAK NOMOR DI MANA SAJA</h2>
@@ -100,7 +100,7 @@
           <h2>COBAIN SEKARANG JUGA!</h2>
         </div>
       </div>
-      
+
       <div class="indicator-dots">
         <div class="dot" [ngClass]="{'active': currentSlide === 0}"></div>
         <div class="dot" [ngClass]="{'active': currentSlide === 1}"></div>

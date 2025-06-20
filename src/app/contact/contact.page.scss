@@ -1,10 +1,4 @@
-/* 
-* Main styling for contact page
-* This file contains all the styles for the contact form, animations
-* and responsive layouts for mobile and desktop views
-*/
-
-// Common styles
+/* Common styles */
 .contact-page {
   --background: #ffffff;
   font-family: 'Roboto', sans-serif;
@@ -48,15 +42,49 @@ ion-label {
   color: #ff4961;
 }
 
-ion-input, ion-textarea {
+ion-input,
+ion-textarea {
   --background: #f9f9f9;
   --padding-start: 1rem;
   --padding-end: 1rem;
   margin-top: 0.5rem;
   border-radius: 5px;
   border: 1px solid #ddd;
-  color:black;
+  color: black;
 }
+
+ion-select {
+  font-size: 1rem;
+  max-width: 100%;
+  --background: #f9f9f9;
+  --padding-start: 1rem;
+  --padding-end: 3rem;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: black;
+  
+  // Alternatif menggunakan CSS custom properties Ionic
+  --placeholder-color: #666;
+  --icon-color: #666;
+  
+  ion-select-option {
+    background: #6863f2;
+    color: white;
+  }
+}
+
+// Jika masih belum berhasil, gunakan ini
+.form-group ion-select::part(icon) {
+  position: absolute;
+  right: 1rem;
+}
+
+ion-text[color="danger"] {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
 
 .invalid {
   --border-color: #ff4961;
@@ -134,7 +162,7 @@ ion-input, ion-textarea {
   background-color: #fff;
   border-radius: 50%;
   position: relative;
-  
+
   &:after {
     content: '';
     position: absolute;
@@ -208,6 +236,7 @@ ion-input, ion-textarea {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
+
   100% {
     transform: translate(-50%, -50%) scale(2);
     opacity: 0;
@@ -218,6 +247,7 @@ ion-input, ion-textarea {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -238,15 +268,16 @@ ion-input, ion-textarea {
   .form-container {
     flex-direction: column;
   }
-  
-  .input-section, .location-animation {
+
+  .input-section,
+  .location-animation {
     width: 100%;
   }
-  
+
   .location-animation {
     margin-top: 1.5rem;
   }
-  
+
   .input-fields {
     padding: 1.5rem;
   }
@@ -261,28 +292,28 @@ ion-input, ion-textarea {
   .desktop-view {
     display: block;
   }
-  
+
   .form-container {
     flex-direction: row;
     min-height: 500px;
   }
-  
+
   .input-section {
     width: 50%;
     padding: 2rem;
   }
-  
+
   .location-animation {
     width: 50%;
     display: flex;
     align-items: stretch;
   }
-  
+
   .gradient-bg {
     width: 100%;
     justify-content: center;
   }
-  
+
   .button-container {
     margin-top: 1rem;
   }

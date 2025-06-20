@@ -3,18 +3,14 @@
     <!-- Mobile View -->
     <div class="mobile-view">
       <h1 class="page-title">Hubungi Kami</h1>
-      
+
       <div class="form-container">
         <div class="input-section">
           <div class="input-fields">
             <div class="form-group">
               <ion-label position="floating">Nama Lengkap <span class="required">*</span></ion-label>
-              <ion-input 
-                type="text" 
-                [(ngModel)]="contactForm.fullName" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('fullName')}"
-                (ionBlur)="validateField('fullName')">
+              <ion-input type="text" [(ngModel)]="contactForm.fullName" required
+                [ngClass]="{'invalid': isFieldInvalid('fullName')}" (ionBlur)="validateField('fullName')">
               </ion-input>
               <div class="error-message" *ngIf="formErrors.fullName">
                 {{ formErrors.fullName }}
@@ -23,12 +19,8 @@
 
             <div class="form-group">
               <ion-label position="floating">Nama Perusahaan <span class="required">*</span></ion-label>
-              <ion-input 
-                type="text" 
-                [(ngModel)]="contactForm.companyName" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('companyName')}"
-                (ionBlur)="validateField('companyName')">
+              <ion-input type="text" [(ngModel)]="contactForm.companyName" required
+                [ngClass]="{'invalid': isFieldInvalid('companyName')}" (ionBlur)="validateField('companyName')">
               </ion-input>
               <div class="error-message" *ngIf="formErrors.companyName">
                 {{ formErrors.companyName }}
@@ -37,26 +29,17 @@
 
             <div class="form-group">
               <ion-label position="floating">Negara <span class="required">*</span></ion-label>
-              <ion-input 
-                type="text" 
-                [(ngModel)]="contactForm.country" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('country')}"
-                (ionBlur)="validateField('country')">
-              </ion-input>
-              <div class="error-message" *ngIf="formErrors.country">
-                {{ formErrors.country }}
-              </div>
+              <ion-select required [(ngModel)]="contactForm.country" name="country" (ionBlur)="validateField('country')"
+                [class.invalid]="isFieldInvalid('country')">
+                <ion-select-option *ngFor="let country of countries" [value]="country">{{ country }}</ion-select-option>
+              </ion-select>
+              <ion-text color="danger" *ngIf="isFieldInvalid('country')">{{ formErrors.country }}</ion-text>
             </div>
 
             <div class="form-group">
               <ion-label position="floating">Email Bisnis <span class="required">*</span></ion-label>
-              <ion-input 
-                type="email" 
-                [(ngModel)]="contactForm.email" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('email')}"
-                (ionBlur)="validateField('email')">
+              <ion-input type="email" [(ngModel)]="contactForm.email" required
+                [ngClass]="{'invalid': isFieldInvalid('email')}" (ionBlur)="validateField('email')">
               </ion-input>
               <div class="error-message" *ngIf="formErrors.email">
                 {{ formErrors.email }}
@@ -65,13 +48,8 @@
 
             <div class="form-group">
               <ion-label position="floating">Pesan <span class="required">*</span></ion-label>
-              <ion-textarea 
-                class="message-input"
-                rows="4"
-                [(ngModel)]="contactForm.message" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('message')}"
-                (ionBlur)="validateField('message')">
+              <ion-textarea class="message-input" rows="4" [(ngModel)]="contactForm.message" required
+                [ngClass]="{'invalid': isFieldInvalid('message')}" (ionBlur)="validateField('message')">
               </ion-textarea>
               <div class="error-message" *ngIf="formErrors.message">
                 {{ formErrors.message }}
@@ -79,31 +57,27 @@
             </div>
           </div>
         </div>
-      
+
       </div>
-      
+
       <div class="button-container">
         <ion-button expand="block" class="submit-btn" (click)="submitForm()">
           Kirim
         </ion-button>
       </div>
     </div>
-    
+
     <!-- Desktop View -->
     <div class="desktop-view">
       <h1 class="page-title">Hubungi Kami</h1>
-      
+
       <div class="form-container">
         <div class="input-section">
           <div class="input-fields">
             <div class="form-group">
               <ion-label position="floating">Nama Lengkap <span class="required">*</span></ion-label>
-              <ion-input 
-                type="text" 
-                [(ngModel)]="contactForm.fullName" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('fullName')}"
-                (ionBlur)="validateField('fullName')">
+              <ion-input type="text" [(ngModel)]="contactForm.fullName" required
+                [ngClass]="{'invalid': isFieldInvalid('fullName')}" (ionBlur)="validateField('fullName')">
               </ion-input>
               <div class="error-message" *ngIf="formErrors.fullName">
                 {{ formErrors.fullName }}
@@ -112,40 +86,27 @@
 
             <div class="form-group">
               <ion-label position="floating">Nama Perusahaan <span class="required">*</span></ion-label>
-              <ion-input 
-                type="text" 
-                [(ngModel)]="contactForm.companyName" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('companyName')}"
-                (ionBlur)="validateField('companyName')">
+              <ion-input type="text" [(ngModel)]="contactForm.companyName" required
+                [ngClass]="{'invalid': isFieldInvalid('companyName')}" (ionBlur)="validateField('companyName')">
               </ion-input>
               <div class="error-message" *ngIf="formErrors.companyName">
                 {{ formErrors.companyName }}
               </div>
             </div>
 
-            <div class="form-group">
+             <div class="form-group">
               <ion-label position="floating">Negara <span class="required">*</span></ion-label>
-              <ion-input 
-                type="text" 
-                [(ngModel)]="contactForm.country" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('country')}"
-                (ionBlur)="validateField('country')">
-              </ion-input>
-              <div class="error-message" *ngIf="formErrors.country">
-                {{ formErrors.country }}
-              </div>
+              <ion-select required [(ngModel)]="contactForm.country" name="country" (ionBlur)="validateField('country')"
+                [class.invalid]="isFieldInvalid('country')">
+                <ion-select-option *ngFor="let country of countries" [value]="country">{{ country }}</ion-select-option>
+              </ion-select>
+              <ion-text color="danger" *ngIf="isFieldInvalid('country')">{{ formErrors.country }}</ion-text>
             </div>
 
             <div class="form-group">
               <ion-label position="floating">Email Bisnis <span class="required">*</span></ion-label>
-              <ion-input 
-                type="email" 
-                [(ngModel)]="contactForm.email" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('email')}"
-                (ionBlur)="validateField('email')">
+              <ion-input type="email" [(ngModel)]="contactForm.email" required
+                [ngClass]="{'invalid': isFieldInvalid('email')}" (ionBlur)="validateField('email')">
               </ion-input>
               <div class="error-message" *ngIf="formErrors.email">
                 {{ formErrors.email }}
@@ -154,13 +115,8 @@
 
             <div class="form-group">
               <ion-label position="floating">Pesan <span class="required">*</span></ion-label>
-              <ion-textarea 
-                class="message-input"
-                rows="4"
-                [(ngModel)]="contactForm.message" 
-                required
-                [ngClass]="{'invalid': isFieldInvalid('message')}"
-                (ionBlur)="validateField('message')">
+              <ion-textarea class="message-input" rows="4" [(ngModel)]="contactForm.message" required
+                [ngClass]="{'invalid': isFieldInvalid('message')}" (ionBlur)="validateField('message')">
               </ion-textarea>
               <div class="error-message" *ngIf="formErrors.message">
                 {{ formErrors.message }}
@@ -168,7 +124,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="location-animation">
           <div class="gradient-bg">
             <div class="gps-animation">
@@ -185,7 +141,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="button-container">
         <ion-button expand="block" class="submit-btn" (click)="submitForm()">
           Kirim

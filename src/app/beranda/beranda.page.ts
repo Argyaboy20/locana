@@ -496,7 +496,7 @@ export class BerandaPage implements OnInit {
     this.phoneNumber = '';
     
     // Navigasi ke /tabs/tab1 dengan replaceUrl: true
-    this.router.navigate(['/tabs/tab1'], { 
+    this.router.navigate(['/'], { 
       replaceUrl: true 
     });
     
