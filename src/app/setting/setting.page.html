@@ -1,0 +1,122 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-left logo-title">
+      <div class="logo-container">
+        <ion-icon name="arrow-back-outline" (click)="navigateBack()" class="back-icon"></ion-icon>
+        <span class="logo-text">Pengaturan Akun</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" id="main-content">
+  <div class="setting-container">
+    <!-- Mobile View -->
+    <div class="mobile-view">
+      <div class="content-wrapper">
+        <ion-list class="setting-list">
+          <ion-item button routerLink="/akun" routerDirection="forward" class="setting-item">
+            <ion-icon name="person-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Profil Saya</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button routerLink="/privacypolicy" routerDirection="forward" class="setting-item">
+            <ion-icon name="shield-checkmark-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Syarat & Kebijakan Privasi</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button routerLink="/faq" routerDirection="forward" class="setting-item">
+            <ion-icon name="help-circle-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Pusat Bantuan</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button (click)="openContactModal()" class="setting-item">
+            <ion-icon name="logo-whatsapp" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Kontak Kami</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button (click)="confirmDeleteAccount()" class="setting-item">
+            <ion-icon name="trash-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Hapus Akun</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+    <!-- Desktop View -->
+    <div class="desktop-view">
+      <div class="content-wrapper">
+        <ion-list class="setting-list">
+          <ion-item button routerLink="/akun" routerDirection="forward" class="setting-item">
+            <ion-icon name="person-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Profil Saya</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button routerLink="/privacypolicy" routerDirection="forward" class="setting-item">
+            <ion-icon name="shield-checkmark-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Syarat & Kebijakan Privasi</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button routerLink="/faq" routerDirection="forward" class="setting-item">
+            <ion-icon name="help-circle-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Pusat Bantuan</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button (click)="openContactModal()" class="setting-item">
+            <ion-icon name="logo-whatsapp" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Kontak Kami</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
+          <ion-item button (click)="confirmDeleteAccount()" class="setting-item">
+            <ion-icon name="trash-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Hapus Akun</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Contact Modal -->
+<ion-modal #contactModal [isOpen]="isContactModalOpen" (didDismiss)="closeContactModal()" class="contact-modal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="modal-title">Kontak Kami</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeContactModal()" class="close-button">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="modal-content">
+      <div class="contact-container">
+        <ion-list class="contact-list">
+          <ion-item button (click)="openWhatsApp()" class="contact-item">
+            <ion-icon name="logo-whatsapp" slot="start" class="contact-icon whatsapp-icon"></ion-icon>
+            <ion-label class="contact-label">WhatsApp ke Minna</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="contact-arrow"></ion-icon>
+          </ion-item>
+
+          <ion-item button (click)="openEmail()" class="contact-item">
+            <ion-icon name="mail-outline" slot="start" class="contact-icon email-icon"></ion-icon>
+            <ion-label class="contact-label">Email ke care&#64;locana.id</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="contact-arrow"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

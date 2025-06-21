@@ -1,0 +1,299 @@
+/* Background styling for content and toolbar */
+ion-content {
+  --background: white;
+}
+
+ion-toolbar {
+  --background: #6863f2;
+}
+
+/* Header logo title styling */
+.logo-title {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Logo container to align back button and text */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Back button icon styling */
+.back-icon {
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+/* Logo text styling with proper spacing */
+.logo-text {
+  font-family: 'Montserrat';
+  font-size: 18px;
+}
+
+/* Main container for setting page */
+.setting-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile view responsive styling */
+.mobile-view {
+  display: block;
+  padding: 20px 16px;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+/* Desktop view responsive styling */
+.desktop-view {
+  display: none;
+  padding: 40px 20%;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+/* Content wrapper for consistent spacing */
+.content-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Setting list container styling */
+.setting-list {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual setting item styling */
+.setting-item {
+  --background: white;
+  --border-color: #e0e0e0;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --min-height: 60px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Hover effect for desktop */
+  @media (min-width: 768px) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(104, 99, 242, 0.15);
+      cursor: pointer;
+    }
+  }
+
+  /* Mobile specific adjustments */
+  @media (max-width: 767px) {
+    --min-height: 55px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+}
+
+/* Setting label text styling */
+.setting-label {
+  color: #6863f2;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+
+  /* Mobile font size adjustment */
+  @media (max-width: 767px) {
+    font-size: 15px;
+  }
+}
+
+/* Item icon styling for each setting option */
+.item-icon {
+  color: #6863f2;
+  font-size: 20px;
+  margin-right: 16px;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+
+  /* Icon hover effect */
+  .setting-item:hover & {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  /* Mobile icon size adjustment */
+  @media (max-width: 767px) {
+    font-size: 18px;
+    margin-right: 12px;
+  }
+}
+
+/* Arrow icon styling for navigation indication */
+.arrow-icon {
+  color: #6863f2;
+  font-size: 18px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+
+  /* Icon hover effect */
+  .setting-item:hover & {
+    opacity: 1;
+  }
+
+  /* Mobile icon size adjustment */
+  @media (max-width: 767px) {
+    font-size: 16px;
+  }
+}
+
+/* Modal styling */
+/* Contact modal size and positioning */
+.contact-modal {
+  --width: 90%;
+  --height: 25%;
+  --min-height: 250px;
+  --max-width: 400px;
+  --border-radius: 16px;
+
+  /* Desktop specific modal sizing */
+  @media (min-width: 768px) {
+    --width: 25%;
+    --height: 30%;
+    --min-height: 280px;
+  }
+}
+
+/* Modal title styling with center alignment */
+.modal-title {
+  text-align: center;
+  font-weight: bold;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+}
+
+/* Close button styling for modal */
+.close-button {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+/* Modal content container */
+.modal-content {
+  --background: #ffffff;
+  padding: 20px;
+}
+
+/* Contact container for modal content */
+.contact-container {
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Contact list styling inside modal */
+.contact-list {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* Contact item styling for modal items */
+.contact-item {
+  --background: white;
+  --border-color: #e0e0e0;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --min-height: 60px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Hover effect for contact items */
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(104, 99, 242, 0.15);
+  }
+
+  /* Mobile specific adjustments for contact items */
+  @media (max-width: 767px) {
+    --min-height: 55px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+}
+
+/* Contact label styling */
+.contact-label {
+  color: #333333;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+
+  /* Mobile font size adjustment */
+  @media (max-width: 767px) {
+    font-size: 15px;
+  }
+}
+
+/* Contact icon styling with specific colors */
+.contact-icon {
+  font-size: 20px;
+  margin-right: 16px;
+  transition: all 0.3s ease;
+
+  /* WhatsApp icon specific styling */
+  &.whatsapp-icon {
+    color: #25d366;
+  }
+
+  /* Email icon specific styling */
+  &.email-icon {
+    color: #6863f2;
+  }
+
+  /* Icon hover effect */
+  .contact-item:hover & {
+    transform: scale(1.05);
+  }
+
+  /* Mobile icon size adjustment */
+  @media (max-width: 767px) {
+    font-size: 18px;
+    margin-right: 12px;
+  }
+}
+
+/* Contact arrow icon styling */
+.contact-arrow {
+  color: #6863f2;
+  font-size: 18px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+
+  /* Arrow hover effect */
+  .contact-item:hover & {
+    opacity: 1;
+  }
+
+  /* Mobile arrow size adjustment */
+  @media (max-width: 767px) {
+    font-size: 16px;
+  }
+}

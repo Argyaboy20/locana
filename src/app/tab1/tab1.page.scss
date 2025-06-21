@@ -21,6 +21,7 @@ ion-toolbar[color="locana-primary"] {
 }
 
 .title-logo {
+  color: #ffffff;
   margin-left: -20px;
   font-family: 'Montserrat';
   font-weight: 600;
@@ -30,7 +31,7 @@ ion-toolbar[color="locana-primary"] {
 
 /* New simple toolbar button style */
 .toolbar-button {
-  --color: var(--locana-white);
+  color: #ffffff;
   margin-right: 4px;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -465,10 +466,41 @@ ion-content {
 @media (max-width: 767px) {
   .mobile-view {
     display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Pastikan tinggi minimum sesuai viewport */
+    height: auto; /* Biarkan tinggi menyesuaikan konten */
+    overflow-y: auto; /* Izinkan scroll vertikal */
+    padding-bottom: 20px; /* Tambah padding bawah untuk ruang scroll */
   }
   
   .desktop-view {
     display: none;
+  }
+  
+  /* Pastikan ion-content bisa di-scroll */
+  ion-content {
+    --overflow: auto; /* Izinkan scroll pada ion-content */
+    height: auto;
+  }
+  
+  /* Pastikan container utama tidak terpotong */
+  .message-section {
+    flex-shrink: 0; /* Jangan biarkan section ini mengecil */
+    margin-bottom: 20px; /* Tambah margin bawah */
+  }
+  
+  .action-buttons {
+    flex-shrink: 0; /* Jangan biarkan tombol mengecil */
+    margin-bottom: 20px; /* Tambah margin bawah */
+  }
+  
+  .logo-section {
+    flex-shrink: 0; /* Jangan biarkan logo mengecil */
+    margin-bottom: 20px; /* Tambah margin bawah */
+  }
+  
+  .tracking-decoration {
+    flex-shrink: 0; /* Jangan biarkan dekorasi mengecil */
   }
   
   /* Mobile specific tweaks */
