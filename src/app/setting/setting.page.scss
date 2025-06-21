@@ -108,7 +108,7 @@ ion-toolbar {
   color: #6863f2;
   font-weight: 500;
   font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat';
 
   /* Mobile font size adjustment */
   @media (max-width: 767px) {
@@ -174,11 +174,15 @@ ion-toolbar {
 
 /* Modal title styling with center alignment */
 .modal-title {
-  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-weight: bold;
   color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat';
   font-size: 18px;
+  white-space: nowrap;
 }
 
 /* Close button styling for modal */
