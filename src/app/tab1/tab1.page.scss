@@ -32,6 +32,7 @@ ion-toolbar[color="locana-primary"] {
 /* New simple toolbar button style */
 .toolbar-button {
   color: #ffffff;
+  font-family: 'Montserrat' !important;
   margin-right: 4px;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -225,7 +226,7 @@ ion-content {
 .message-section {
   text-align: center;
   color: #000000;
-  font-family: 'Franklin Gothic Medium';
+  font-family: 'Franklin Gothic Medium' !important;
   padding: 30px 0;
   margin-top: 50px;
   min-height: 220px;
@@ -402,7 +403,7 @@ ion-content {
 
 .slide-container {
   position: relative;
-  font-family: 'Franklin Gothic Medium';
+  font-family: 'Franklin Gothic Medium' !important;
   width: 100%;
   height: 70%;
   display: flex;
