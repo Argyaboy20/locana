@@ -2,56 +2,160 @@
   <ion-toolbar>
     <ion-title>Hasil Pelacakan</ion-title>
     <ion-buttons slot="end">
+      <!-- Connection Status Indicator -->
+      <ion-badge [color]="getConnectionStatusColor()" class="connection-badge">
+        {{getConnectionStatusText()}}
+      </ion-badge>
       <ion-button (click)="dismissModal()">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <div class="location-modal-content">
-    <ion-icon name="location" class="location-icon"></ion-icon>
-    <h2 class="location-title">Lokasi Ditemukan</h2>
     
-    <div class="location-details">
-      <div class="location-detail-item">
-        <span class="detail-label">Nomor:</span>
-        <span>{{phoneNumber}}</span>
+    <!-- Real-time Controls -->
+    <div class="realtime-controls">
+      <div class="control-group">
+        <ion-button 
+          *ngIf="!isTracking" 
+          (click)="startTracking()" 
+          [disabled]="connectionStatus !== 'connected'"
+          expand="block" 
+          fill="solid" 
+          color="primary"
+          class="tracking-button">
+          <ion-icon name="play-circle" slot="start"></ion-icon>
+          Mulai Pelacakan Real-time
+        </ion-button>
+
+        <ion-button 
+          *ngIf="isTracking" 
+          (click)="stopTracking()" 
+          expand="block" 
+          fill="solid" 
+          color="warning"
+          class="tracking-button">
+          <ion-icon name="stop-circle" slot="start"></ion-icon>
+          Hentikan Pelacakan
+        </ion-button>
       </div>
-      <div class="location-detail-item">
-        <span class="detail-label">Provider:</span>
-        <span>{{provider}}</span>
-      </div>
-      <div class="location-detail-item">
-        <span class="detail-label">Provinsi:</span>
-        <span>{{region}}</span>
-      </div>
-      <div class="location-detail-item">
-        <span class="detail-label">Kota:</span>
-        <span>{{city}}</span>
-      </div>
-      <div class="location-detail-item">
-        <span class="detail-label">Status:</span>
-        <span>Aktif</span>
-      </div>
-      <div class="location-detail-item">
-        <span class="detail-label">Kekuatan Sinyal:</span>
-        <span>{{signalStrength}}</span>
-      </div>
-      <div *ngIf="coordinates" class="location-detail-item">
-        <span class="detail-label">Koordinat:</span>
-        <span>{{coordinates?.lat?.toFixed(6)}}, {{coordinates?.lng?.toFixed(6)}}</span>
+
+      <!-- Reconnect button when disconnected -->
+      <ion-button 
+        *ngIf="connectionStatus === 'disconnected' || connectionStatus === 'error'" 
+        (click)="reconnectSocketIO()" 
+        expand="block" 
+        fill="outline" 
+        color="medium"
+        size="small">
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Hubungkan Ulang
+      </ion-button>
+
+      <!-- Last update info -->
+      <div *ngIf="lastUpdate && isTracking" class="last-update">
+        <ion-icon name="time-outline"></ion-icon>
+        Update terakhir: {{lastUpdate | date:'HH:mm:ss'}}
       </div>
     </div>
 
-    <div *ngIf="coordinates" class="map-container">
-      <div class="map-placeholder">
-        <p>Peta Lokasi BTS Terdekat</p>
-        <p class="coordinates">{{coordinates?.lat?.toFixed(6)}}, {{coordinates?.lng?.toFixed(6)}}</p>
+    <!-- Map Container -->
+    <div *ngIf="hasValidCoordinates()" class="map-container">
+      <div id="map-container" class="leaflet-map"></div>
+      
+      <!-- Real-time indicator overlay -->
+      <div *ngIf="isTracking" class="realtime-indicator">
+        <div class="pulse-dot"></div>
+        <span>LIVE</span>
+      </div>
+    </div>
+    
+    <!-- Fallback when no coordinates -->
+    <div *ngIf="!hasValidCoordinates()" class="map-placeholder">
+      <ion-icon name="location" class="location-icon"></ion-icon>
+      <p>Lokasi tidak ditemukan</p>
+      <small>Debug: lat={{coordinates?.lat}}, lng={{coordinates?.lng}}</small>
+    </div>
+    
+    <h2 class="location-title">
+      Lokasi Ditemukan
+      <ion-icon *ngIf="isTracking" name="radio" class="live-icon"></ion-icon>
+    </h2>
+    
+    <div class="location-details">
+      <div class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="call-outline"></ion-icon>
+          Nomor:
+        </span>
+        <span>{{phoneNumber}}</span>
+      </div>
+      
+      <div class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="business-outline"></ion-icon>
+          Provider:
+        </span>
+        <span>{{provider}}</span>
+      </div>
+      
+      <div class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="map-outline"></ion-icon>
+          Provinsi:
+        </span>
+        <span>{{region}}</span>
+      </div>
+      
+      <div class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="location-outline"></ion-icon>
+          Kota:
+        </span>
+        <span>{{city}}</span>
+      </div>
+      
+      <div class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          Status:
+        </span>
+        <span class="status-active">Aktif</span>
+      </div>
+      
+      <div class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="cellular-outline"></ion-icon>
+          Kekuatan Sinyal:
+        </span>
+        <span class="signal-strength">{{signalStrength}}</span>
+      </div>
+      
+      <div *ngIf="coordinates" class="location-detail-item">
+        <span class="detail-label">
+          <ion-icon name="navigate-outline"></ion-icon>
+          Koordinat:
+        </span>
+        <span class="coordinates">{{coordinates.lat?.toFixed(6)}}, {{coordinates.lng?.toFixed(6)}}</span>
+      </div>
+
+      <!-- Connection Status -->
+      <div class="location-detail-item connection-status">
+        <span class="detail-label">
+          <ion-icon name="wifi-outline"></ion-icon>
+          Koneksi:
+        </span>
+        <ion-badge [color]="getConnectionStatusColor()">
+          {{getConnectionStatusText()}}
+        </ion-badge>
       </div>
     </div>
     
     <ion-button expand="block" class="close-button" (click)="dismissModal()">
+      <ion-icon name="close-circle-outline" slot="start"></ion-icon>
       Tutup
     </ion-button>
   </div>

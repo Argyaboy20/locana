@@ -1,67 +1,443 @@
+@import '~leaflet/dist/leaflet.css';
+
 .location-modal-content {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  padding: 0;
 }
 
-.location-icon {
-  font-size: 48px;
-  color: #6863f2;
-  margin-bottom: 10px;
+// Header connection badge
+.connection-badge {
+  margin-right: 8px;
+  font-size: 10px;
+  padding: 4px 8px;
+}
+
+// Real-time controls
+.realtime-controls {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #dee2e6;
+
+  .control-group {
+    margin-bottom: 12px;
+  }
+
+  .tracking-button {
+    height: 44px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    
+    &[color="primary"] {
+      --background: #28a745;
+      --background-activated: #218838;
+    }
+    
+    &[color="warning"] {
+      --background: #ffc107;
+      --background-activated: #e0a800;
+      --color: #212529;
+    }
+  }
+
+  .last-update {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 8px;
+    
+    ion-icon {
+      font-size: 14px;
+    }
+  }
 }
 
 .location-title {
   font-size: 24px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 20px;
+  margin: 20px 0;
+  padding: 0 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  .live-icon {
+    color: #dc3545;
+    font-size: 20px;
+    animation: pulse 2s infinite;
+  }
 }
 
 .location-details {
   width: 100%;
   margin-bottom: 20px;
+  padding: 0 20px;
 }
 
 .location-detail-item {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
+  align-items: center;
+  padding: 14px 12px;
   border-bottom: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  &.connection-status {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
 }
 
 .detail-label {
   font-weight: 600;
   color: #666;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  ion-icon {
+    font-size: 16px;
+    color: #6863f2;
+  }
 }
 
+.status-active {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.signal-strength {
+  font-weight: 600;
+  color: #17a2b8;
+}
+
+.coordinates {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+// Map container with real-time indicator
 .map-container {
   width: 100%;
-  height: 200px;
-  margin: 20px 0;
-  border-radius: 12px;
+  height: 300px;
+  margin-bottom: 15px;
+  position: relative;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
   overflow: hidden;
+
+  .realtime-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: slideInFromRight 0.5s ease-out;
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+  }
 }
 
+.leaflet-map {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 6px;
+  position: relative !important;
+  display: block !important;
+  z-index: 1 !important;
+}
+
+// Fallback map placeholder
 .map-placeholder {
   width: 100%;
-  height: 100%;
+  height: 250px;
   background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 1px solid #ddd;
-}
+  border-radius: 8px;
+  margin-bottom: 15px;
+  flex-shrink: 0;
+  
+  .location-icon {
+    font-size: 48px;
+    color: #6863f2;
+    margin-bottom: 10px;
+  }
 
-.coordinates {
-  font-size: 12px;
-  color: #777;
+  p {
+    margin: 8px 0;
+    color: #666;
+    font-weight: 500;
+  }
+
+  small {
+    font-size: 11px;
+    color: #999;
+  }
 }
 
 .close-button {
   --background: #6863f2;
   --background-activated: #5651d5;
-  margin-top: 20px;
+  margin: 20px;
+  width: calc(100% - 40px);
+  height: 48px;
+  font-weight: 600;
+}
+
+// Animations
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Leaflet container fixes untuk modal
+:global(.leaflet-container) {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+:global(.leaflet-map-pane) {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+:global(.leaflet-tile-container) {
+  width: 256px !important;
+  height: 256px !important;
+  position: absolute !important;
+}
+
+:global(.leaflet-tile) {
+  width: 256px !important;
+  height: 256px !important;
+  position: absolute !important;
+}
+
+:global(.leaflet-layer) {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+// Custom Leaflet popup styles dengan real-time enhancements
+:global(.leaflet-popup-content-wrapper) {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  border: 2px solid #6863f2;
+}
+
+:global(.leaflet-popup-content) {
+  margin: 12px 18px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+// Enhanced marker styles
+:global(.leaflet-marker-icon) {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  transition: transform 0.3s ease;
+}
+
+:global(.leaflet-marker-icon:hover) {
+  transform: scale(1.1);
+}
+
+// Custom circle styles with pulsing animation
+:global(.leaflet-interactive) {
+  stroke-width: 2;
+  animation: mapPulse 3s ease-in-out infinite;
+}
+
+@keyframes mapPulse {
+  0%, 100% {
+    stroke-opacity: 0.6;
+    fill-opacity: 0.1;
+  }
+  50% {
+    stroke-opacity: 0.9;
+    fill-opacity: 0.2;
+  }
+}
+
+// Enhanced map controls
+:global(.leaflet-control-zoom) {
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+:global(.leaflet-control-zoom a) {
+  background-color: #fff;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  display: block !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #6863f2;
+    color: white;
+  }
+
+  &:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: none;
+  }
+}
+
+:global(.leaflet-control-attribution) {
+  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 10px;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+// Performance optimizations
+:global(.leaflet-fade-anim .leaflet-tile) {
+  will-change: opacity;
+}
+
+:global(.leaflet-zoom-anim .leaflet-zoom-animated) {
+  will-change: transform;
+}
+
+// Ionic modal specific fixes
+ion-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .location-title {
+    font-size: 20px;
+  }
+
+  .realtime-controls {
+    padding: 12px 16px;
+  }
+
+  .tracking-button {
+    height: 40px;
+  }
+
+  .map-container {
+    height: 250px;
+  }
+
+  .location-detail-item {
+    padding: 12px 8px;
+  }
+
+  .detail-label {
+    font-size: 14px;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .location-modal-content {
+    background-color: #1e1e1e;
+  }
+
+  .realtime-controls {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1e1e1e 100%);
+    border-bottom-color: #444;
+  }
+
+  .location-title {
+    color: #fff;
+  }
+
+  .location-detail-item {
+    border-bottom-color: #444;
+    
+    &:hover {
+      background-color: #2d2d2d;
+    }
+
+    &.connection-status {
+      background-color: #2d2d2d;
+      border-color: #444;
+    }
+  }
+
+  .detail-label {
+    color: #ccc;
+  }
+
+  .map-placeholder {
+    background-color: #2d2d2d;
+    border-color: #444;
+    
+    p {
+      color: #ccc;
+    }
+  }
 }

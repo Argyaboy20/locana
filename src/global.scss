@@ -122,6 +122,29 @@ ion-select-option {
     }
 }
 
+// Leaflet marker icon fix
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box {
+  pointer-events: auto;
+}
+
+// Fix for Leaflet default marker icons
+.leaflet-default-icon-path {
+  background-image: none;
+}
+
+// Ensure Leaflet controls work properly in Ionic
+.leaflet-control-container {
+  pointer-events: auto;
+}
+
+// Custom marker icon styles
+.custom-div-icon {
+  background: transparent;
+  border: none;
+}
+
 
 /**
  * Ionic Dark Mode
