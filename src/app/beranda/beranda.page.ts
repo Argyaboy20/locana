@@ -12,7 +12,10 @@ import { ModalContentComponent } from '../modal-content/modal-content.component'
 })
 export class BerandaPage implements OnInit {
   phoneNumber: string = '';
-  
+
+  /* Tambahkan property untuk modal notifikasi */
+  isNotificationModalOpen = false;
+
   // Mapping for provider prefixes
   private providerPrefixes: { [key: string]: string } = {
     '0811': 'Telkomsel', '0812': 'Telkomsel', '0813': 'Telkomsel', '0821': 'Telkomsel', '0822': 'Telkomsel',
@@ -36,7 +39,7 @@ export class BerandaPage implements OnInit {
     '0851': { region: 'Kalimantan Timur', city: 'Samarinda', signalStrength: 'Sedang' },
     '0852': { region: 'Bali', city: 'Denpasar', signalStrength: 'Kuat' },
     '0853': { region: 'Nusa Tenggara Barat', city: 'Mataram', signalStrength: 'Sedang' },
-    
+
     // Indosat
     '0814': { region: 'DKI Jakarta', city: 'Jakarta Selatan', signalStrength: 'Kuat' },
     '0815': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Kuat' },
@@ -45,7 +48,7 @@ export class BerandaPage implements OnInit {
     '0856': { region: 'Bali', city: 'Denpasar', signalStrength: 'Kuat' },
     '0857': { region: 'Sumatera Selatan', city: 'Palembang', signalStrength: 'Sedang' },
     '0858': { region: 'Kalimantan Selatan', city: 'Banjarmasin', signalStrength: 'Sedang' },
-    
+
     // XL
     '0817': { region: 'DKI Jakarta', city: 'Jakarta Barat', signalStrength: 'Kuat' },
     '0818': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Kuat' },
@@ -53,13 +56,13 @@ export class BerandaPage implements OnInit {
     '0859': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Kuat' },
     '0877': { region: 'Bali', city: 'Kuta', signalStrength: 'Kuat' },
     '0878': { region: 'Nusa Tenggara Barat', city: 'Lombok', signalStrength: 'Sedang' },
-    
+
     // Axis
     '0831': { region: 'DKI Jakarta', city: 'Jakarta Timur', signalStrength: 'Sedang' },
     '0832': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Sedang' },
     '0833': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Sedang' },
     '0838': { region: 'Jawa Timur', city: 'Malang', signalStrength: 'Sedang' },
-    
+
     // Smartfren
     '0881': { region: 'DKI Jakarta', city: 'Jakarta Utara', signalStrength: 'Sedang' },
     '0882': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Sedang' },
@@ -70,7 +73,7 @@ export class BerandaPage implements OnInit {
     '0887': { region: 'Sulawesi Selatan', city: 'Makassar', signalStrength: 'Lemah' },
     '0888': { region: 'Bali', city: 'Denpasar', signalStrength: 'Sedang' },
     '0889': { region: 'Lampung', city: 'Bandar Lampung', signalStrength: 'Lemah' },
-    
+
     // 3 (Tri)
     '0895': { region: 'DKI Jakarta', city: 'Jakarta Selatan', signalStrength: 'Sedang' },
     '0896': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Sedang' },
@@ -201,18 +204,18 @@ export class BerandaPage implements OnInit {
       const baseAnimation = this.animationCtrl.create();
       const backdropAnimation = this.animationCtrl.create();
       const wrapperAnimation = this.animationCtrl.create();
-      
+
       backdropAnimation
         .addElement(baseEl.querySelector('ion-backdrop')!)
         .fromTo('opacity', 0.01, 'var(--backdrop-opacity)');
-      
+
       wrapperAnimation
         .addElement(baseEl.querySelector('.alert-wrapper')!)
         .keyframes([
           { offset: 0, opacity: '0', transform: 'scale(0.8)' },
           { offset: 1, opacity: '1', transform: 'scale(1)' }
         ]);
-      
+
       return baseAnimation
         .addElement(baseEl)
         .easing('cubic-bezier(0.34, 1.56, 0.64, 1)')
@@ -220,24 +223,24 @@ export class BerandaPage implements OnInit {
         .addAnimation([backdropAnimation, wrapperAnimation]);
     };
   }
-  
+
   leaveAnimation() {
     return (baseEl: HTMLElement) => {
       const baseAnimation = this.animationCtrl.create();
       const backdropAnimation = this.animationCtrl.create();
       const wrapperAnimation = this.animationCtrl.create();
-      
+
       backdropAnimation
         .addElement(baseEl.querySelector('ion-backdrop')!)
         .fromTo('opacity', 'var(--backdrop-opacity)', 0);
-      
+
       wrapperAnimation
         .addElement(baseEl.querySelector('.alert-wrapper')!)
         .keyframes([
           { offset: 0, opacity: '1', transform: 'scale(1)' },
           { offset: 1, opacity: '0', transform: 'scale(0.9)' }
         ]);
-      
+
       return baseAnimation
         .addElement(baseEl)
         .easing('ease-out')
@@ -252,16 +255,16 @@ export class BerandaPage implements OnInit {
 
   validateNumber(event: any) {
     const input = event.target.value;
-    
+
     // Remove any non-numeric characters
     const numericValue = input.replace(/[^0-9]/g, '');
-    
+
     // If the input was changed (contained non-numeric chars)
     if (input !== numericValue) {
       this.phoneNumber = numericValue;
       this.showAlertOnlyNumbers();
     }
-    
+
     // Add animation class when the input has content
     const inputElement = event.target;
     if (this.phoneNumber.length > 0) {
@@ -280,7 +283,7 @@ export class BerandaPage implements OnInit {
       enterAnimation: this.enterAnimation(),
       leaveAnimation: this.leaveAnimation()
     });
-  
+
     await alert.present();
   }
 
@@ -297,7 +300,7 @@ export class BerandaPage implements OnInit {
       await alert.present();
       return;
     }
-    
+
     if (this.phoneNumber.length < 10 || this.phoneNumber.length > 13) {
       const alert = await this.alertController.create({
         header: 'Nomor Tidak Valid',
@@ -310,8 +313,8 @@ export class BerandaPage implements OnInit {
       await alert.present();
       return;
     }
-  
-    
+
+
     // Show loading before displaying results
     const loadingAlert = await this.alertController.create({
       header: 'Melacak Nomor',
@@ -322,7 +325,7 @@ export class BerandaPage implements OnInit {
       leaveAnimation: this.leaveAnimation()
     });
     await loadingAlert.present();
-    
+
     // Simulate tracking process with delay - mimics real API call to BTS data
     setTimeout(async () => {
       await loadingAlert.dismiss();
@@ -340,27 +343,27 @@ export class BerandaPage implements OnInit {
   } {
     let normalizedNumber = phoneNumber;
     let prefix = '';
-    
+
     // Normalize phone number format
     if (normalizedNumber.startsWith('62')) {
       normalizedNumber = '0' + normalizedNumber.substring(2);
     }
-    
+
     // Extract prefix (first 4 digits)
     prefix = normalizedNumber.substring(0, 4);
-    
+
     // Get provider
     const provider = this.providerPrefixes[prefix] || 'Tidak diketahui';
-    
+
     // Get detailed location information
     let locationData = this.prefixLocations[prefix];
-    
+
     if (!locationData) {
       // Fallback if specific prefix not found - use first prefix of provider
       const providerFirstPrefix = Object.keys(this.prefixLocations).find(
         key => this.providerPrefixes[key] === provider
       );
-      
+
       if (providerFirstPrefix) {
         locationData = this.prefixLocations[providerFirstPrefix];
       } else {
@@ -372,7 +375,7 @@ export class BerandaPage implements OnInit {
         };
       }
     }
-    
+
     // Find BTS tower coordinates for the city
     let coordinates;
     const btsData = this.btsTowers[locationData.city];
@@ -380,16 +383,16 @@ export class BerandaPage implements OnInit {
       // Use last 3 digits of phone number to make it deterministic but seem random
       const lastDigits = parseInt(normalizedNumber.slice(-3));
       const btsIndex = lastDigits % btsData.length;
-      
+
       // Add slight variation based on phone number
       const variance = (lastDigits % 100) / 1000; // Small variance
-      
+
       coordinates = {
         lat: btsData[btsIndex].lat + variance,
         lng: btsData[btsIndex].lng - variance
       };
     }
-    
+
     return {
       provider: provider,
       region: locationData.region,
@@ -402,7 +405,7 @@ export class BerandaPage implements OnInit {
   async showLocationModal() {
     // Get detailed location data using our new function
     const locationData = this.getLocationData(this.phoneNumber);
-    
+
     const modal = await this.modalController.create({
       component: ModalContentComponent,
       componentProps: {
@@ -415,7 +418,7 @@ export class BerandaPage implements OnInit {
       },
       cssClass: 'location-modal'
     });
-    
+
     await modal.present();
   }
 
@@ -429,7 +432,7 @@ export class BerandaPage implements OnInit {
   navigateToTab(tabName: string) {
     // Set tab yang aktif
     this.activeTab = tabName;
-  
+
     if (tabName === 'home') {
       // Jika sudah di halaman home, hanya perlu mengubah indikator tab aktif
       if (this.router.url !== '/beranda') {
@@ -444,14 +447,14 @@ export class BerandaPage implements OnInit {
       });
     }
   }
-  
+
   selectTab(tabName: string) {
     // Hapus selected dari semua tab
     const tabButtons = document.querySelectorAll('ion-tab-button');
     tabButtons.forEach(button => {
       button.removeAttribute('selected');
     });
-    
+
     // Tambahkan selected ke tab yang dipilih
     const selectedTab = document.querySelector(`ion-tab-button[tab="${tabName}"]`);
     if (selectedTab) {
@@ -462,7 +465,7 @@ export class BerandaPage implements OnInit {
   async confirmLogout() {
     // Tutup menu terlebih dahulu
     this.menuCtrl.close();
-  
+
     const alert = await this.alertController.create({
       header: 'Konfirmasi Logout',
       message: 'Apakah Anda yakin ingin keluar dari aplikasi?',
@@ -484,28 +487,44 @@ export class BerandaPage implements OnInit {
       enterAnimation: this.enterAnimation(),
       leaveAnimation: this.leaveAnimation()
     });
-  
+
     await alert.present();
   }
-  
+
   // Metode untuk menangani proses logout
   logout() {
     // Di sini Anda bisa menambahkan logika untuk menghapus token atau session storage
-    
+
     // Bersihkan form data
     this.phoneNumber = '';
-    
+
     // Navigasi ke /tabs/tab1 dengan replaceUrl: true
-    this.router.navigate(['/'], { 
-      replaceUrl: true 
+    this.router.navigate(['/'], {
+      replaceUrl: true
     });
-    
+
     // Menghapus history navigasi sehingga tidak bisa kembali
     setTimeout(() => {
       history.pushState(null, '', location.href);
-      window.onpopstate = function() {
+      window.onpopstate = function () {
         history.pushState(null, '', location.href);
       };
     }, 100);
   }
+
+  /* Method untuk membuka modal notifikasi */
+  openNotificationModal(): void {
+    this.isNotificationModalOpen = true;
+  }
+
+  /* Method untuk menutup modal notifikasi */
+  closeNotificationModal(): void {
+    this.isNotificationModalOpen = false;
+  }
+
+  /* Method untuk navigasi ke halaman history */
+  navigateToHistory(): void {
+    this.router.navigate(['/history']);
+  }
+
 }

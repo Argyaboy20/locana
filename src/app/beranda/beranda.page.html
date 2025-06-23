@@ -9,6 +9,13 @@
         <span class="logo-text">Locana</span>
       </div>
     </ion-title>
+
+    <!-- Icon bell notifikasi -->
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openNotificationModal()">
+        <ion-icon name="notifications-outline" class="bell-icon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -47,46 +54,66 @@
       <div class="tracking-container">
         <h1 class="tracking-title">Pelacakan Nomor</h1>
         <p class="tracking-subtitle">Silakan masukkan nomor yang aktif</p>
-        
+
         <div class="input-container">
-          <ion-input 
-            class="rounded-input" 
-            placeholder="Masukkan nomor" 
-            type="tel" 
-            [(ngModel)]="phoneNumber"
-            (ionInput)="validateNumber($event)"
-            maxlength="13"
-          ></ion-input>
+          <ion-input class="rounded-input" placeholder="Masukkan nomor" type="tel" [(ngModel)]="phoneNumber"
+            (ionInput)="validateNumber($event)" maxlength="13"></ion-input>
           <ion-button class="process-button" (click)="trackNumber()">
             <ion-icon name="search-outline"></ion-icon>
           </ion-button>
         </div>
+
+        <!-- Link Riwayat Pelacakan -->
+        <div class="history-link" (click)="navigateToHistory()">
+          Riwayat Pelacakan
+        </div>
       </div>
     </div>
-    
+
     <!-- Desktop View -->
     <div class="desktop-view">
       <div class="tracking-container">
         <h1 class="tracking-title">Pelacakan Nomor</h1>
         <p class="tracking-subtitle">Silakan masukkan nomor yang aktif</p>
-        
+
         <div class="input-container">
-          <ion-input 
-            class="rounded-input" 
-            placeholder="Masukkan nomor" 
-            type="tel" 
-            [(ngModel)]="phoneNumber"
-            (ionInput)="validateNumber($event)"
-            maxlength="13"
-          ></ion-input>
+          <ion-input class="rounded-input" placeholder="Masukkan nomor" type="tel" [(ngModel)]="phoneNumber"
+            (ionInput)="validateNumber($event)" maxlength="13"></ion-input>
           <ion-button class="process-button" (click)="trackNumber()">
             <ion-icon name="search-outline"></ion-icon>
             <span>Lacak</span>
           </ion-button>
         </div>
+
+        <!-- Link Riwayat Pelacakan -->
+        <div class="history-link" (click)="navigateToHistory()">
+          Riwayat Pelacakan
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Modal Notifikasi -->
+  <ion-modal #notificationModal [isOpen]="isNotificationModalOpen" (didDismiss)="closeNotificationModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Notifikasi</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="closeNotificationModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="notification-content">
+        <div class="empty-notification">
+          <ion-icon name="notifications-outline" class="empty-notification-icon"></ion-icon>
+          <p class="empty-notification-text">Tidak ada notifikasi untuk saat ini</p>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
 
 <ion-tab-bar slot="bottom" class="tab-bar">
