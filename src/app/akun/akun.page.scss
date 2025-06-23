@@ -1,0 +1,283 @@
+/* Background styling for content and toolbar */
+ion-content {
+  --background: white;
+}
+
+ion-toolbar {
+  --background: #6863f2;
+}
+
+/* Header logo title styling */
+.logo-title {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Logo container to align back button and text */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Back button icon styling */
+.back-icon {
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+/* Logo text styling with proper spacing */
+.logo-text {
+  font-family: 'Montserrat';
+  font-size: 18px;
+}
+
+/* Main profile container */
+.profile-container {
+  padding: 20px;
+  max-width: 100%;
+}
+
+/* Mobile view styling - default for small screens */
+.mobile-view {
+  display: block;
+}
+
+/* Desktop view styling - hidden by default */
+.desktop-view {
+  display: none;
+}
+
+/* Content wrapper for mobile view */
+.content-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.content-wrapper-desktop {
+  width: 600px;
+}
+
+
+/* Profile form styling */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Form group container */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Form label styling with brand color */
+.form-label {
+  color: #6863f2;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+/* Required field indicator with red asterisk */
+.form-label.required::after {
+  content: '*';
+  color: red;
+  margin-left: 2px;
+}
+
+/* Input field styling */
+.form-input {
+  --background: #f8f9fa;
+  --border-color: #e9ecef;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --color: #000000;
+  --placeholder-color: #9ca3af;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+/* Input focus state */
+.form-input.ion-focused {
+  --border-color: #6863f2;
+  box-shadow: 0 0 0 2px rgba(104, 99, 242, 0.1);
+}
+
+/* Select field styling with proper arrow positioning */
+.form-select {
+  --background: #f8f9fa;
+  --border-color: #e9ecef;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 40px; /* Add right padding for arrow */
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --color: #333333;
+  --placeholder-color: #9ca3af;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  position: relative;
+  color: #000000;
+}
+
+/* Custom arrow for select - align to right */
+.form-select::part(icon) {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Date input container for calendar icon positioning */
+.date-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Date input field styling */
+.date-input {
+  --padding-end: 50px; /* Add space for calendar icon */
+}
+
+/* Calendar icon styling */
+.calendar-icon {
+  position: absolute;
+  right: 16px;
+  font-size: 20px;
+  color: #6863f2;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* Calendar icon hover effect */
+.calendar-icon:hover {
+  color: #5a54e6;
+}
+
+/* Save button wrapper - now part of form flow */
+.save-button-wrapper {
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease-in-out;
+  visibility: hidden;
+}
+
+/* Show save button with fade-in animation */
+.save-button-wrapper.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Save button styling with brand color */
+.save-button {
+  --background: #6863f2;
+  --color: white;
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  height: 50px;
+}
+
+/* Save button hover effect */
+.save-button:hover {
+  --background: #5a54e6;
+}
+
+/* Desktop responsive design - screens larger than 768px */
+@media (min-width: 768px) {
+  /* Hide mobile view and show desktop view */
+  .mobile-view {
+    display: none;
+  }
+  
+  .desktop-view {
+    display: block;
+  }
+
+  /* Desktop content wrapper with larger max-width */
+  .content-wrapper {
+    max-width: 600px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Desktop profile container with centered layout */
+  .profile-container {
+    padding: 40px 20px;
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  /* Desktop form styling with larger gaps */
+  .profile-form {
+    gap: 32px;
+  }
+
+  /* Desktop form labels with larger font size */
+  .form-label {
+    font-size: 16px;
+  }
+
+  /* Desktop input fields with enhanced styling */
+  .form-input,
+  .form-select {
+    font-size: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    height: 54px;
+  }
+
+  /* Desktop select field padding adjustment */
+  .form-select {
+    --padding-end: 50px;
+  }
+
+  /* Desktop calendar icon */
+  .calendar-icon {
+    font-size: 22px;
+  }
+
+  /* Desktop save button wrapper */
+  .save-button-wrapper {
+    margin-top: 32px;
+  }
+
+  /* Desktop save button with enhanced styling */
+  .save-button {
+    height: 56px;
+    font-size: 18px;
+  }
+}
+
+/* Large desktop responsive design - screens larger than 1200px */
+@media (min-width: 1200px) {
+  /* Extra large desktop content wrapper */
+  .content-wrapper {
+    max-width: 700px;
+    padding: 50px;
+  }
+
+  /* Extra large desktop save button wrapper */
+  .save-button-wrapper {
+    margin-top: 40px;
+  }
+}

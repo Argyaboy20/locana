@@ -21,6 +21,12 @@
             <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
           </ion-item>
 
+          <ion-item button (click)="openAccessModal()" class="setting-item">
+            <ion-icon name="key-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Akses Izin</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
           <ion-item button routerLink="/privacypolicy" routerDirection="forward" class="setting-item">
             <ion-icon name="shield-checkmark-outline" slot="start" class="item-icon"></ion-icon>
             <ion-label class="setting-label">Syarat & Kebijakan Privasi</ion-label>
@@ -58,6 +64,12 @@
             <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
           </ion-item>
 
+          <ion-item button (click)="openAccessModal()" class="setting-item">
+            <ion-icon name="key-outline" slot="start" class="item-icon"></ion-icon>
+            <ion-label class="setting-label">Akses Izin</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+          </ion-item>
+
           <ion-item button routerLink="/privacypolicy" routerDirection="forward" class="setting-item">
             <ion-icon name="shield-checkmark-outline" slot="start" class="item-icon"></ion-icon>
             <ion-label class="setting-label">Syarat & Kebijakan Privasi</ion-label>
@@ -86,6 +98,58 @@
     </div>
   </div>
 </ion-content>
+
+<!-- Access Permission Modal -->
+<ion-modal #accessModal [isOpen]="isAccessModalOpen" (didDismiss)="closeAccessModal()" class="access-modal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="modal-title">Akses Izin</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeAccessModal()" class="close-button">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="modal-content">
+      <div class="access-container">
+        <ion-list class="access-list">
+          <!-- Akses Pelacakan Toggle -->
+          <ion-item class="access-item">
+            <ion-icon name="location-outline" slot="start" class="access-icon"></ion-icon>
+            <ion-label class="access-label">
+              <h3>Akses Pelacakan</h3>
+              <p>Izinkan aplikasi untuk melacak lokasi Anda</p>
+            </ion-label>
+            <ion-toggle 
+              slot="end" 
+              [(ngModel)]="trackingPermission" 
+              (ionChange)="onTrackingToggleChange($event)"
+              class="access-toggle">
+            </ion-toggle>
+          </ion-item>
+
+          <!-- Enkripsi End-to-End (Always On) -->
+          <ion-item class="access-item">
+            <ion-icon name="shield-checkmark-outline" slot="start" class="access-icon"></ion-icon>
+            <ion-label class="access-label">
+              <h3>Enkripsi End-to-End</h3>
+              <p>Keamanan data Anda dengan enkripsi end-to-end</p>
+            </ion-label>
+            <ion-toggle 
+              slot="end" 
+              [checked]="true" 
+              [disabled]="true"
+              class="access-toggle disabled-toggle">
+            </ion-toggle>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 
 <!-- Contact Modal -->
 <ion-modal #contactModal [isOpen]="isContactModalOpen" (didDismiss)="closeContactModal()" class="contact-modal">

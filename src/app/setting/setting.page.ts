@@ -12,6 +12,10 @@ import { Location } from '@angular/common';
 export class SettingPage implements OnInit {
   /* Modal state management */
   isContactModalOpen = false;
+  isAccessModalOpen = false;
+  
+  /* Access permission states */
+  trackingPermission = false;
 
   constructor(
     private router: Router,
@@ -20,11 +24,45 @@ export class SettingPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Load saved tracking permission state from localStorage
+    const savedTrackingPermission = localStorage.getItem('trackingPermission');
+    if (savedTrackingPermission !== null) {
+      this.trackingPermission = JSON.parse(savedTrackingPermission);
+    }
   }
 
   /* Navigation method to handle back button functionality */
   navigateBack(): void {
     this.router.navigate(['/beranda']);
+  }
+
+  /* Method to open access modal */
+  openAccessModal(): void {
+    this.isAccessModalOpen = true;
+  }
+
+  /* Method to close access modal */
+  closeAccessModal(): void {
+    this.isAccessModalOpen = false;
+  }
+
+  /* Method to handle tracking permission toggle change */
+  onTrackingToggleChange(event: any): void {
+    this.trackingPermission = event.detail.checked;
+    
+    // Save the tracking permission state to localStorage
+    localStorage.setItem('trackingPermission', JSON.stringify(this.trackingPermission));
+    
+    // You can add additional logic here for handling location permissions
+    if (this.trackingPermission) {
+      console.log('Tracking permission enabled');
+      // Request location permission from the device if needed
+      // this.requestLocationPermission();
+    } else {
+      console.log('Tracking permission disabled');
+      // Handle disabling location tracking
+      // this.disableLocationTracking();
+    }
   }
 
   /* Method to open contact modal */

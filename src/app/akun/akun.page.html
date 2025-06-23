@@ -1,13 +1,216 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>akun</ion-title>
+    <ion-title class="ion-text-left logo-title">
+      <div class="logo-container">
+        <ion-icon name="arrow-back-outline" (click)="navigateBack()" class="back-icon"></ion-icon>
+        <span class="logo-text">Ubah Profil</span>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">akun</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" id="main-content">
+  <div class="profile-container">
+    <!-- Mobile View -->
+    <div class="mobile-view">
+      <div class="content-wrapper">
+        <form class="profile-form">
+          <!-- Nama Field -->
+          <div class="form-group">
+            <ion-label class="form-label required">Nama</ion-label>
+            <ion-input 
+              [(ngModel)]="profileData.nama" 
+              name="nama"
+              type="text"
+              placeholder="Masukkan nama lengkap"
+              class="form-input"
+              (ionInput)="onInputChange()"
+              [pattern]="namePattern">
+            </ion-input>
+          </div>
+
+          <!-- Jenis Kelamin Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Jenis Kelamin</ion-label>
+            <ion-select 
+              [(ngModel)]="profileData.jenisKelamin" 
+              name="jenisKelamin"
+              placeholder="Pilih jenis kelamin"
+              class="form-select"
+              interface="popover"
+              (ionChange)="onInputChange()">
+              <ion-select-option value="Laki-Laki">Laki-Laki</ion-select-option>
+              <ion-select-option value="Perempuan">Perempuan</ion-select-option>
+            </ion-select>
+          </div>
+
+          <!-- Tanggal Lahir Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Tanggal Lahir</ion-label>
+            <div class="date-input-container">
+              <ion-input 
+                [(ngModel)]="formattedDate" 
+                name="tanggalLahir"
+                type="text"
+                placeholder="Pilih tanggal lahir"
+                class="form-input date-input"
+                readonly="true"
+                (click)="openDatePicker()">
+              </ion-input>
+              <ion-icon name="calendar-outline" class="calendar-icon" (click)="openDatePicker()"></ion-icon>
+            </div>
+            <ion-popover [isOpen]="isDatePickerOpen" (didDismiss)="closeDatePicker()">
+              <ng-template>
+                <ion-datetime 
+                  [(ngModel)]="profileData.tanggalLahir" 
+                  presentation="date"
+                  (ionChange)="onDateChange($event)"
+                  [max]="maxDate"
+                  [min]="minDate">
+                </ion-datetime>
+              </ng-template>
+            </ion-popover>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Email</ion-label>
+            <ion-input 
+              [(ngModel)]="profileData.email" 
+              name="email"
+              type="email"
+              placeholder="Masukkan email"
+              class="form-input"
+              (ionInput)="onInputChange()">
+            </ion-input>
+          </div>
+
+          <!-- Nomor Telepon Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Nomor Telepon</ion-label>
+            <ion-input 
+              [(ngModel)]="profileData.nomorTelepon" 
+              name="nomorTelepon"
+              type="tel"
+              placeholder="62xxxxxxxxxx"
+              class="form-input"
+              (ionInput)="onInputChange()"
+              [pattern]="phonePattern">
+            </ion-input>
+          </div>
+
+          <!-- Save Button -->
+          <div class="save-button-wrapper" [class.show]="showSaveButton">
+            <ion-button 
+              expand="block" 
+              class="save-button"
+              (click)="saveProfile()">
+              Simpan Sekarang
+            </ion-button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Desktop View -->
+    <div class="desktop-view">
+      <div class="content-wrapper-desktop">
+        <form class="profile-form">
+          <!-- Nama Field -->
+          <div class="form-group">
+            <ion-label class="form-label required">Nama</ion-label>
+            <ion-input 
+              [(ngModel)]="profileData.nama" 
+              name="nama"
+              type="text"
+              placeholder="Masukkan nama lengkap"
+              class="form-input"
+              (ionInput)="onInputChange()"
+              [pattern]="namePattern">
+            </ion-input>
+          </div>
+
+          <!-- Jenis Kelamin Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Jenis Kelamin</ion-label>
+            <ion-select 
+              [(ngModel)]="profileData.jenisKelamin" 
+              name="jenisKelamin"
+              placeholder="Pilih jenis kelamin"
+              class="form-select"
+              interface="popover"
+              (ionChange)="onInputChange()">
+              <ion-select-option value="Laki-Laki">Laki-Laki</ion-select-option>
+              <ion-select-option value="Perempuan">Perempuan</ion-select-option>
+            </ion-select>
+          </div>
+
+          <!-- Tanggal Lahir Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Tanggal Lahir</ion-label>
+            <div class="date-input-container">
+              <ion-input 
+                [(ngModel)]="formattedDate" 
+                name="tanggalLahir"
+                type="text"
+                placeholder="Pilih tanggal lahir"
+                class="form-input date-input"
+                readonly="true"
+                (click)="openDatePicker()">
+              </ion-input>
+              <ion-icon name="calendar-outline" class="calendar-icon" (click)="openDatePicker()"></ion-icon>
+            </div>
+            <ion-popover [isOpen]="isDatePickerOpen" (didDismiss)="closeDatePicker()">
+              <ng-template>
+                <ion-datetime 
+                  [(ngModel)]="profileData.tanggalLahir" 
+                  presentation="date"
+                  (ionChange)="onDateChange($event)"
+                  [max]="maxDate"
+                  [min]="minDate">
+                </ion-datetime>
+              </ng-template>
+            </ion-popover>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Email</ion-label>
+            <ion-input 
+              [(ngModel)]="profileData.email" 
+              name="email"
+              type="email"
+              placeholder="Masukkan email"
+              class="form-input"
+              (ionInput)="onInputChange()">
+            </ion-input>
+          </div>
+
+          <!-- Nomor Telepon Field -->
+          <div class="form-group">
+            <ion-label class="form-label">Nomor Telepon</ion-label>
+            <ion-input 
+              [(ngModel)]="profileData.nomorTelepon" 
+              name="nomorTelepon"
+              type="tel"
+              placeholder="62xxxxxxxxxx"
+              class="form-input"
+              (ionInput)="onInputChange()"
+              [pattern]="phonePattern">
+            </ion-input>
+          </div>
+
+          <!-- Save Button -->
+          <div class="save-button-wrapper" [class.show]="showSaveButton">
+            <ion-button 
+              expand="block" 
+              class="save-button"
+              (click)="saveProfile()">
+              Simpan Sekarang
+            </ion-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </ion-content>

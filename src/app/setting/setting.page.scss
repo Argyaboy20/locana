@@ -155,6 +155,21 @@ ion-toolbar {
   }
 }
 
+.access-modal {
+  --width: 90%;
+  --height: 25%;
+  --min-height: 238px;
+  --max-width: 400px;
+  --border-radius: 16px;
+
+  /* Desktop specific modal sizing */
+  @media (min-width: 768px) {
+    --width: 25%;
+    --height: 30%;
+    --min-height: 238px;
+  }
+}
+
 /* Modal styling */
 /* Contact modal size and positioning */
 .contact-modal {
