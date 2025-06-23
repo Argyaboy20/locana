@@ -155,22 +155,181 @@ ion-toolbar {
   }
 }
 
+/* Access Permission Modal styling */
+/* Access modal size and positioning */
 .access-modal {
-  --width: 90%;
-  --height: 25%;
-  --min-height: 238px;
-  --max-width: 400px;
-  --border-radius: 16px;
+  --width: 95%;
+  --height: 35%;
+  --min-height: 280px;
+  --max-width: 450px;
+  --border-radius: 18px;
 
   /* Desktop specific modal sizing */
   @media (min-width: 768px) {
-    --width: 25%;
-    --height: 30%;
-    --min-height: 238px;
+    --width: 35%;
+    --height: 40%;
+    --min-height: 300px;
   }
 }
 
-/* Modal styling */
+/* Modal title styling with center alignment */
+.modal-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #ffffff;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+/* Close button styling for modal */
+.close-button {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+/* Modal content container */
+.modal-content {
+  --background: #ffffff;
+  padding: 24px;
+}
+
+/* Access container for modal content */
+.access-container {
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  padding-top: 10px;
+}
+
+/* Access list styling inside modal */
+.access-list {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* Access item styling for modal items */
+.access-item {
+  --background: white;
+  --border-color: #e8e8e8;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --min-height: 80px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Hover effect for access items */
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(104, 99, 242, 0.12);
+  }
+
+  /* Mobile specific adjustments for access items */
+  @media (max-width: 767px) {
+    --min-height: 70px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    margin-bottom: 16px;
+  }
+}
+
+/* Access label styling */
+.access-label {
+  color: #2d2d2d;
+  font-family: 'Montserrat', sans-serif;
+
+  h3 {
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0 0 4px 0;
+    color: #1a1a1a;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 13px;
+    margin: 0;
+    color: #666666;
+    line-height: 1.4;
+  }
+
+  /* Mobile font size adjustment */
+  @media (max-width: 767px) {
+    h3 {
+      font-size: 15px;
+    }
+    
+    p {
+      font-size: 12px;
+    }
+  }
+}
+
+/* Access icon styling with specific colors */
+.access-icon {
+  font-size: 22px;
+  margin-right: 18px;
+  transition: all 0.3s ease;
+  color: #6863f2;
+
+  /* Icon hover effect */
+  .access-item:hover & {
+    transform: scale(1.08);
+    color: #5a54e6;
+  }
+
+  /* Mobile icon size adjustment */
+  @media (max-width: 767px) {
+    font-size: 20px;
+    margin-right: 16px;
+  }
+}
+
+/* Access toggle styling */
+.access-toggle {
+  --handle-width: 26px;
+  --handle-height: 26px;
+  --track-width: 48px;
+  --track-height: 28px;
+  --handle-spacing: 2px;
+  transition: all 0.3s ease;
+
+  /* Toggle checked state */
+  &.toggle-checked {
+    --color-checked: #6863f2;
+  }
+
+  /* Disabled toggle styling */
+  &.disabled-toggle {
+    opacity: 0.6;
+    
+    &.toggle-checked {
+      --color-checked: #4caf50;
+    }
+  }
+
+  /* Mobile toggle size adjustment */
+  @media (max-width: 767px) {
+    --handle-width: 24px;
+    --handle-height: 24px;
+    --track-width: 44px;
+    --track-height: 26px;
+  }
+}
+
+/* Contact Modal styling */
 /* Contact modal size and positioning */
 .contact-modal {
   --width: 90%;
