@@ -1,13 +1,222 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>history</ion-title>
+    <ion-title class="logo-title">
+      <div class="logo-container">
+        <span class="logo-text">Riwayat</span>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">history</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" id="main-content">
+  <div class="history-container">
+    <!-- Mobile View -->
+    <div class="mobile-view">
+      <!-- Empty state when no history -->
+      <div *ngIf="historyList.length === 0" class="empty-state">
+        <ion-icon name="time-outline" class="empty-icon"></ion-icon>
+        <h3 class="empty-title">Belum Ada Riwayat</h3>
+        <p class="empty-subtitle">Riwayat pelacakan akan muncul di sini setelah Anda melakukan pencarian</p>
+      </div>
+
+      <!-- History List for Mobile -->
+      <div *ngIf="historyList.length > 0" class="history-list-container">
+        <h2 class="section-title">Riwayat Pelacakan</h2>
+        
+        <!-- Infinite scroll list -->
+        <div class="history-items">
+          <div 
+            *ngFor="let item of displayedHistory; trackBy: trackByHistoryId" 
+            class="history-item mobile-item"
+            (click)="openHistoryDetail(item)">
+            
+            <!-- Provider as title -->
+            <div class="item-header">
+              <h3 class="provider-title">{{item.provider}}</h3>
+              <span class="timestamp">{{formatTimestamp(item.timestamp)}}</span>
+            </div>
+            
+            <!-- Phone number as subtitle -->
+            <p class="phone-subtitle">{{item.phoneNumber}}</p>
+            
+            <!-- Additional info -->
+            <div class="item-footer">
+              <span class="location-info">
+                <ion-icon name="location-outline"></ion-icon>
+                {{item.city}}, {{item.region}}
+              </span>
+              <ion-icon name="chevron-forward-outline" class="chevron-icon"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Load more button when there are more items -->
+        <ion-button 
+          *ngIf="canLoadMore()" 
+          expand="block" 
+          fill="clear" 
+          (click)="loadMore()"
+          class="load-more-btn">
+          <ion-icon name="chevron-down-outline" slot="start"></ion-icon>
+          Muat Lebih Banyak
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Desktop View -->
+    <div class="desktop-view">
+      <!-- Empty state when no history -->
+      <div *ngIf="historyList.length === 0" class="empty-state">
+        <ion-icon name="time-outline" class="empty-icon"></ion-icon>
+        <h3 class="empty-title">Belum Ada Riwayat</h3>
+        <p class="empty-subtitle">Riwayat pelacakan akan muncul di sini setelah Anda melakukan pencarian</p>
+      </div>
+
+      <!-- History List for Desktop -->
+      <div *ngIf="historyList.length > 0" class="history-list-container">
+        <h2 class="section-title">Riwayat Pelacakan</h2>
+        
+        <!-- Desktop grid layout -->
+        <div class="history-items desktop-grid">
+          <div 
+            *ngFor="let item of displayedHistory; trackBy: trackByHistoryId" 
+            class="history-item desktop-item"
+            (click)="openHistoryDetail(item)">
+            
+            <!-- Provider as title -->
+            <div class="item-header">
+              <h3 class="provider-title">{{item.provider}}</h3>
+              <span class="timestamp">{{formatTimestamp(item.timestamp)}}</span>
+            </div>
+            
+            <!-- Phone number as subtitle -->
+            <p class="phone-subtitle">{{item.phoneNumber}}</p>
+            
+            <!-- Additional info -->
+            <div class="item-footer">
+              <span class="location-info">
+                <ion-icon name="location-outline"></ion-icon>
+                {{item.city}}, {{item.region}}
+              </span>
+              <span class="signal-info">
+                <ion-icon name="cellular-outline"></ion-icon>
+                {{item.signalStrength}}
+              </span>
+              <ion-icon name="chevron-forward-outline" class="chevron-icon"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Load more button when there are more items -->
+        <ion-button 
+          *ngIf="canLoadMore()" 
+          expand="block" 
+          fill="clear" 
+          (click)="loadMore()"
+          class="load-more-btn">
+          <ion-icon name="chevron-down-outline" slot="start"></ion-icon>
+          Muat Lebih Banyak
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for History Detail (reusing modal-content structure) -->
+  <ion-modal #historyDetailModal [isOpen]="isHistoryDetailOpen" (didDismiss)="closeHistoryDetail()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Detail Riwayat</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeHistoryDetail()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content>
+        <div *ngIf="selectedHistoryItem" class="location-modal-content">
+          <!-- Map Container -->
+          <div *ngIf="hasValidHistoryCoordinates()" class="map-container">
+            <div id="history-map-container" class="leaflet-map"></div>
+          </div>
+          
+          <!-- Fallback when no coordinates -->
+          <div *ngIf="!hasValidHistoryCoordinates()" class="map-placeholder">
+            <ion-icon name="location" class="location-icon"></ion-icon>
+            <p>Lokasi tidak ditemukan</p>
+          </div>
+          
+          <h2 class="location-title">Detail Pelacakan</h2>
+          
+          <div class="location-details">
+            <div class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="call-outline"></ion-icon>
+                Nomor:
+              </span>
+              <span>{{selectedHistoryItem.phoneNumber}}</span>
+            </div>
+            
+            <div class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="business-outline"></ion-icon>
+                Provider:
+              </span>
+              <span>{{selectedHistoryItem.provider}}</span>
+            </div>
+            
+            <div class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="map-outline"></ion-icon>
+                Provinsi:
+              </span>
+              <span>{{selectedHistoryItem.region}}</span>
+            </div>
+            
+            <div class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="location-outline"></ion-icon>
+                Kota:
+              </span>
+              <span>{{selectedHistoryItem.city}}</span>
+            </div>
+            
+            <div class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="cellular-outline"></ion-icon>
+                Kekuatan Sinyal:
+              </span>
+              <span class="signal-strength">{{selectedHistoryItem.signalStrength}}</span>
+            </div>
+            
+            <div *ngIf="selectedHistoryItem.coordinates" class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="navigate-outline"></ion-icon>
+                Koordinat:
+              </span>
+              <span class="coordinates">
+                {{selectedHistoryItem.coordinates.lat?.toFixed(6)}}, 
+                {{selectedHistoryItem.coordinates.lng?.toFixed(6)}}
+              </span>
+            </div>
+
+            <div class="location-detail-item">
+              <span class="detail-label">
+                <ion-icon name="time-outline"></ion-icon>
+                Waktu Pelacakan:
+              </span>
+              <span>{{formatFullTimestamp(selectedHistoryItem.timestamp)}}</span>
+            </div>
+          </div>
+          
+          <ion-button expand="block" class="close-button" (click)="closeHistoryDetail()">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+            Tutup
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

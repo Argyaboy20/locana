@@ -1,0 +1,405 @@
+/* Base styles for toolbar and content */
+ion-toolbar {
+  --background: white;
+}
+
+ion-content {
+  --background: #ffffff;
+}
+
+/* Header logo styles - consistent with beranda */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.logo-title {
+  font-weight: bold;
+  color: #6863f2;
+  position: relative;
+  width: 100%;
+}
+
+.logo-text {
+  margin-left: 5px;
+  font-family: 'Montserrat';
+}
+
+/* Main container for history content */
+.history-container {
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* Mobile view styles */
+.mobile-view {
+  display: block;
+}
+
+/* Desktop view styles - hidden by default */
+.desktop-view {
+  display: none;
+}
+
+/* Empty state styles when no history available */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  margin-top: 20%;
+  
+  .empty-icon {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 20px;
+  }
+  
+  .empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .empty-subtitle {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+    max-width: 300px;
+  }
+}
+
+/* Section title for history list */
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* History list container with infinite scroll support */
+.history-list-container {
+  .history-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    
+    /* Enable smooth scrolling for long lists */
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 5px;
+    
+    /* Custom scrollbar for webkit browsers */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 2px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #6863f2;
+      border-radius: 2px;
+    }
+  }
+}
+
+/* Individual history item styles */
+.history-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  
+  /* Hover effect for better UX */
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(104, 99, 242, 0.15);
+    border-color: #6863f2;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* Header section of each history item */
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  
+  .provider-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #6863f2;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .timestamp {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-left: 10px;
+  }
+}
+
+/* Phone number subtitle */
+.phone-subtitle {
+  font-size: 0.95rem;
+  color: #333;
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+/* Footer section with location and navigation */
+.item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  .location-info {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #666;
+    
+    ion-icon {
+      margin-right: 4px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .signal-info {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #666;
+    
+    ion-icon {
+      margin-right: 4px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .chevron-icon {
+    color: #ccc;
+    font-size: 1rem;
+  }
+}
+
+/* Load more button for infinite scroll */
+.load-more-btn {
+  margin: 20px 0;
+  --color: #6863f2;
+  font-weight: 500;
+}
+
+/* Modal content styles - reused from modal-content component */
+.location-modal-content {
+  padding: 16px;
+  
+  .location-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin: 20px 0 16px 0;
+    text-align: center;
+  }
+  
+  .location-details {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .location-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .detail-label {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: #555;
+      
+      ion-icon {
+        margin-right: 8px;
+        color: #6863f2;
+      }
+    }
+    
+    .signal-strength {
+      font-weight: 600;
+      color: #28a745;
+    }
+    
+    .coordinates {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+  
+  .close-button {
+    --background: #6863f2;
+    --color: white;
+    font-weight: 600;
+    margin-top: 20px;
+  }
+}
+
+/* Map container styles */
+.map-container {
+  height: 300px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  .leaflet-map {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/* Map placeholder when coordinates unavailable */
+.map-placeholder {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  
+  .location-icon {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    color: #666;
+    margin: 0;
+  }
+  
+  small {
+    color: #999;
+    margin-top: 5px;
+  }
+}
+
+/* Desktop responsive styles */
+@media (min-width: 768px) {
+  /* Show desktop view, hide mobile view */
+  .mobile-view {
+    display: none;
+  }
+  
+  .desktop-view {
+    display: block;
+  }
+  
+  /* Desktop grid layout for history items */
+  .desktop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    max-height: none;
+    
+    .desktop-item {
+      /* Desktop specific item styles */
+      .item-footer {
+        .signal-info {
+          display: flex;
+        }
+      }
+    }
+  }
+  
+  /* Adjust container padding for desktop */
+  .history-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Desktop section title */
+  .section-title {
+    font-size: 1.6rem;
+    text-align: left;
+  }
+  
+  /* Desktop empty state */
+  .empty-state {
+    margin-top: 10%;
+    
+    .empty-icon {
+      font-size: 5rem;
+    }
+    
+    .empty-title {
+      font-size: 1.8rem;
+    }
+    
+    .empty-subtitle {
+      font-size: 1.1rem;
+      max-width: 400px;
+    }
+  }
+  
+  /* Desktop modal content */
+  .location-modal-content {
+    padding: 24px;
+    
+    .map-container {
+      height: 400px;
+    }
+    
+    .map-placeholder {
+      height: 400px;
+    }
+  }
+}
+
+/* Large desktop styles */
+@media (min-width: 1200px) {
+  .desktop-grid {
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  }
+  
+  .history-container {
+    padding: 60px;
+  }
+}

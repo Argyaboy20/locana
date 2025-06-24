@@ -198,6 +198,24 @@ ion-toolbar {
   pointer-events: none;
 }
 
+.header-logo {
+  height: 32px;
+  margin-right: 4px;
+}
+
+.logo-title {
+  font-weight: bold;
+  color: #6863f2;
+  position: relative;
+  width: 100%;
+}
+
+.logo-text {
+  margin-left: 5px;
+  font-family: 'Montserrat';
+}
+
+
 .bell-icon {
   color: #6863f2;
   font-size: 20px; /* ukuran untuk mobile */
@@ -260,23 +278,6 @@ ion-modal {
     display: block !important; /* paksa untuk tampil */
     line-height: 1.4;
   }
-}
-
-.header-logo {
-  height: 32px;
-  margin-right: 4px;
-}
-
-.logo-title {
-  font-weight: bold;
-  color: #6863f2;
-  position: relative;
-  width: 100%;
-}
-
-.logo-text {
-  margin-left: 5px;
-  font-family: 'Montserrat';
 }
 
 /* Menu styles */
