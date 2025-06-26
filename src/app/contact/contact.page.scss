@@ -64,7 +64,7 @@ ion-select {
   border: 1px solid #ddd;
   color: black;
   
-  // Alternatif menggunakan CSS custom properties Ionic
+  /* Alternatif menggunakan CSS custom properties Ionic */
   --placeholder-color: #666;
   --icon-color: #666;
   
@@ -74,7 +74,7 @@ ion-select {
   }
 }
 
-// Jika masih belum berhasil, gunakan ini
+/* Jika masih belum berhasil, gunakan ini */
 .form-group ion-select::part(icon) {
   position: absolute;
   right: 1rem;

@@ -100,7 +100,7 @@ export class LupapasswordPage implements OnInit {
   }
 
   validateEmail() {
-    // Reset status
+    /* Reset status */
     this.emailStatus = null;
     this.isEmailValid = false;
     this.isEmailRegistered = false;

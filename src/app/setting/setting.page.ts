@@ -24,7 +24,7 @@ export class SettingPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Load saved tracking permission state from localStorage
+    /* Load saved tracking permission state from localStorage */
     const savedTrackingPermission = localStorage.getItem('trackingPermission');
     if (savedTrackingPermission !== null) {
       this.trackingPermission = JSON.parse(savedTrackingPermission);
@@ -50,17 +50,17 @@ export class SettingPage implements OnInit {
   onTrackingToggleChange(event: any): void {
     this.trackingPermission = event.detail.checked;
     
-    // Save the tracking permission state to localStorage
+    /* Save the tracking permission state to localStorage */
     localStorage.setItem('trackingPermission', JSON.stringify(this.trackingPermission));
     
-    // You can add additional logic here for handling location permissions
+    /* You can add additional logic here for handling location permissions */
     if (this.trackingPermission) {
       console.log('Tracking permission enabled');
-      // Request location permission from the device if needed
+      /* Request location permission from the device if needed */
       // this.requestLocationPermission();
     } else {
       console.log('Tracking permission disabled');
-      // Handle disabling location tracking
+      /* Handle disabling location tracking */
       // this.disableLocationTracking();
     }
   }

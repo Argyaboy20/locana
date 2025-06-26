@@ -1,4 +1,4 @@
-// Custom primary color
+/* Custom primary color */
 :root {
     --ion-color-primary: #6863f2;
     --ion-color-primary-rgb: 104, 99, 242;
@@ -8,20 +8,20 @@
     --ion-color-primary-tint: #7775f3;
   }
   
-  // Header styles
+  /* Header styles */
   ion-toolbar {
-    // Menambahkan ini untuk memastikan toolbar berada di tengah
+    /* Menambahkan ini untuk memastikan toolbar berada di tengah */
     display: flex;
     justify-content: center;
     
     ion-title {
-      // Memastikan title terletak di tengah
+      /* Memastikan title terletak di tengah */
       text-align: center;
       padding: 0;
       width: 100%;
       left: 0;
       right: 0;
-      pointer-events: none; // Agar back button tetap berfungsi
+      pointer-events: none; /* Agar back button tetap berfungsi */
       
       .logo-container {
         display: flex;
@@ -35,7 +35,7 @@
         .header-logo {
           width: 35px;
           height: 35px;
-          object-fit: contain; // Prevents the logo from being stretched/squished
+          object-fit: contain; /* Prevents the logo from being stretched/squished */
         }
       
         span {
@@ -47,13 +47,13 @@
     }
   }
   
-  // Memastikan tombol back tetap berfungsi meskipun title di-absolute
+  /* Memastikan tombol back tetap berfungsi meskipun title di-absolute */
   ion-buttons {
     z-index: 2;
     position: relative;
   }
   
-  // FAQ page styles
+  /* FAQ page styles */
   .faq-content {
     --background: #f5f5f7;
     font-family: 'Roboto', sans-serif;

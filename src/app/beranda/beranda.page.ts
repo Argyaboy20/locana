@@ -16,7 +16,7 @@ export class BerandaPage implements OnInit {
   /* Tambahkan property untuk modal notifikasi */
   isNotificationModalOpen = false;
 
-  // Mapping for provider prefixes
+  /*Mapping for provider prefixes */
   private providerPrefixes: { [key: string]: string } = {
     '0811': 'Telkomsel', '0812': 'Telkomsel', '0813': 'Telkomsel', '0821': 'Telkomsel', '0822': 'Telkomsel',
     '0823': 'Telkomsel', '0851': 'Telkomsel', '0852': 'Telkomsel', '0853': 'Telkomsel',
@@ -27,9 +27,9 @@ export class BerandaPage implements OnInit {
     '0895': '3', '0896': '3', '0897': '3', '0898': '3', '0899': '3',
   };
 
-  // Detailed mapping for specific prefixes to locations (more accurate)
+  /* Detailed mapping for specific prefixes to locations (more accurate) */
   private prefixLocations: { [key: string]: { region: string, city: string, signalStrength: string } } = {
-    // Telkomsel
+    /* Telkomsel */
     '0811': { region: 'DKI Jakarta', city: 'Jakarta Pusat', signalStrength: 'Sangat Kuat' },
     '0812': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Kuat' },
     '0813': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Kuat' },
@@ -40,7 +40,7 @@ export class BerandaPage implements OnInit {
     '0852': { region: 'Bali', city: 'Denpasar', signalStrength: 'Kuat' },
     '0853': { region: 'Nusa Tenggara Barat', city: 'Mataram', signalStrength: 'Sedang' },
 
-    // Indosat
+    /* Indosat */
     '0814': { region: 'DKI Jakarta', city: 'Jakarta Selatan', signalStrength: 'Kuat' },
     '0815': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Kuat' },
     '0816': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Sedang' },
@@ -49,7 +49,7 @@ export class BerandaPage implements OnInit {
     '0857': { region: 'Sumatera Selatan', city: 'Palembang', signalStrength: 'Sedang' },
     '0858': { region: 'Kalimantan Selatan', city: 'Banjarmasin', signalStrength: 'Sedang' },
 
-    // XL
+    /* XL */
     '0817': { region: 'DKI Jakarta', city: 'Jakarta Barat', signalStrength: 'Kuat' },
     '0818': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Kuat' },
     '0819': { region: 'DI Yogyakarta', city: 'Yogyakarta', signalStrength: 'Kuat' },
@@ -57,13 +57,13 @@ export class BerandaPage implements OnInit {
     '0877': { region: 'Bali', city: 'Kuta', signalStrength: 'Kuat' },
     '0878': { region: 'Nusa Tenggara Barat', city: 'Lombok', signalStrength: 'Sedang' },
 
-    // Axis
+    /* Axis */
     '0831': { region: 'DKI Jakarta', city: 'Jakarta Timur', signalStrength: 'Sedang' },
     '0832': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Sedang' },
     '0833': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Sedang' },
     '0838': { region: 'Jawa Timur', city: 'Malang', signalStrength: 'Sedang' },
 
-    // Smartfren
+    /* Smartfren */
     '0881': { region: 'DKI Jakarta', city: 'Jakarta Utara', signalStrength: 'Sedang' },
     '0882': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Sedang' },
     '0883': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Sedang' },
@@ -74,7 +74,7 @@ export class BerandaPage implements OnInit {
     '0888': { region: 'Bali', city: 'Denpasar', signalStrength: 'Sedang' },
     '0889': { region: 'Lampung', city: 'Bandar Lampung', signalStrength: 'Lemah' },
 
-    // 3 (Tri)
+    /* 3 (Tri) */
     '0895': { region: 'DKI Jakarta', city: 'Jakarta Selatan', signalStrength: 'Sedang' },
     '0896': { region: 'Jawa Barat', city: 'Bandung', signalStrength: 'Sedang' },
     '0897': { region: 'Jawa Timur', city: 'Surabaya', signalStrength: 'Sedang' },
@@ -82,7 +82,7 @@ export class BerandaPage implements OnInit {
     '0899': { region: 'Nusa Tenggara Barat', city: 'Lombok', signalStrength: 'Lemah' },
   };
 
-  // BTS Tower data for more precise location tracking
+  /* BTS Tower data for more precise location tracking */
   private btsTowers: { [key: string]: { lat: number, lng: number, radius: number }[] } = {
     'Jakarta Pusat': [
       { lat: -6.1753924, lng: 106.8271528, radius: 1.2 },
@@ -116,7 +116,7 @@ export class BerandaPage implements OnInit {
       { lat: -7.0051453, lng: 110.4381254, radius: 1.1 },
       { lat: -6.9932251, lng: 110.4208731, radius: 1.2 }
     ]
-    // Additional cities can be added as needed
+    /* Additional cities can be added as needed */
   };
 
   constructor(
@@ -132,7 +132,7 @@ export class BerandaPage implements OnInit {
   }
 
   addAlertCustomStyles() {
-    // Create style element if it doesn't exist
+    /* Create style element if it doesn't exist */
     let style = document.getElementById('custom-alert-styles');
     if (!style) {
       style = document.createElement('style');
@@ -256,16 +256,16 @@ export class BerandaPage implements OnInit {
   validateNumber(event: any) {
     const input = event.target.value;
 
-    // Remove any non-numeric characters
+    /* Remove any non-numeric characters */
     const numericValue = input.replace(/[^0-9]/g, '');
 
-    // If the input was changed (contained non-numeric chars)
+    /* If the input was changed (contained non-numeric chars) */
     if (input !== numericValue) {
       this.phoneNumber = numericValue;
       this.showAlertOnlyNumbers();
     }
 
-    // Add animation class when the input has content
+    /* Add animation class when the input has content */
     const inputElement = event.target;
     if (this.phoneNumber.length > 0) {
       inputElement.classList.add('animated-input');
@@ -315,7 +315,7 @@ export class BerandaPage implements OnInit {
     }
 
 
-    // Show loading before displaying results
+    /* Show loading before displaying results */
     const loadingAlert = await this.alertController.create({
       header: 'Melacak Nomor',
       message: 'Sedang memproses permintaan...',
@@ -326,14 +326,14 @@ export class BerandaPage implements OnInit {
     });
     await loadingAlert.present();
 
-    // Simulate tracking process with delay - mimics real API call to BTS data
+    /* Simulate tracking process with delay - mimics real API call to BTS data */
     setTimeout(async () => {
       await loadingAlert.dismiss();
       this.showLocationModal();
     }, 2000);
   }
 
-  // Get location data based on phone prefix
+  /* Get location data based on phone prefix */
   getLocationData(phoneNumber: string): {
     provider: string;
     region: string;
@@ -344,22 +344,22 @@ export class BerandaPage implements OnInit {
     let normalizedNumber = phoneNumber;
     let prefix = '';
 
-    // Normalize phone number format
+    /* Normalize phone number format */
     if (normalizedNumber.startsWith('62')) {
       normalizedNumber = '0' + normalizedNumber.substring(2);
     }
 
-    // Extract prefix (first 4 digits)
+    /* Extract prefix (first 4 digits) */
     prefix = normalizedNumber.substring(0, 4);
 
-    // Get provider
+    /* Get provider */
     const provider = this.providerPrefixes[prefix] || 'Tidak diketahui';
 
-    // Get detailed location information
+    /* Get detailed location information */
     let locationData = this.prefixLocations[prefix];
 
     if (!locationData) {
-      // Fallback if specific prefix not found - use first prefix of provider
+      /* Fallback if specific prefix not found - use first prefix of provider */
       const providerFirstPrefix = Object.keys(this.prefixLocations).find(
         key => this.providerPrefixes[key] === provider
       );
@@ -376,15 +376,15 @@ export class BerandaPage implements OnInit {
       }
     }
 
-    // Find BTS tower coordinates for the city
+    /* Find BTS tower coordinates for the city */
     let coordinates;
     const btsData = this.btsTowers[locationData.city];
     if (btsData && btsData.length > 0) {
-      // Use last 3 digits of phone number to make it deterministic but seem random
+      /* Use last 3 digits of phone number to make it deterministic but seem random */
       const lastDigits = parseInt(normalizedNumber.slice(-3));
       const btsIndex = lastDigits % btsData.length;
 
-      // Add slight variation based on phone number
+      /* Add slight variation based on phone number */
       const variance = (lastDigits % 100) / 1000; // Small variance
 
       coordinates = {
@@ -403,7 +403,7 @@ export class BerandaPage implements OnInit {
   }
 
   async showLocationModal() {
-    // Get detailed location data using our new function
+    /* Get detailed location data using our new function */
     const locationData = this.getLocationData(this.phoneNumber);
 
     const modal = await this.modalController.create({
@@ -423,25 +423,25 @@ export class BerandaPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    // Ketika kembali ke halaman Beranda (home), pastikan tab yang aktif adalah 'home'
+    /* Ketika kembali ke halaman Beranda (home), pastikan tab yang aktif adalah 'home' */
     this.activeTab = 'home';
   }
 
   activeTab: string = 'home';
 
   navigateToTab(tabName: string) {
-    // Set tab yang aktif
+    /* Set tab yang aktif */
     this.activeTab = tabName;
 
     if (tabName === 'home') {
-      // Jika sudah di halaman home, hanya perlu mengubah indikator tab aktif
+      /* Jika sudah di halaman home, hanya perlu mengubah indikator tab aktif */
       if (this.router.url !== '/beranda') {
         this.router.navigate(['/beranda'], {
           state: { animation: 'tab-transition' }
         });
       }
     } else if (tabName === 'security') {
-      // Navigasi ke halaman security
+      /* Navigasi ke halaman security */
       this.router.navigate(['/security'], {
         state: { animation: 'tab-transition' }
       });
@@ -449,13 +449,13 @@ export class BerandaPage implements OnInit {
   }
 
   selectTab(tabName: string) {
-    // Hapus selected dari semua tab
+    /* Hapus selected dari semua tab */
     const tabButtons = document.querySelectorAll('ion-tab-button');
     tabButtons.forEach(button => {
       button.removeAttribute('selected');
     });
 
-    // Tambahkan selected ke tab yang dipilih
+    /* Tambahkan selected ke tab yang dipilih */
     const selectedTab = document.querySelector(`ion-tab-button[tab="${tabName}"]`);
     if (selectedTab) {
       selectedTab.setAttribute('selected', 'true');
@@ -463,7 +463,7 @@ export class BerandaPage implements OnInit {
   }
 
   async confirmLogout() {
-    // Tutup menu terlebih dahulu
+    /* Tutup menu terlebih dahulu */
     this.menuCtrl.close();
 
     const alert = await this.alertController.create({
@@ -491,11 +491,11 @@ export class BerandaPage implements OnInit {
     await alert.present();
   }
 
-  // Metode untuk menangani proses logout
+  /* Metode untuk menangani proses logout */
   logout() {
-    // Di sini Anda bisa menambahkan logika untuk menghapus token atau session storage
+    /* Di sini Anda bisa menambahkan logika untuk menghapus token atau session storage */
 
-    // Bersihkan form data
+    /* Bersihkan form data */
     this.phoneNumber = '';
 
     // Navigasi ke /tabs/tab1 dengan replaceUrl: true

@@ -164,7 +164,7 @@ export class Tab2Page implements OnInit {
 
   /* Method to handle sign up */
   async signUp() {
-    // Validate all fields
+    /* Validate all fields */
     if (!this.username) {
       await this.presentAlert('Username diperlukan', 'Harap masukkan username Anda.');
       return;

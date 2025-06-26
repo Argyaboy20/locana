@@ -8,7 +8,7 @@ import { ToastController } from '@ionic/angular';
   standalone: false,
 })
 export class FaqPage implements OnInit {
-  // FAQ items array
+  /* FAQ items array */
   faqItems = [
     {
       id: 'first',
@@ -52,17 +52,16 @@ export class FaqPage implements OnInit {
     }
   ];
 
-  // Search query
+  /* Search query */
   searchQuery: string = '';
   filteredFaqItems = [...this.faqItems];
 
   constructor(private toastController: ToastController) { }
 
   ngOnInit() {
-    // Initialize the FAQ page
   }
 
-  // Search functionality
+  /* Search functionality */
   onSearchChange(event: any) {
     const query = event.detail.value.toLowerCase();
     this.searchQuery = query;
@@ -77,7 +76,7 @@ export class FaqPage implements OnInit {
     }
   }
 
-  // Contact support
+  /* Contact support */
   async contactSupport() {
     const toast = await this.toastController.create({
       message: 'Permintaan dukungan Anda telah dikirim. Tim kami akan segera menghubungi Anda.',

@@ -18,7 +18,7 @@ export class SupportPage implements OnInit {
   emailStatus: { message: string, class: string } | null = null;
   kendalaStatus: { message: string, class: string } | null = null;
   
-  // Simulasi email terdaftar
+  /* Simulasi email terdaftar */
   registeredEmails: string[] = [
     'user@example.com',
     'admin@locana.com',
@@ -137,7 +137,7 @@ export class SupportPage implements OnInit {
     
     /* Simulasi pengiriman laporan */
     try {
-      // Di sini bisa menambahkan kode untuk mengirim data ke API
+      /* Di sini bisa menambahkan kode untuk mengirim data ke API */
       console.log('Mengirim laporan:');
       console.log('Email:', this.email);
       console.log('Kendala:', this.kendalaText);

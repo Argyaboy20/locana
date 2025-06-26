@@ -59,12 +59,11 @@ export class ContactPage implements OnInit {
   constructor(private toastController: ToastController) { }
 
   ngOnInit() {
-    // Initialize component
   }
 
   validateField(fieldName: string): void {
     if (fieldName as keyof typeof this.fieldStatus) {
-      // Explicitly cast to avoid TypeScript errors
+      /* Explicitly cast to avoid TypeScript errors */
       const field = fieldName as keyof typeof this.fieldStatus;
       
       this.fieldStatus[field] = true;

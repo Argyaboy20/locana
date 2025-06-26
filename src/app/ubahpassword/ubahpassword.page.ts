@@ -203,8 +203,8 @@ export class UbahpasswordPage implements OnInit {
       return;
     }
 
-    // Here you would typically verify the old password against database
-    // For this example, we'll simulate a verification
+    /* Here you would typically verify the old password against database */
+    /* For this example, we'll simulate a verification */
     const oldPasswordVerified = this.verifyOldPassword(this.oldPassword);
     
     if (!oldPasswordVerified) {
@@ -212,8 +212,8 @@ export class UbahpasswordPage implements OnInit {
       return;
     }
 
-    // If we get here, all validations passed
-    // In a real app, you'd update the password in your database
+    /* If we get here, all validations passed */
+    /* In a real app, you'd update the password in your database */
     await this.presentAlert('Berhasil', 'Password Anda berhasil diubah!', true);
     
     /* Reset the form */
@@ -227,8 +227,8 @@ export class UbahpasswordPage implements OnInit {
     this.router.navigate(['/ubahpassword']);
   }
 
-  // Simulate verifying old password against database
-  // In a real app, this would check against your authentication service
+  /* Simulate verifying old password against database */
+  /* In a real app, this would check against your authentication service */
   verifyOldPassword(password: string): boolean {
     // For demo purposes, let's say "password123" is the current password
     // In a real app, this would be a call to your authentication service

@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   constructor(private afAuth: AngularFireAuth) {}
 
-  // Login dengan Google
+  /* Login dengan Google */
   async loginWithGoogle(): Promise<firebase.auth.UserCredential> {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -21,17 +21,17 @@ export class AuthService {
     }
   }
 
-  // Cek status login
+  /* Cek status login */
   get isLoggedIn(): Observable<boolean> {
     return this.afAuth.authState.pipe(map(user => !!user));
   }
 
-  // Logout
+  /* Logout */
   async logout(): Promise<void> {
     return await this.afAuth.signOut();
   }
 
-  // Dapatkan user saat ini
+  /* Dapatkan user saat ini */
   get currentUser(): Observable<firebase.User | null> {
     return this.afAuth.authState;
   }

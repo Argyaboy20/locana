@@ -32,21 +32,21 @@ export interface ConnectionStatus {
   providedIn: 'root'
 })
 export class WebSocketService implements OnDestroy {
-  // SOLUSI: Multiple endpoints untuk fallback
+  /* SOLUSI: Multiple endpoints untuk fallback */
   private readonly SOCKET_ENDPOINTS = [
-    'https://locana-server.vercel.app', // Ganti dengan URL server Vercel yang benar
+    'https://locana-server.vercel.app', /* Ganti dengan URL server Vercel yang benar */
   ];
 
   private currentEndpointIndex = 0;
   private socket: Socket | null = null;
 
-  // Subjects untuk mengelola state
+  /* Subjects untuk mengelola state */
   private readonly connectionStatus$ = new BehaviorSubject<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected');
   private readonly locationUpdates$ = new Subject<LocationData>();
   private readonly trackResponses$ = new Subject<TrackRequestResponse>();
   private readonly errors$ = new Subject<string>();
 
-  // Reconnection settings
+  /* Reconnection settings */
   private readonly RECONNECT_INTERVAL = 5000;
   private readonly MAX_RECONNECT_ATTEMPTS = 3;
   private readonly MAX_ENDPOINT_ATTEMPTS = 2;
@@ -68,7 +68,7 @@ export class WebSocketService implements OnDestroy {
     const currentEndpoint = this.SOCKET_ENDPOINTS[this.currentEndpointIndex];
     console.log(`Testing endpoint: ${currentEndpoint}`);
 
-    // Test dengan path health check yang lebih reliable
+    /* Test dengan path health check yang lebih reliable */
     const testUrl = `${currentEndpoint}/health`;
 
     fetch(testUrl, {
@@ -92,9 +92,7 @@ export class WebSocketService implements OnDestroy {
       });
   }
 
-  /**
-   * Try next endpoint in the list
-   */
+  /* Try next endpoint in the list */
   private tryNextEndpoint(): void {
     this.endpointAttempts++;
 
@@ -103,7 +101,7 @@ export class WebSocketService implements OnDestroy {
       this.endpointAttempts = 0;
 
       if (this.currentEndpointIndex >= this.SOCKET_ENDPOINTS.length) {
-        // All endpoints failed
+        /* All endpoints failed */
         console.error('All endpoints failed');
         this.connectionStatus$.next('error');
         this.errors$.next('Unable to connect to any server. Please check your internet connection and try again later.');
@@ -127,32 +125,32 @@ export class WebSocketService implements OnDestroy {
 
     console.log(`Connecting to: ${currentEndpoint}`);
 
-    // Konfigurasi optimized untuk serverless dan network issues
+    /* Konfigurasi optimized untuk serverless dan network issues */
     this.socket = io(currentEndpoint, {
-      // Prioritas polling untuk serverless yang lebih stabil
+      /* Prioritas polling untuk serverless yang lebih stabil */
       transports: ['polling', 'websocket'],
 
-      // Timeout yang lebih panjang untuk serverless cold start
+      /* Timeout yang lebih panjang untuk serverless cold start */
       timeout: 30000,
 
-      // Upgrade transport setelah koneksi stabil
+      /* Upgrade transport setelah koneksi stabil */
       upgrade: true,
 
-      // Settings untuk serverless
+      /* Settings untuk serverless */
       forceNew: true,
       autoConnect: true,
 
-      // Manual reconnection control
+      /* Manual reconnection control */
       reconnection: false,
 
-      // Additional options untuk stabilitas
+      /* Additional options untuk stabilitas */
       rememberUpgrade: false,
       timestampRequests: true
     });
 
     this.setupSocketListeners();
 
-    // Tambahkan fallback timeout manual
+    /* Tambahkan fallback timeout manual */
     setTimeout(() => {
       if (this.socket && !this.socket.connected && this.connectionStatus$.value === 'connecting') {
         console.log('Manual timeout triggered, trying next endpoint');
@@ -161,13 +159,11 @@ export class WebSocketService implements OnDestroy {
     }, 25000);
   }
 
-  /**
-   * Setup Socket.IO event listeners dengan enhanced error handling
-   */
+  /* Setup Socket.IO event listeners dengan enhanced error handling */
   private setupSocketListeners(): void {
     if (!this.socket) return;
 
-    // Connection events
+    /* Connection events */
     this.socket.on('connect', () => {
       console.log('✅ Socket.IO connected successfully!');
       console.log('Socket ID:', this.socket?.id);
@@ -183,12 +179,12 @@ export class WebSocketService implements OnDestroy {
       console.log('❌ Socket.IO disconnected:', reason);
       this.connectionStatus$.next('disconnected');
 
-      // Enhanced disconnect handling
+      /* Enhanced disconnect handling */
       if (reason === 'io server disconnect') {
-        // Server disconnected us, try to reconnect
+        /* Server disconnected us, try to reconnect */
         this.scheduleReconnect();
       } else if (reason === 'transport close' || reason === 'transport error') {
-        // Network issues, try different endpoint
+        /* Network issues, try different endpoint */
         this.tryNextEndpoint();
       } else if (reason !== 'io client disconnect') {
         this.scheduleReconnect();
@@ -199,7 +195,7 @@ export class WebSocketService implements OnDestroy {
       console.error('❌ Socket.IO connection error:', error);
       this.connectionStatus$.next('error');
 
-      // Enhanced error handling dengan lebih banyak kasus
+      /* Enhanced error handling dengan lebih banyak kasus */
       let errorMessage = 'Connection failed';
       if (error.message) {
         if (error.message.includes('timeout')) {
@@ -219,7 +215,7 @@ export class WebSocketService implements OnDestroy {
 
       this.errors$.next(errorMessage);
 
-      // Immediate retry untuk timeout, delayed untuk other errors
+      /* Immediate retry untuk timeout, delayed untuk other errors */
       const retryDelay = error.message?.includes('timeout') ? 500 : 2000;
 
       setTimeout(() => {
@@ -227,7 +223,7 @@ export class WebSocketService implements OnDestroy {
       }, retryDelay);
     });
 
-    // Server events
+    /* Server events */
     this.socket.on('connection_status', (data: ConnectionStatus) => {
       console.log('📊 Connection status received:', data);
       if (data.status === 'connected') {
@@ -250,7 +246,7 @@ export class WebSocketService implements OnDestroy {
       this.errors$.next(error.message || 'Server error occurred');
     });
 
-    // Additional debugging events
+    /* Additional debugging events */
     this.socket.on('ping', () => {
       console.log('🏓 Ping received');
     });
@@ -260,9 +256,7 @@ export class WebSocketService implements OnDestroy {
     });
   }
 
-  /**
-   * Schedule reconnection attempt dengan backoff
-   */
+  /* Schedule reconnection attempt dengan backoff */
   private scheduleReconnect(): void {
     if (this.reconnectAttempts >= this.MAX_RECONNECT_ATTEMPTS) {
       console.error('Max reconnection attempts reached for current endpoint');
@@ -279,16 +273,14 @@ export class WebSocketService implements OnDestroy {
     }, delay);
   }
 
-  /**
-   * Request location tracking untuk phone number
-   */
+  /* Request location tracking untuk phone number */
   public trackLocation(phoneNumber: string): void {
-    // Improved connection check
+    /* Improved connection check */
     if (!this.socket) {
       this.errors$.next('⚠️ Not connected to server. Initializing connection...');
       this.initializeConnection();
 
-      // Retry setelah connection attempt
+      /* Retry setelah connection attempt */
       setTimeout(() => {
         if (this.isConnected()) {
           this.trackLocation(phoneNumber);
@@ -307,7 +299,7 @@ export class WebSocketService implements OnDestroy {
       return;
     }
 
-    // Validate phone number format (basic)
+    /* Validate phone number format (basic) */
     const cleanPhone = phoneNumber.trim().replace(/\D/g, '');
     if (cleanPhone.length < 10) {
       this.errors$.next('❌ Please enter a valid phone number');

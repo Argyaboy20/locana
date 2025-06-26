@@ -21,7 +21,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() signalStrength: string = '';
   @Input() coordinates?: { lat: number | undefined, lng: number | undefined } | undefined;
 
-  // Real-time properties
+  /* Real-time properties */
   public isTracking = false;
   public connectionStatus = 'disconnected';
   public lastUpdate: Date | null = null;
@@ -34,7 +34,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
   private trackingPath?: L.Polyline;
   private locationHistory: LocationData[] = [];
   
-  // Subscriptions untuk Socket.IO events
+  /* Subscriptions untuk Socket.IO events */
   private locationSubscription?: Subscription;
   private connectionSubscription?: Subscription;
   private errorSubscription?: Subscription;
@@ -73,9 +73,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cleanup();
   }
 
-  /**
-   * Initialize Socket.IO subscriptions sesuai dengan server.js
-   */
+  /* Initialize Socket.IO subscriptions sesuai dengan server.js */
   private initializeSocketIOSubscriptions(): void {
     // Subscribe to connection status
     this.connectionSubscription = this.webSocketService.getConnectionStatus()
@@ -92,7 +90,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
       });
 
-    // Subscribe to location updates (event: location_update dari server.js)
+    /* Subscribe to location updates (event: location_update dari server.js) */
     this.locationSubscription = this.webSocketService.getLocationUpdates()
       .subscribe((locationData: LocationData) => {
         console.log('Location update received:', locationData);
@@ -104,7 +102,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    // Subscribe to track request responses (event: track_request_response dari server.js)
+    /* Subscribe to track request responses (event: track_request_response dari server.js) */
     this.trackResponseSubscription = this.webSocketService.getTrackResponses()
       .subscribe((response: TrackRequestResponse) => {
         console.log('Track response received:', response);
@@ -119,7 +117,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
       });
 
-    // Subscribe to errors (event: error dari server.js)
+    /* Subscribe to errors (event: error dari server.js) */
     this.errorSubscription = this.webSocketService.getErrors()
       .subscribe(error => {
         console.error('Socket.IO error:', error);
@@ -134,11 +132,9 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  /**
-   * Update location data from Socket.IO location_update event
-   */
+  /*Update location data from Socket.IO location_update event */
   private updateLocationData(locationData: LocationData): void {
-    // Update component properties dengan data terbaru
+    /* Update component properties dengan data terbaru */
     this.provider = locationData.provider;
     this.region = locationData.region;
     this.city = locationData.city;
@@ -146,37 +142,33 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.coordinates = locationData.coordinates;
     this.lastUpdate = new Date(locationData.timestamp);
 
-    // Update map jika tersedia
+    /* Update map jika tersedia */
     if (this.map && this.hasValidCoordinates()) {
       this.updateMapLocation();
       this.updateTrackingPath();
     } else if (this.hasValidCoordinates()) {
-      // Initialize map jika belum ada
+      /* Initialize map jika belum ada */
       this.initializeMap();
     }
 
-    // Trigger change detection
+    /* Trigger change detection */
     this.cdr.detectChanges();
     
-    // Show update notification
+    /* Show update notification */
     this.showToast(`Lokasi ${this.city} - ${this.signalStrength}`, 'medium');
   }
 
-  /**
-   * Add location to history for tracking path
-   */
+  /* Add location to history for tracking path */
   private addToLocationHistory(locationData: LocationData): void {
     this.locationHistory.push(locationData);
     
-    // Limit history to last 50 points untuk performance
+    /* Limit history to last 50 points untuk performance */
     if (this.locationHistory.length > 50) {
       this.locationHistory = this.locationHistory.slice(-50);
     }
   }
 
-  /**
-   * Start real-time tracking menggunakan Socket.IO
-   */
+  /* Start real-time tracking menggunakan Socket.IO */
   public async startTracking(): Promise<void> {
     if (!this.webSocketService.isConnected()) {
       this.showToast('Socket.IO tidak terhubung ke server', 'warning');
@@ -191,10 +183,10 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     await loading.present();
 
     try {
-      // Clear location history
+      /* Clear location history */
       this.locationHistory = [];
       
-      // Send track_request event ke server (sesuai server.js)
+      /* Send track_request event ke server (sesuai server.js) */
       this.webSocketService.trackLocation(this.phoneNumber);
       
       console.log(`Track request sent for ${this.phoneNumber} via Socket.IO`);
@@ -210,14 +202,12 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Stop real-time tracking
-   */
+  /* Stop real-time tracking */
   public stopTracking(): void {
     this.isTracking = false;
     this.trackingStartTime = null;
     
-    // Clear tracking path
+    /* Clear tracking path */
     if (this.trackingPath) {
       this.map?.removeLayer(this.trackingPath);
       this.trackingPath = undefined;
@@ -227,17 +217,13 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  /**
-   * Reconnect to Socket.IO server
-   */
+  /* Reconnect to Socket.IO server */
   public reconnectSocketIO(): void {
     this.webSocketService.reconnect();
     this.showToast('Menghubungkan ulang ke server...', 'medium');
   }
 
-  /**
-   * Update tracking path on map
-   */
+  /* Update tracking path on map */
   private updateTrackingPath(): void {
     if (!this.map || !this.isTracking || this.locationHistory.length < 2) return;
 
@@ -247,12 +233,12 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (pathCoordinates.length < 2) return;
 
-    // Remove existing path
+    /* Remove existing path */
     if (this.trackingPath) {
       this.map.removeLayer(this.trackingPath);
     }
 
-    // Create new tracking path
+    /* Create new tracking path */
     this.trackingPath = L.polyline(pathCoordinates, {
       color: '#6863f2',
       weight: 3,
@@ -261,16 +247,14 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }).addTo(this.map);
   }
 
-  /**
-   * Update map location with new coordinates
-   */
+  /* Update map location with new coordinates */
   private updateMapLocation(): void {
     if (!this.map || !this.hasValidCoordinates()) return;
 
     const lat = this.coordinates!.lat!;
     const lng = this.coordinates!.lng!;
 
-    // Update marker position
+    /* Update marker position */
     if (this.marker) {
       this.marker.setLatLng([lat, lng]);
       this.marker.setPopupContent(this.createPopupContent());
@@ -287,20 +271,18 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // Update accuracy circle
+    /* Update accuracy circle */
     if (this.accuracyCircle) {
       this.accuracyCircle.setLatLng([lat, lng]);
     }
 
-    // Pan to new location if tracking
+    /* Pan to new location if tracking */
     if (this.isTracking) {
       this.map.panTo([lat, lng]);
     }
   }
 
-  /**
-   * Create popup content for marker dengan Socket.IO info
-   */
+  /* Create popup content for marker dengan Socket.IO info */
   private createPopupContent(): string {
     const lat = this.coordinates!.lat!;
     const lng = this.coordinates!.lng!;
@@ -346,7 +328,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     console.log('Initializing map with coordinates:', lat, lng);
 
-    // Initialize the map
+    /* Initialize the map */
     this.map = L.map('map-container', {
       center: [lat, lng],
       zoom: 15,
@@ -354,13 +336,13 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
       attributionControl: true
     });
 
-    // Add OpenStreetMap tile layer
+    /* Add OpenStreetMap tile layer */
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
       maxZoom: 19
     }).addTo(this.map);
 
-    // Create custom icon for marker dengan indicator real-time
+    /* Create custom icon for marker dengan indicator real-time */
     const customIcon = L.icon({
       iconUrl: 'data:image/svg+xml;base64,' + btoa(`
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6863f2" width="32" height="32">
@@ -373,13 +355,13 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
       popupAnchor: [0, -32]
     });
 
-    // Add marker to the map
+    /* Add marker to the map */
     this.marker = L.marker([lat, lng], { icon: customIcon })
       .addTo(this.map)
       .bindPopup(this.createPopupContent())
       .openPopup();
 
-    // Add circle untuk coverage area
+    /* Add circle untuk coverage area */
     this.accuracyCircle = L.circle([lat, lng], {
       color: this.isTracking ? '#6863f2' : '#999',
       fillColor: this.isTracking ? '#6863f2' : '#999',
@@ -388,16 +370,14 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
       dashArray: this.isTracking ? undefined : '5, 5'
     }).addTo(this.map);
 
-    // Add CSS for bounce animation
+    /* Add CSS for bounce animation */
     this.addMapStyles();
 
-    // Multiple invalidateSize calls untuk memastikan rendering yang benar
+    /* Multiple invalidateSize calls untuk memastikan rendering yang benar */
     this.invalidateMapSize();
   }
 
-  /**
-   * Add CSS styles for map animations
-   */
+  /* Add CSS styles for map animations */
   private addMapStyles(): void {
     const style = document.createElement('style');
     style.textContent = `
@@ -420,9 +400,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  /**
-   * Show toast message
-   */
+  /* Show toast message */
   private async showToast(message: string, color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'): Promise<void> {
     const toast = await this.toastController.create({
       message,
@@ -439,9 +417,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     await toast.present();
   }
 
-  /**
-   * Get connection status color untuk Socket.IO
-   */
+  /* Get connection status color untuk Socket.IO */
   public getConnectionStatusColor(): string {
     switch (this.connectionStatus) {
       case 'connected': return 'success';
@@ -451,9 +427,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Get connection status text untuk Socket.IO
-   */
+  /* Get connection status text untuk Socket.IO */
   public getConnectionStatusText(): string {
     switch (this.connectionStatus) {
       case 'connected': return 'Socket.IO Terhubung';
@@ -463,9 +437,7 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Get tracking duration
-   */
+  /* Get tracking duration */
   public getTrackingDuration(): string {
     if (!this.trackingStartTime) return '';
     
@@ -477,11 +449,9 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
-  /**
-   * Cleanup subscriptions and map
-   */
+  /* Cleanup subscriptions and map */
   private cleanup(): void {
-    // Unsubscribe dari semua Socket.IO event subscriptions
+    /* Unsubscribe dari semua Socket.IO event subscriptions */
     if (this.locationSubscription) {
       this.locationSubscription.unsubscribe();
     }
@@ -495,12 +465,12 @@ export class ModalContentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.trackResponseSubscription.unsubscribe();
     }
     
-    // Clean up map
+    /* Clean up map */
     if (this.map) {
       this.map.remove();
     }
     
-    // Reset tracking state
+    /* Reset tracking state */
     this.isTracking = false;
     this.trackingStartTime = null;
     this.locationHistory = [];
