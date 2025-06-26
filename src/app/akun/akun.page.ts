@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IonContent, IonToolbar } from '@ionic/angular';
 
 /* Interface for profile data structure */
 interface ProfileData {
@@ -16,7 +17,15 @@ interface ProfileData {
   styleUrls: ['./akun.page.scss'],
   standalone: false,
 })
-export class AkunPage implements OnInit {
+export class AkunPage implements OnInit, OnDestroy, AfterViewInit {
+
+  /* ViewChild references for scroll detection */
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
+  @ViewChild(IonToolbar, { static: false, read: ElementRef }) toolbar!: ElementRef;
+
+  /* Observers for scroll detection */
+  private resizeObserver?: ResizeObserver;
+  private mutationObserver?: MutationObserver;
 
   /* Profile data model with initial values from database simulation */
   profileData: ProfileData = {
@@ -58,6 +67,103 @@ export class AkunPage implements OnInit {
     if (this.profileData.tanggalLahir) {
       this.formatDisplayDate();
     }
+  }
+
+  ngAfterViewInit() {
+    /* Initialize scroll detection after view is ready */
+    setTimeout(() => {
+      this.initializeScrollDetection();
+    }, 100);
+  }
+
+  ngOnDestroy() {
+    /* Clean up observers */
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect();
+    }
+  }
+
+  /* Initialize scroll detection system */
+  private async initializeScrollDetection() {
+    try {
+      /* Get the native scroll element */
+      const scrollElement = await this.content.getScrollElement();
+      
+      if (scrollElement && this.toolbar) {
+        /* Initial check */
+        this.checkScrollbar(scrollElement);
+
+        /* Create ResizeObserver to watch for content changes */
+        this.resizeObserver = new ResizeObserver(() => {
+          this.checkScrollbar(scrollElement);
+        });
+
+        /* Observe the scroll element */
+        this.resizeObserver.observe(scrollElement);
+
+        /* Also observe the content for dynamic changes */
+        this.mutationObserver = new MutationObserver(() => {
+          setTimeout(() => this.checkScrollbar(scrollElement), 50);
+        });
+
+        this.mutationObserver.observe(scrollElement, {
+          childList: true,
+          subtree: true,
+          attributes: true
+        });
+
+        /* Listen for window resize */
+        window.addEventListener('resize', () => {
+          setTimeout(() => this.checkScrollbar(scrollElement), 100);
+        });
+      }
+    } catch (error) {
+      console.warn('Could not initialize scroll detection:', error);
+    }
+  }
+
+  /* Check if scrollbar is present and adjust toolbar accordingly */
+  private checkScrollbar(scrollElement: HTMLElement) {
+    const hasVerticalScrollbar = scrollElement.scrollHeight > scrollElement.clientHeight;
+    const toolbarElement = this.toolbar?.nativeElement;
+
+    if (toolbarElement) {
+      if (hasVerticalScrollbar) {
+        /* Calculate scrollbar width dynamically */
+        const scrollbarWidth = this.getScrollbarWidth();
+        toolbarElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+        toolbarElement.classList.add('has-scrollbar');
+      } else {
+        toolbarElement.classList.remove('has-scrollbar');
+        toolbarElement.style.removeProperty('--scrollbar-width');
+      }
+    }
+  }
+
+  /* Calculate scrollbar width dynamically */
+  private getScrollbarWidth(): number {
+    /* Create temporary element to measure scrollbar width */
+    const outer = document.createElement('div');
+    outer.style.visibility = 'hidden';
+    outer.style.overflow = 'scroll';
+    outer.style.width = '100px';
+    outer.style.height = '100px';
+    outer.style.position = 'absolute';
+    outer.style.top = '-9999px';
+    document.body.appendChild(outer);
+
+    const inner = document.createElement('div');
+    inner.style.width = '100%';
+    inner.style.height = '200px';
+    outer.appendChild(inner);
+
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+    document.body.removeChild(outer);
+
+    return scrollbarWidth || 17; /* Fallback to 17px */
   }
 
   /* Set min and max date constraints for date picker */
@@ -116,6 +222,17 @@ export class AkunPage implements OnInit {
     /* Check if any field has been modified */
     const hasChanges = this.hasProfileChanges();
     this.showSaveButton = hasChanges;
+    
+    /* Recheck scrollbar when content changes */
+    setTimeout(() => {
+      if (this.content) {
+        this.content.getScrollElement().then(scrollElement => {
+          if (scrollElement) {
+            this.checkScrollbar(scrollElement);
+          }
+        });
+      }
+    }, 100);
   }
 
   /* Method to compare current data with original data */
@@ -192,6 +309,17 @@ export class AkunPage implements OnInit {
       /* Show success message */
       this.showSuccessMessage('Profil berhasil disimpan');
       
+      /* Recheck scrollbar after save button is hidden */
+      setTimeout(() => {
+        if (this.content) {
+          this.content.getScrollElement().then(scrollElement => {
+            if (scrollElement) {
+              this.checkScrollbar(scrollElement);
+            }
+          });
+        }
+      }, 100);
+      
     } catch (error) {
       /* Handle save error */
       console.error('Error saving profile:', error);
@@ -228,5 +356,10 @@ export class AkunPage implements OnInit {
   ionViewWillEnter() {
     /* Load saved profile data when entering the page */
     this.loadSavedProfile();
+    
+    /* Initialize scroll detection when entering the page */
+    setTimeout(() => {
+      this.initializeScrollDetection();
+    }, 200);
   }
 }

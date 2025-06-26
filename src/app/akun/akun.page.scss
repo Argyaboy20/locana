@@ -1,22 +1,68 @@
 /* Background styling for content and toolbar */
 ion-content {
   --background: white;
+  
+  /* Ensure proper scrolling behavior */
+  &.scroll-y {
+    overflow-y: auto;
+  }
 }
 
 ion-toolbar {
   --background: #6863f2;
+  position: relative;
+  transition: padding-right 0.2s ease;
+  
+  /* Detect when content is scrollable and adjust toolbar */
+  &.has-scrollbar {
+    padding-right: var(--scrollbar-width, 17px);
+  }
+  
+  /* For webkit browsers (Chrome, Safari, Edge) */
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    &.has-scrollbar {
+      padding-right: 17px; /* Standard scrollbar width */
+    }
+  }
+  
+  /* For Firefox */
+  @-moz-document url-prefix() {
+    &.has-scrollbar {
+      padding-right: 17px;
+    }
+  }
+}
+
+ion-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  
+  /* Prevent toolbar from overlapping scrollbar */
+  ion-toolbar {
+    box-sizing: border-box;
+    width: 100%;
+    
+    /* Smooth transition when scrollbar appears/disappears */
+    transition: all 0.2s ease-in-out;
+  }
 }
 
 /* Header logo title styling */
 .logo-title {
   font-weight: bold;
   color: #ffffff;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
 }
 
 /* Logo container to align back button and text */
 .logo-container {
   display: flex;
   align-items: center;
+  width: 100%;
+  padding-right: 10px;
 }
 
 /* Back button icon styling */
@@ -25,18 +71,22 @@ ion-toolbar {
   color: #ffffff;
   cursor: pointer;
   margin-right: 15px;
+  flex-shrink: 0;
 }
 
 /* Logo text styling with proper spacing */
 .logo-text {
   font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 18px;
+  flex: 1;
+  text-align: left;
 }
 
 /* Main profile container */
 .profile-container {
   padding: 20px;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Mobile view styling - default for small screens */
@@ -198,6 +248,43 @@ ion-toolbar {
   --background: #5a54e6;
 }
 
+/* Scrollbar styling for better integration */
+ion-content::part(scroll) {
+  /* Custom scrollbar untuk webkit browsers */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    
+    &:hover {
+      background: #a8a8a8;
+    }
+  }
+}
+
+/* Utility class untuk force show scrollbar */
+.force-scrollbar {
+  overflow-y: scroll !important;
+}
+
+/* Animation untuk smooth toolbar adjustment */
+@keyframes toolbarAdjust {
+  from {
+    padding-right: 0;
+  }
+  to {
+    padding-right: var(--scrollbar-width, 17px);
+  }
+}
+
 /* Desktop responsive design - screens larger than 768px */
 @media (min-width: 768px) {
   /* Hide mobile view and show desktop view */
@@ -220,11 +307,16 @@ ion-toolbar {
 
   /* Desktop profile container with centered layout */
   .profile-container {
-    padding: 40px 20px;
+    padding: 25px;
     min-height: calc(100vh - 140px);
     display: flex;
     align-items: flex-start;
     justify-content: center;
+
+    /* Desktop specific toolbar adjustments */
+    ion-toolbar.has-scrollbar {
+    padding-right: 20px; /* Slightly larger padding for desktop */
+    }
   }
 
   /* Desktop form styling with larger gaps */
