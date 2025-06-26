@@ -1,13 +1,95 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>privacypolicy</ion-title>
+    <ion-title class="ion-text-left logo-title">
+      <div class="logo-container">
+        <ion-icon name="arrow-back-outline" (click)="navigateBack()" class="back-icon"></ion-icon>
+        <span class="logo-text">Syarat dan Kebijakan Privasi</span>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">privacypolicy</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" id="main-content">
+  <!-- Loading spinner while content loads -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="circular" color="primary"></ion-spinner>
+    <p class="loading-text">Memuat kebijakan privasi...</p>
+  </div>
+
+  <!-- Main content container -->
+  <div *ngIf="!isLoading" class="content-wrapper">
+    
+    <!-- Header section with app info -->
+    <div class="header-section">
+      <ion-icon name="shield-checkmark-outline" class="shield-icon"></ion-icon>
+      <h1 class="main-title">Kebijakan Privasi</h1>
+      <p class="subtitle">Aplikasi Pelacakan Lokasi Real-time</p>
+      <div class="update-info">
+        <ion-icon name="calendar-outline" class="calendar-icon"></ion-icon>
+        <span class="update-text">Terakhir diperbarui: {{ lastUpdated }}</span>
+      </div>
+    </div>
+
+    <!-- Privacy policy sections -->
+    <div class="policy-content">
+      
+      <!-- Introduction section -->
+      <div class="policy-section" *ngFor="let section of policySections; let i = index">
+        <div class="section-header" (click)="toggleSection(i)">
+          <h2 class="section-title">{{ section.title }}</h2>
+          <ion-icon 
+            [name]="section.expanded ? 'chevron-up-outline' : 'chevron-down-outline'" 
+            class="expand-icon">
+          </ion-icon>
+        </div>
+        
+        <div class="section-content" [class.expanded]="section.expanded">
+          <div class="content-text" [innerHTML]="section.content"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Action buttons -->
+    <div class="action-buttons">
+      <ion-button 
+        expand="block" 
+        fill="solid" 
+        class="accept-button"
+        (click)="acceptPolicy()">
+        <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        Saya Menyetujui
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        class="contact-button"
+        (click)="contactUs()">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        Hubungi Kami
+      </ion-button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-section">
+      <div class="footer-links">
+        <a href="/privacypolicy" class="footer-link" (click)="openTerms()">Syarat Penggunaan</a>
+        <span class="separator">|</span>
+        <a href="/support" class="footer-link" (click)="openSupport()">Dukungan</a>
+        <span class="separator">|</span>
+        <a href="/faq" class="footer-link" (click)="openFAQ()">FAQ</a>
+      </div>
+      <p class="copyright">© 2025 LocationTracker App. Semua hak dilindungi.</p>
+    </div>
+
+  </div>
+
+  <!-- Floating action button for quick access -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="scrollToTop()">
+      <ion-icon name="arrow-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>
