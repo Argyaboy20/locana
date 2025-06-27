@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { WebSocketService, LocationData } from '../services/WebSocket.service';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 /* Interface untuk struktur data history item */
 interface HistoryItem {

@@ -1,6 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, AnimationController } from '@ionic/angular';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-tab3',

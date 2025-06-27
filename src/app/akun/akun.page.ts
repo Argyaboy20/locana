@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonToolbar } from '@ionic/angular';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 /* Interface for profile data structure */
 interface ProfileData {

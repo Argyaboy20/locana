@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-tab1',

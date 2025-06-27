@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-faq',

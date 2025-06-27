@@ -3,6 +3,9 @@ import { MenuController, AlertController, ModalController, AnimationController }
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ModalContentComponent } from '../modal-content/modal-content.component';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-beranda',

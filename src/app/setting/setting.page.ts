@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-setting',

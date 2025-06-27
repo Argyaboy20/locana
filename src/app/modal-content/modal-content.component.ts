@@ -5,6 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import { WebSocketService, LocationData, TrackRequestResponse } from '../services/WebSocket.service';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-modal-content',

@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 /* Interface for policy section structure */
 interface PolicySection {

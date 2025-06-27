@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-support',

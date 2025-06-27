@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, AnimationController } from '@ionic/angular';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 @Component({
   selector: 'app-tab2',
