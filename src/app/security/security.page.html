@@ -4,11 +4,66 @@
     <div class="mobile-view">
       <div class="content-container">
         <h1 class="page-title">Security</h1>
-        <p class="page-subtitle">Halaman Security</p>
+        <p class="page-subtitle">Generator Password Random</p>
         
-        <!-- Content goes here -->
-        <div class="content-box">
-          <p>Ini adalah halaman security yang sudah terintegrasi dengan tab bar.</p>
+        <!-- Password Generator Content -->
+        <div class="generator-container">
+          <!-- Password Type Selection -->
+          <div class="option-group">
+            <h3 class="option-title">Jenis Password</h3>
+            <ion-select 
+              [(ngModel)]="passwordType" 
+              placeholder="Pilih jenis password"
+              interface="popover"
+              class="custom-select">
+              <ion-select-option value="no-symbols">Tanpa Simbol</ion-select-option>
+              <ion-select-option value="no-numbers">Tanpa Angka</ion-select-option>
+              <ion-select-option value="no-letters">Tanpa Huruf</ion-select-option>
+              <ion-select-option value="mixed">Campuran</ion-select-option>
+            </ion-select>
+          </div>
+
+          <!-- Password Length Selection -->
+          <div class="option-group">
+            <h3 class="option-title">Panjang Password</h3>
+            <ion-select 
+              [(ngModel)]="passwordLength" 
+              placeholder="Pilih panjang password"
+              interface="popover"
+              class="custom-select">
+              <ion-select-option value="8">8 Karakter</ion-select-option>
+              <ion-select-option value="10">10 Karakter</ion-select-option>
+            </ion-select>
+          </div>
+
+          <!-- Generate Button -->
+          <ion-button 
+            expand="block" 
+            color="primary" 
+            class="generate-button"
+            (click)="generatePassword()"
+            [disabled]="!passwordType || !passwordLength">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Generate Password
+          </ion-button>
+
+          <!-- Generated Password Display -->
+          <div class="password-result" *ngIf="generatedPassword">
+            <h4 class="result-title">Password Generated:</h4>
+            <div class="password-display">
+              <span class="password-text">{{ generatedPassword }}</span>
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="copyToClipboard()"
+                class="copy-button">
+                <ion-icon name="copy-outline"></ion-icon>
+              </ion-button>
+            </div>
+            <p class="password-info">
+              Tipe: {{ getPasswordTypeLabel() }} | Panjang: {{ passwordLength }} karakter
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -17,11 +72,66 @@
     <div class="desktop-view">
       <div class="content-container">
         <h1 class="page-title">Security</h1>
-        <p class="page-subtitle">Halaman Security</p>
+        <p class="page-subtitle">Generator Password Random</p>
         
-        <!-- Content goes here -->
-        <div class="content-box">
-          <p>Ini adalah halaman security yang sudah terintegrasi dengan tab bar.</p>
+        <!-- Password Generator Content (Same as mobile) -->
+        <div class="generator-container">
+          <!-- Password Type Selection -->
+          <div class="option-group">
+            <h3 class="option-title">Jenis Password</h3>
+            <ion-select 
+              [(ngModel)]="passwordType" 
+              placeholder="Pilih jenis password"
+              interface="popover"
+              class="custom-select">
+              <ion-select-option value="no-symbols">Tanpa Simbol</ion-select-option>
+              <ion-select-option value="no-numbers">Tanpa Angka</ion-select-option>
+              <ion-select-option value="no-letters">Tanpa Huruf</ion-select-option>
+              <ion-select-option value="mixed">Campuran</ion-select-option>
+            </ion-select>
+          </div>
+
+          <!-- Password Length Selection -->
+          <div class="option-group">
+            <h3 class="option-title">Panjang Password</h3>
+            <ion-select 
+              [(ngModel)]="passwordLength" 
+              placeholder="Pilih panjang password"
+              interface="popover"
+              class="custom-select">
+              <ion-select-option value="8">8 Karakter</ion-select-option>
+              <ion-select-option value="10">10 Karakter</ion-select-option>
+            </ion-select>
+          </div>
+
+          <!-- Generate Button -->
+          <ion-button 
+            expand="block" 
+            color="primary" 
+            class="generate-button"
+            (click)="generatePassword()"
+            [disabled]="!passwordType || !passwordLength">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Generate Password
+          </ion-button>
+
+          <!-- Generated Password Display -->
+          <div class="password-result" *ngIf="generatedPassword">
+            <h4 class="result-title">Password Generated:</h4>
+            <div class="password-display">
+              <span class="password-text">{{ generatedPassword }}</span>
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="copyToClipboard()"
+                class="copy-button">
+                <ion-icon name="copy-outline"></ion-icon>
+              </ion-button>
+            </div>
+            <p class="password-info">
+              Tipe: {{ getPasswordTypeLabel() }} | Panjang: {{ passwordLength }} karakter
+            </p>
+          </div>
         </div>
       </div>
     </div>
