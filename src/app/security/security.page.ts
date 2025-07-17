@@ -13,12 +13,18 @@ inject();
 })
 export class SecurityPage implements OnInit {
   activeTab: string = 'security';
-  
+
   /* Password generator properties */
   passwordType: string = '';
   passwordLength: string = '';
   generatedPassword: string = '';
-  
+  capitalCount: string = '';
+  generateCount: number = 0;
+  lastGenerateTime: number = 0;
+  isLimited: boolean = false;
+  remainingTime: number = 0;
+  private countdownInterval: any;
+
   /* Character sets for password generation */
   private readonly characterSets = {
     letters: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -34,11 +40,18 @@ export class SecurityPage implements OnInit {
   ngOnInit() {
     /* Initialize active tab as security */
     this.activeTab = 'security';
+    this.loadGenerateHistory();
+    this.checkRateLimit();
+  }
+
+  ngOnDestroy() {
+    this.clearCountdown();
   }
 
   ionViewDidEnter() {
     /* Ensure active tab is set to security when entering this page */
     this.activeTab = 'security';
+    this.checkRateLimit();
   }
 
   /**
@@ -48,7 +61,7 @@ export class SecurityPage implements OnInit {
   navigateToTab(tabName: string) {
     /* Set the active tab indicator */
     this.activeTab = tabName;
-  
+
     if (tabName === 'home') {
       /* Navigate to home page if not already there */
       if (this.router.url !== '/beranda') {
@@ -63,7 +76,7 @@ export class SecurityPage implements OnInit {
       });
     }
   }
-  
+
   /**
    * Update tab selection UI
    * @param tabName - Name of the tab to select
@@ -74,7 +87,7 @@ export class SecurityPage implements OnInit {
     tabButtons.forEach(button => {
       button.removeAttribute('selected');
     });
-    
+
     /* Add selected state to the chosen tab */
     const selectedTab = document.querySelector(`ion-tab-button[tab="${tabName}"]`);
     if (selectedTab) {
@@ -86,20 +99,38 @@ export class SecurityPage implements OnInit {
    * Generate random password based on selected options
    */
   generatePassword() {
-    /* Validate that both options are selected */
-    if (!this.passwordType || !this.passwordLength) {
-      this.showToast('Pilih jenis password dan panjang password terlebih dahulu', 'warning');
+    // Check rate limit
+    if (this.isLimited) {
+      this.showToast('Anda telah mencapai batas generate password (5x per jam)', 'warning');
       return;
     }
 
-    /* Get character set based on password type */
+    // Validate that all options are selected
+    if (!this.passwordType || !this.passwordLength || !this.capitalCount) {
+      this.showToast('Pilih semua opsi terlebih dahulu', 'warning');
+      return;
+    }
+
+    // Get character set based on password type
     const characters = this.getCharacterSet();
-    
-    /* Generate password with specified length */
+
+    // Generate password with specified length and capital count
     const length = parseInt(this.passwordLength);
-    this.generatedPassword = this.createRandomPassword(characters, length);
-    
-    /* Show success message */
+    const capitals = parseInt(this.capitalCount);
+    this.generatedPassword = this.createRandomPasswordWithCapitals(characters, length, capitals);
+
+    // Update generate count and timestamp
+    this.generateCount++;
+    this.lastGenerateTime = Date.now();
+    this.saveGenerateHistory();
+
+    // Check if limit reached
+    if (this.generateCount >= 5) {
+      this.isLimited = true;
+      this.startCountdown();
+    }
+
+    // Show success message
     this.showToast('Password berhasil di-generate!', 'success');
   }
 
@@ -109,7 +140,7 @@ export class SecurityPage implements OnInit {
    */
   private getCharacterSet(): string {
     let characters = '';
-    
+
     switch (this.passwordType) {
       case 'no-symbols':
         /* Include letters and numbers, exclude symbols */
@@ -131,25 +162,47 @@ export class SecurityPage implements OnInit {
         /* Default to mixed if no valid type selected */
         characters = this.characterSets.letters + this.characterSets.numbers + this.characterSets.symbols;
     }
-    
+
     return characters;
   }
 
   /**
-   * Create random password from character set
+   * Create random password with specified capital letters
    * @param characters - Available characters for password generation
    * @param length - Desired password length
+   * @param capitalCount - Number of capital letters required
    * @returns Generated random password
    */
-  private createRandomPassword(characters: string, length: number): string {
+  private createRandomPasswordWithCapitals(characters: string, length: number, capitalCount: number): string {
     let password = '';
-    
-    /* Generate random characters for the specified length */
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      password += characters.charAt(randomIndex);
+    let capitalPlaced = 0;
+    const capitalLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    // Create array to track capital positions
+    const capitalPositions = new Set<number>();
+
+    // Randomly select positions for capital letters
+    while (capitalPlaced < capitalCount && capitalPlaced < length) {
+      const randomPos = Math.floor(Math.random() * length);
+      if (!capitalPositions.has(randomPos)) {
+        capitalPositions.add(randomPos);
+        capitalPlaced++;
+      }
     }
-    
+
+    // Generate password character by character
+    for (let i = 0; i < length; i++) {
+      if (capitalPositions.has(i)) {
+        // Place capital letter at this position
+        const randomIndex = Math.floor(Math.random() * capitalLetters.length);
+        password += capitalLetters.charAt(randomIndex);
+      } else {
+        // Place regular character from character set
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters.charAt(randomIndex);
+      }
+    }
+
     return password;
   }
 
@@ -208,11 +261,11 @@ export class SecurityPage implements OnInit {
     textArea.style.left = '-999999px';
     textArea.style.top = '-999999px';
     document.body.appendChild(textArea);
-    
+
     /* Select and copy text */
     textArea.focus();
     textArea.select();
-    
+
     try {
       document.execCommand('copy');
       this.showToast('Password berhasil disalin ke clipboard!', 'success');
@@ -224,6 +277,88 @@ export class SecurityPage implements OnInit {
       document.body.removeChild(textArea);
     }
   }
+
+  /**
+ * Load generate history from localStorage
+ */
+  private loadGenerateHistory() {
+    const history = localStorage.getItem('passwordGenerateHistory');
+    if (history) {
+      const data = JSON.parse(history);
+      this.generateCount = data.count || 0;
+      this.lastGenerateTime = data.timestamp || 0;
+    }
+  }
+
+  /**
+   * Save generate history to localStorage
+   */
+  private saveGenerateHistory() {
+    const history = {
+      count: this.generateCount,
+      timestamp: this.lastGenerateTime
+    };
+    localStorage.setItem('passwordGenerateHistory', JSON.stringify(history));
+  }
+
+  /**
+   * Check if user has reached rate limit
+   */
+  private checkRateLimit() {
+    const now = Date.now();
+    const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+
+    // Reset count if more than 1 hour has passed
+    if (now - this.lastGenerateTime > oneHour) {
+      this.generateCount = 0;
+      this.isLimited = false;
+      this.clearCountdown();
+    } else if (this.generateCount >= 5) {
+      this.isLimited = true;
+      this.startCountdown();
+    }
+  }
+
+  /**
+   * Start countdown for rate limit
+   */
+  private startCountdown() {
+    this.clearCountdown();
+
+    this.countdownInterval = setInterval(() => {
+      const now = Date.now();
+      const oneHour = 60 * 60 * 1000;
+      const timePassed = now - this.lastGenerateTime;
+
+      if (timePassed >= oneHour) {
+        this.generateCount = 0;
+        this.isLimited = false;
+        this.clearCountdown();
+      } else {
+        this.remainingTime = oneHour - timePassed;
+      }
+    }, 1000);
+  }
+
+  /**
+   * Clear countdown interval
+   */
+  private clearCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
+  }
+
+  /**
+   * Format remaining time for display
+   */
+  getRemainingTimeString(): string {
+    const minutes = Math.floor(this.remainingTime / (60 * 1000));
+    const seconds = Math.floor((this.remainingTime % (60 * 1000)) / 1000);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
 
   /**
    * Show toast notification to user
@@ -238,7 +373,7 @@ export class SecurityPage implements OnInit {
       position: 'top',
       cssClass: 'custom-toast'
     });
-    
+
     await toast.present();
   }
 }

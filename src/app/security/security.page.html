@@ -5,16 +5,19 @@
       <div class="content-container">
         <h1 class="page-title">Security</h1>
         <p class="page-subtitle">Generator Password Random</p>
-        
+
+        <!-- Rate Limit Alert -->
+        <div class="rate-limit-alert" *ngIf="isLimited">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Batas generate tercapai. Coba lagi dalam {{ getRemainingTimeString() }}</span>
+        </div>
+
         <!-- Password Generator Content -->
         <div class="generator-container">
           <!-- Password Type Selection -->
           <div class="option-group">
             <h3 class="option-title">Jenis Password</h3>
-            <ion-select 
-              [(ngModel)]="passwordType" 
-              placeholder="Pilih jenis password"
-              interface="popover"
+            <ion-select [(ngModel)]="passwordType" placeholder="Pilih jenis password" interface="popover"
               class="custom-select">
               <ion-select-option value="no-symbols">Tanpa Simbol</ion-select-option>
               <ion-select-option value="no-numbers">Tanpa Angka</ion-select-option>
@@ -23,13 +26,22 @@
             </ion-select>
           </div>
 
+          <!-- Capital Count Selection -->
+          <div class="option-group">
+            <h3 class="option-title">Jumlah Kapital</h3>
+            <ion-select [(ngModel)]="capitalCount" placeholder="Pilih jumlah huruf kapital" interface="popover"
+              class="custom-select">
+              <ion-select-option value="1">1 Huruf Kapital</ion-select-option>
+              <ion-select-option value="2">2 Huruf Kapital</ion-select-option>
+              <ion-select-option value="3">3 Huruf Kapital</ion-select-option>
+              <ion-select-option value="4">4 Huruf Kapital</ion-select-option>
+            </ion-select>
+          </div>
+
           <!-- Password Length Selection -->
           <div class="option-group">
             <h3 class="option-title">Panjang Password</h3>
-            <ion-select 
-              [(ngModel)]="passwordLength" 
-              placeholder="Pilih panjang password"
-              interface="popover"
+            <ion-select [(ngModel)]="passwordLength" placeholder="Pilih panjang password" interface="popover"
               class="custom-select">
               <ion-select-option value="8">8 Karakter</ion-select-option>
               <ion-select-option value="10">10 Karakter</ion-select-option>
@@ -37,12 +49,8 @@
           </div>
 
           <!-- Generate Button -->
-          <ion-button 
-            expand="block" 
-            color="primary" 
-            class="generate-button"
-            (click)="generatePassword()"
-            [disabled]="!passwordType || !passwordLength">
+          <ion-button expand="block" color="primary" class="generate-button" (click)="generatePassword()"
+            [disabled]="!passwordType || !passwordLength || !capitalCount || isLimited">
             <ion-icon name="refresh-outline" slot="start"></ion-icon>
             Generate Password
           </ion-button>
@@ -52,37 +60,38 @@
             <h4 class="result-title">Password Generated:</h4>
             <div class="password-display">
               <span class="password-text">{{ generatedPassword }}</span>
-              <ion-button 
-                fill="clear" 
-                size="small" 
-                (click)="copyToClipboard()"
-                class="copy-button">
+              <ion-button fill="clear" size="small" (click)="copyToClipboard()" class="copy-button">
                 <ion-icon name="copy-outline"></ion-icon>
               </ion-button>
             </div>
             <p class="password-info">
-              Tipe: {{ getPasswordTypeLabel() }} | Panjang: {{ passwordLength }} karakter
+              Tipe: {{ getPasswordTypeLabel() }} | Panjang: {{ passwordLength }} karakter | Kapital: {{ capitalCount }}
+              <br>
+              <small>Generate tersisa: {{ 5 - generateCount }} kali</small>
             </p>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- Desktop View -->
     <div class="desktop-view">
       <div class="content-container">
         <h1 class="page-title">Security</h1>
         <p class="page-subtitle">Generator Password Random</p>
-        
+
+        <!-- Rate Limit Alert -->
+        <div class="rate-limit-alert" *ngIf="isLimited">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Batas generate tercapai. Coba lagi dalam {{ getRemainingTimeString() }}</span>
+        </div>
+
         <!-- Password Generator Content (Same as mobile) -->
         <div class="generator-container">
           <!-- Password Type Selection -->
           <div class="option-group">
             <h3 class="option-title">Jenis Password</h3>
-            <ion-select 
-              [(ngModel)]="passwordType" 
-              placeholder="Pilih jenis password"
-              interface="popover"
+            <ion-select [(ngModel)]="passwordType" placeholder="Pilih jenis password" interface="popover"
               class="custom-select">
               <ion-select-option value="no-symbols">Tanpa Simbol</ion-select-option>
               <ion-select-option value="no-numbers">Tanpa Angka</ion-select-option>
@@ -91,13 +100,22 @@
             </ion-select>
           </div>
 
+          <!-- Capital Count Selection -->
+          <div class="option-group">
+            <h3 class="option-title">Jumlah Kapital</h3>
+            <ion-select [(ngModel)]="capitalCount" placeholder="Pilih jumlah huruf kapital" interface="popover"
+              class="custom-select">
+              <ion-select-option value="1">1 Huruf Kapital</ion-select-option>
+              <ion-select-option value="2">2 Huruf Kapital</ion-select-option>
+              <ion-select-option value="3">3 Huruf Kapital</ion-select-option>
+              <ion-select-option value="4">4 Huruf Kapital</ion-select-option>
+            </ion-select>
+          </div>
+
           <!-- Password Length Selection -->
           <div class="option-group">
             <h3 class="option-title">Panjang Password</h3>
-            <ion-select 
-              [(ngModel)]="passwordLength" 
-              placeholder="Pilih panjang password"
-              interface="popover"
+            <ion-select [(ngModel)]="passwordLength" placeholder="Pilih panjang password" interface="popover"
               class="custom-select">
               <ion-select-option value="8">8 Karakter</ion-select-option>
               <ion-select-option value="10">10 Karakter</ion-select-option>
@@ -105,12 +123,8 @@
           </div>
 
           <!-- Generate Button -->
-          <ion-button 
-            expand="block" 
-            color="primary" 
-            class="generate-button"
-            (click)="generatePassword()"
-            [disabled]="!passwordType || !passwordLength">
+          <ion-button expand="block" color="primary" class="generate-button" (click)="generatePassword()"
+            [disabled]="!passwordType || !passwordLength || !capitalCount || isLimited">
             <ion-icon name="refresh-outline" slot="start"></ion-icon>
             Generate Password
           </ion-button>
@@ -120,16 +134,14 @@
             <h4 class="result-title">Password Generated:</h4>
             <div class="password-display">
               <span class="password-text">{{ generatedPassword }}</span>
-              <ion-button 
-                fill="clear" 
-                size="small" 
-                (click)="copyToClipboard()"
-                class="copy-button">
+              <ion-button fill="clear" size="small" (click)="copyToClipboard()" class="copy-button">
                 <ion-icon name="copy-outline"></ion-icon>
               </ion-button>
             </div>
             <p class="password-info">
-              Tipe: {{ getPasswordTypeLabel() }} | Panjang: {{ passwordLength }} karakter
+              Tipe: {{ getPasswordTypeLabel() }} | Panjang: {{ passwordLength }} karakter | Kapital: {{ capitalCount }}
+              <br>
+              <small>Generate tersisa: {{ 5 - generateCount }} kali</small>
             </p>
           </div>
         </div>
