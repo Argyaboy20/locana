@@ -167,16 +167,19 @@ export class SecurityPage implements OnInit {
   }
 
   /**
-   * Create random password with specified capital letters
-   * @param characters - Available characters for password generation
-   * @param length - Desired password length
-   * @param capitalCount - Number of capital letters required
-   * @returns Generated random password
-   */
+ * Create random password with specified capital letters
+ * @param characters - Available characters for password generation
+ * @param length - Desired password length
+ * @param capitalCount - Number of capital letters required
+ * @returns Generated random password
+ */
   private createRandomPasswordWithCapitals(characters: string, length: number, capitalCount: number): string {
     let password = '';
     let capitalPlaced = 0;
     const capitalLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    // Remove capital letters from characters to avoid conflicts
+    const nonCapitalCharacters = characters.replace(/[A-Z]/g, '');
 
     // Create array to track capital positions
     const capitalPositions = new Set<number>();
@@ -197,9 +200,9 @@ export class SecurityPage implements OnInit {
         const randomIndex = Math.floor(Math.random() * capitalLetters.length);
         password += capitalLetters.charAt(randomIndex);
       } else {
-        // Place regular character from character set
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        password += characters.charAt(randomIndex);
+        // Place regular character from non-capital character set
+        const randomIndex = Math.floor(Math.random() * nonCapitalCharacters.length);
+        password += nonCapitalCharacters.charAt(randomIndex);
       }
     }
 
