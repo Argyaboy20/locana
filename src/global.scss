@@ -145,6 +145,277 @@ ion-select-option {
   border: none;
 }
 
+/* History Modal Styling */
+.history-modal {
+  --width: 90%;
+  --height: 70%;
+  --max-width: 600px;
+  --max-height: 700px;
+  --border-radius: 16px;
+  
+  @media (min-width: 768px) {
+    --width: 80%;
+    --height: 65%;
+    --max-width: 700px;
+  }
+  
+  @media (min-width: 1024px) {
+    --width: 60%;
+    --height: 60%;
+    --max-width: 800px;
+  }
+
+  /* Styling untuk header dan toolbar modal */
+  ion-header {
+    background: #6863f2 !important;
+    
+    ion-toolbar {
+      --background: #6863f2 !important;
+      --color: white !important;
+      --border-color: transparent !important;
+    }
+
+    ion-title {
+      color: white !important;
+      font-weight: 600 !important;
+    }
+
+    ion-buttons ion-button {
+      --color: white !important;
+      
+      ion-icon {
+        color: white !important;
+      }
+    }
+  }
+
+  /* Styling untuk seluruh konten modal */
+  .modal-wrapper {
+    background: #6863f2 !important;
+  }
+}
+
+.history-modal-content {
+  --background: #6863f2 !important;
+}
+
+.history-container {
+  padding: 20px;
+  max-height: 100%;
+  overflow-y: auto;
+  background: #6863f2 !important;
+}
+
+.history-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.history-info {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.history-expiry {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+
+  ion-icon {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.history-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.history-index {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  color: #6863f2;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.history-time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.history-password-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.history-password {
+  font-family: 'Franklin Gothic Medium', 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  flex: 1;
+  word-break: break-all;
+  margin-right: 12px;
+  letter-spacing: 1px;
+}
+
+.history-copy-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 36px;
+
+  &:hover {
+    background: #218838;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.history-details {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.history-detail {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255, 255, 255, 0.7);
+
+  ion-icon {
+    font-size: 48px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Mobile Responsive Adjustments for History */
+@media (max-width: 576px) {
+  .history-modal {
+    --width: 95%;
+    --height: 80%;
+  }
+  
+  .history-container {
+    padding: 16px;
+  }
+  
+  .history-password {
+    font-size: 12px;
+  }
+  
+  .history-details {
+    gap: 8px;
+  }
+  
+  .history-detail {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+  
+  .history-password-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .history-copy-btn {
+    align-self: flex-end;
+    width: fit-content;
+  }
+
+  .history-button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* Tablet Responsive Adjustments */
+@media (min-width: 577px) and (max-width: 768px) {
+  .history-modal {
+    --width: 85%;
+    --height: 75%;
+  }
+}
+
+/* Desktop Responsive Adjustments */
+@media (min-width: 1200px) {
+  .history-modal {
+    --width: 50%;
+    --height: 55%;
+  }
+}
+
 
 /**
  * Ionic Dark Mode

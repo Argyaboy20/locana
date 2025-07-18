@@ -148,6 +148,70 @@
       </div>
     </div>
   </div>
+
+  <div class="history-button-container" *ngIf="showHistoryButton">
+    <button class="history-button" (click)="openHistoryModal()">
+      <ion-icon name="time-outline"></ion-icon>
+      Riwayat Generate
+    </button>
+  </div>
+
+  <!-- History Modal -->
+  <ion-modal [isOpen]="isHistoryModalOpen" (willDismiss)="closeHistoryModal()" class="history-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Riwayat Generate Password</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeHistoryModal()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="history-modal-content">
+        <div class="history-container">
+          <div class="history-header">
+            <p class="history-info">
+              Total password yang di-copy: {{ passwordHistory.length }}
+            </p>
+            <p class="history-expiry">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              Riwayat akan otomatis terhapus setelah 12 jam
+            </p>
+          </div>
+
+          <div class="history-list" *ngIf="passwordHistory.length > 0; else emptyHistory">
+            <div class="history-item" *ngFor="let item of passwordHistory; let i = index">
+              <div class="history-item-header">
+                <span class="history-index">#{{ i + 1 }}</span>
+                <span class="history-time">{{ formatTime(item.timestamp) }}</span>
+              </div>
+              <div class="history-password-container">
+                <span class="history-password">{{ item.password }}</span>
+                <button class="history-copy-btn" (click)="copyHistoryPassword(item.password)">
+                  <ion-icon name="copy-outline"></ion-icon>
+                </button>
+              </div>
+              <div class="history-details">
+                <span class="history-detail">{{ item.type }}</span>
+                <span class="history-detail">{{ item.length }} karakter</span>
+                <span class="history-detail">{{ item.capitals }} kapital</span>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #emptyHistory>
+            <div class="empty-history">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <p>Belum ada password yang di-copy</p>
+            </div>
+          </ng-template>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
 
 <ion-tab-bar slot="bottom" class="tab-bar">

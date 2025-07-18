@@ -24,6 +24,15 @@ export class SecurityPage implements OnInit {
   isLimited: boolean = false;
   remainingTime: number = 0;
   private countdownInterval: any;
+  showHistoryButton: boolean = false;
+  isHistoryModalOpen: boolean = false;
+  passwordHistory: Array<{
+    password: string;
+    timestamp: number;
+    type: string;
+    length: string;
+    capitals: string;
+  }> = [];
 
   /* Character sets for password generation */
   private readonly characterSets = {
@@ -42,6 +51,7 @@ export class SecurityPage implements OnInit {
     this.activeTab = 'security';
     this.loadGenerateHistory();
     this.checkRateLimit();
+    this.loadPasswordHistory();
   }
 
   ngOnDestroy() {
@@ -242,9 +252,15 @@ export class SecurityPage implements OnInit {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(this.generatedPassword);
         this.showToast('Password berhasil disalin ke clipboard!', 'success');
+
+        /* Add to history after successful copy */
+        this.addToHistory(this.generatedPassword);
       } else {
         /* Fallback for older browsers */
         this.fallbackCopyToClipboard(this.generatedPassword);
+
+        /* Add to history after successful copy */
+        this.addToHistory(this.generatedPassword);
       }
     } catch (error) {
       console.error('Copy to clipboard failed:', error);
@@ -362,6 +378,141 @@ export class SecurityPage implements OnInit {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  /**
+ * Load password history from localStorage
+ */
+  private loadPasswordHistory() {
+    const history = localStorage.getItem('passwordCopyHistory');
+    if (history) {
+      const data = JSON.parse(history);
+      /* Filter out expired entries (older than 12 hours) */
+      const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
+      this.passwordHistory = data.filter((item: any) => item.timestamp > twelveHoursAgo);
+
+      /* Update showHistoryButton based on history existence */
+      this.showHistoryButton = this.passwordHistory.length > 0;
+
+      /* Save cleaned history back to localStorage */
+      this.savePasswordHistory();
+    }
+  }
+
+  /**
+   * Save password history to localStorage
+   */
+  private savePasswordHistory() {
+    localStorage.setItem('passwordCopyHistory', JSON.stringify(this.passwordHistory));
+  }
+
+  /**
+   * Add password to history when copied
+   * @param password - The password that was copied
+   */
+  private addToHistory(password: string) {
+    const historyItem = {
+      password: password,
+      timestamp: Date.now(),
+      type: this.getPasswordTypeLabel(),
+      length: this.passwordLength,
+      capitals: this.capitalCount
+    };
+
+    /* Add to beginning of array (most recent first) */
+    this.passwordHistory.unshift(historyItem);
+
+    /* Keep only last 50 entries to prevent excessive storage */
+    if (this.passwordHistory.length > 50) {
+      this.passwordHistory = this.passwordHistory.slice(0, 50);
+    }
+
+    /* Save to localStorage */
+    this.savePasswordHistory();
+
+    /* Show history button after first copy */
+    this.showHistoryButton = true;
+  }
+
+  /**
+   * Open history modal
+   */
+  openHistoryModal() {
+    /* Clean expired entries before opening */
+    this.cleanExpiredHistory();
+    this.isHistoryModalOpen = true;
+  }
+
+  /**
+   * Close history modal
+   */
+  closeHistoryModal() {
+    this.isHistoryModalOpen = false;
+  }
+
+  /**
+   * Clean expired history entries (older than 12 hours)
+   */
+  private cleanExpiredHistory() {
+    const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
+    const initialLength = this.passwordHistory.length;
+
+    this.passwordHistory = this.passwordHistory.filter(item => item.timestamp > twelveHoursAgo);
+
+    /* Update showHistoryButton if all entries expired */
+    if (this.passwordHistory.length === 0) {
+      this.showHistoryButton = false;
+    }
+
+    /* Save updated history if any entries were removed */
+    if (this.passwordHistory.length !== initialLength) {
+      this.savePasswordHistory();
+    }
+  }
+
+  /**
+   * Copy password from history
+   * @param password - Password to copy
+   */
+  async copyHistoryPassword(password: string) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(password);
+        this.showToast('Password dari riwayat berhasil disalin!', 'success');
+      } else {
+        this.fallbackCopyToClipboard(password);
+      }
+    } catch (error) {
+      console.error('Copy from history failed:', error);
+      this.showToast('Gagal menyalin password dari riwayat', 'danger');
+    }
+  }
+
+  /**
+   * Format timestamp for display
+   * @param timestamp - Timestamp to format
+   * @returns Formatted time string
+   */
+  formatTime(timestamp: number): string {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+
+    if (diffInMinutes < 1) {
+      return 'Baru saja';
+    } else if (diffInMinutes < 60) {
+      return `${diffInMinutes} menit lalu`;
+    } else if (diffInMinutes < 1440) {
+      const hours = Math.floor(diffInMinutes / 60);
+      return `${hours} jam lalu`;
+    } else {
+      return date.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  }
 
   /**
    * Show toast notification to user
