@@ -29,7 +29,7 @@ ion-content {
     font-weight: bold;
     color: #6863f2;
     margin-bottom: 6px;
-    margin-top: 0;
+    margin-top: -5px;
   }
 
   .page-subtitle {
@@ -67,10 +67,10 @@ ion-content {
     width: 100%;
     background-color: #f9f9f9;
     border-radius: 16px;
-    padding: 20px;
+    padding: 15px;
     box-shadow: 0 4px 20px rgba(104, 99, 242, 0.15);
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     max-height: none;
   }
 
@@ -79,7 +79,7 @@ ion-content {
     margin-bottom: 20px;
 
     .option-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: #333;
       margin-bottom: 12px;
@@ -91,12 +91,13 @@ ion-content {
       --background: white;
       --border-radius: 12px;
       --padding-start: 16px;
-      --padding-end: 16px;
-      --min-height: 48px;
+      --padding-end: 45px; /* Tambahkan padding kanan untuk memberi ruang icon */
+      --min-height: 38px;
       border: 2px solid #e0e0e0;
       border-radius: 12px;
       transition: all 0.3s ease;
       color: black;
+      position: relative; /* Penting untuk positioning */
 
       &:hover {
         border-color: #6863f2;
@@ -104,6 +105,29 @@ ion-content {
 
       &.select-expanded {
         border-color: #6863f2;
+      }
+
+      /* Hide default arrow dan buat custom */
+      &::part(icon) {
+        display: none;
+      }
+
+      /* Alternatif: Custom arrow menggunakan pseudo-element */
+      &::after {
+        content: '▼';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6863f2;
+        font-size: 14px;
+        pointer-events: none;
+        transition: transform 0.3s ease;
+      }
+
+      /* Rotasi arrow saat expanded */
+      &.select-expanded::after {
+        transform: translateY(-50%) rotate(180deg);
       }
     }
   }
@@ -115,9 +139,9 @@ ion-content {
     --border-radius: 12px;
     --padding-top: 14px;
     --padding-bottom: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 20px 0;
+    font-size: 15px;
+    font-weight: 300;
+    margin: 10px 0;
     transition: all 0.3s ease;
 
     &:hover {
@@ -248,11 +272,12 @@ ion-content {
     padding-bottom: 15px;
 
     .content-container {
-      max-width: 600px;
+      max-width: 500px;
       padding-bottom: 40px;
     }
 
     .page-title {
+      margin-top: -15px;
       font-size: 28px;
     }
 
@@ -269,13 +294,13 @@ ion-content {
       margin-bottom: 24px;
 
       .option-title {
-        font-size: 18px;
+        font-size: 14px;
         margin-bottom: 16px;
       }
     }
 
     .generate-button {
-      margin: 24px 0;
+      margin: 12px 0;
     }
   }
 
