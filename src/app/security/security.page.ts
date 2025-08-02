@@ -123,7 +123,7 @@ export class SecurityPage implements OnInit {
 
     // Analyze the name
     this.analyzeUserName();
-
+    
     // Auto-adjust capital count based on name
     this.autoAdjustCapitalCount();
   }
@@ -140,10 +140,10 @@ export class SecurityPage implements OnInit {
   }
 
   /* Auto-adjust capital count based on name analysis */
-  private autoAdjustCapitalCount() {
+   private autoAdjustCapitalCount() {
     if (this.nameAnalysis.hasUpperCase) {
       const upperCaseCount = (this.userName.match(/[A-Z]/g) || []).length;
-
+      
       // Set capital count based on detected uppercase letters, max 4
       if (upperCaseCount >= 4) {
         this.capitalCount = '4';
@@ -163,7 +163,7 @@ export class SecurityPage implements OnInit {
   /* Get analysis description for display */
   getNameAnalysis(): string {
     if (!this.userName) return '';
-
+    
     const features = [];
     if (this.nameAnalysis.hasUpperCase) {
       const count = (this.userName.match(/[A-Z]/g) || []).length;
@@ -175,7 +175,7 @@ export class SecurityPage implements OnInit {
     if (this.nameAnalysis.hasSymbols) {
       features.push('mengandung simbol');
     }
-
+    
     return features.length > 0 ? features.join(', ') : 'huruf kecil semua';
   }
 
@@ -191,7 +191,7 @@ export class SecurityPage implements OnInit {
   }
 
   /* Generate random password based on selected options */
-  async generatePassword() {
+ async generatePassword() {
     // Check rate limit
     if (this.isLimited) {
       this.showToast('Anda telah mencapai batas generate password (5x per jam)', 'warning');
@@ -241,54 +241,122 @@ export class SecurityPage implements OnInit {
   }
 
   /* Create smart password incorporating user name characteristics */
-  private createSmartPasswordWithUserName(characters: string, length: number, capitalCount: number): string {
+   private createSmartPasswordWithUserName(characters: string, length: number, capitalCount: number): string {
     const userName = this.userName.trim();
     let processedUserName = '';
-
+    
     // Process user name based on password type restrictions
     for (let char of userName) {
       if (char === ' ') {
         // Skip spaces
         continue;
       }
-
+      
       // Apply character filtering based on password type
       const processedChar = this.processCharacterByType(char);
       if (processedChar) {
         processedUserName += processedChar;
       }
     }
-
+    
     // If processed name is longer than desired length, truncate it
     if (processedUserName.length >= length) {
       processedUserName = processedUserName.substring(0, length);
       return this.adjustCapitalCount(processedUserName, capitalCount);
     }
-
-    // If processed name is shorter, fill remaining with random characters
+    
+    // Calculate remaining length for random characters
     const remainingLength = length - processedUserName.length;
-    const randomPart = this.generateRandomPart(characters, remainingLength);
-
-    // Combine user name with random part
+    
+    // Generate random part ensuring all required character types are included
+    const randomPart = this.generateRandomPartWithRequiredTypes(remainingLength);
+    
+    // Combine user name with random part (keep name intact)
     let finalPassword = '';
-
-    // Randomly distribute user name characters and random characters
-    const userNameChars = processedUserName.split('');
-    const randomChars = randomPart.split('');
-    const allChars = [...userNameChars, ...randomChars];
-
-    // Shuffle all characters
-    for (let i = allChars.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [allChars[i], allChars[j]] = [allChars[j], allChars[i]];
+    
+    // Choose random position to place the user name (beginning, middle, or end)
+    const namePosition = Math.floor(Math.random() * 3); // 0, 1, or 2
+    
+    if (namePosition === 0) {
+      // Place name at the beginning
+      finalPassword = processedUserName + randomPart;
+    } else if (namePosition === 1) {
+      // Place name in the middle
+      const midPoint = Math.floor(randomPart.length / 2);
+      finalPassword = randomPart.substring(0, midPoint) + processedUserName + randomPart.substring(midPoint);
+    } else {
+      // Place name at the end
+      finalPassword = randomPart + processedUserName;
     }
-
-    finalPassword = allChars.join('');
-
+    
     // Ensure we have the right number of capitals
     finalPassword = this.adjustCapitalCount(finalPassword, capitalCount);
-
+    
     return finalPassword;
+  }
+
+  /* Generate random part ensuring required character types are included */
+  private generateRandomPartWithRequiredTypes(length: number): string {
+    if (length <= 0) return '';
+    
+    let randomPart = '';
+    let requiredChars = '';
+    
+    // Determine what character types are required based on password type
+    switch (this.passwordType) {
+      case 'no-symbols':
+        // Must include letters and numbers
+        if (length >= 2) {
+          requiredChars += this.getRandomChar(this.characterSets.letters);
+          requiredChars += this.getRandomChar(this.characterSets.numbers);
+        }
+        break;
+        
+      case 'no-numbers':
+        // Must include letters and symbols
+        if (length >= 2) {
+          requiredChars += this.getRandomChar(this.characterSets.letters);
+          requiredChars += this.getRandomChar(this.characterSets.symbols);
+        }
+        break;
+        
+      case 'no-letters':
+        // Must include numbers and symbols
+        if (length >= 2) {
+          requiredChars += this.getRandomChar(this.characterSets.numbers);
+          requiredChars += this.getRandomChar(this.characterSets.symbols);
+        }
+        break;
+        
+      case 'mixed':
+        // Must include letters, numbers, and symbols
+        if (length >= 3) {
+          requiredChars += this.getRandomChar(this.characterSets.letters);
+          requiredChars += this.getRandomChar(this.characterSets.numbers);
+          requiredChars += this.getRandomChar(this.characterSets.symbols);
+        } else if (length >= 2) {
+          requiredChars += this.getRandomChar(this.characterSets.letters);
+          requiredChars += this.getRandomChar(this.characterSets.numbers);
+        }
+        break;
+    }
+    
+    // Fill remaining length with random characters from allowed character set
+    const allowedChars = this.getCharacterSet();
+    const remainingLength = length - requiredChars.length;
+    
+    for (let i = 0; i < remainingLength; i++) {
+      requiredChars += this.getRandomChar(allowedChars);
+    }
+    
+    // Shuffle the required characters to randomize their positions
+    const shuffledChars = requiredChars.split('');
+    for (let i = shuffledChars.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledChars[i], shuffledChars[j]] = [shuffledChars[j], shuffledChars[i]];
+    }
+    
+    return shuffledChars.join('');
   }
 
   /* Process character based on password type restrictions */
@@ -296,39 +364,39 @@ export class SecurityPage implements OnInit {
     const isLetter = /[a-zA-Z]/.test(char);
     const isNumber = /[0-9]/.test(char);
     const isSymbol = /[^a-zA-Z0-9\s]/.test(char);
-
+    
     switch (this.passwordType) {
       case 'no-symbols':
         if (isSymbol) {
           // Replace symbol with random letter or number
-          return Math.random() > 0.5 ?
-            this.getRandomChar(this.characterSets.letters) :
+          return Math.random() > 0.5 ? 
+            this.getRandomChar(this.characterSets.letters) : 
             this.getRandomChar(this.characterSets.numbers);
         }
         return char;
-
+        
       case 'no-numbers':
         if (isNumber) {
           // Replace number with random letter or symbol
-          return Math.random() > 0.5 ?
-            this.getRandomChar(this.characterSets.letters) :
+          return Math.random() > 0.5 ? 
+            this.getRandomChar(this.characterSets.letters) : 
             this.getRandomChar(this.characterSets.symbols);
         }
         return char;
-
+        
       case 'no-letters':
         if (isLetter) {
           // Replace letter with random number or symbol
-          return Math.random() > 0.5 ?
-            this.getRandomChar(this.characterSets.numbers) :
+          return Math.random() > 0.5 ? 
+            this.getRandomChar(this.characterSets.numbers) : 
             this.getRandomChar(this.characterSets.symbols);
         }
         return char;
-
+        
       case 'mixed':
         // Allow all characters
         return char;
-
+        
       default:
         return char;
     }
@@ -343,7 +411,7 @@ export class SecurityPage implements OnInit {
   private getSimilarCharacter(char: string, characters: string): string {
     const lowerChar = char.toLowerCase();
     const upperChar = char.toUpperCase();
-
+    
     if (characters.includes(lowerChar)) {
       return lowerChar;
     } else if (characters.includes(upperChar)) {
@@ -357,12 +425,12 @@ export class SecurityPage implements OnInit {
   /* Generate random part of password */
   private generateRandomPart(characters: string, length: number): string {
     let randomPart = '';
-
+    
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       randomPart += characters[randomIndex];
     }
-
+    
     return randomPart;
   }
 
@@ -370,10 +438,10 @@ export class SecurityPage implements OnInit {
   private adjustCapitalCount(password: string, targetCapitalCount: number): string {
     const capitalLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let passwordArray = password.split('');
-
+    
     // Count existing capitals
     let currentCapitals = passwordArray.filter(char => /[A-Z]/.test(char)).length;
-
+    
     // If we have too many capitals, convert some to lowercase
     if (currentCapitals > targetCapitalCount) {
       let toConvert = currentCapitals - targetCapitalCount;
@@ -384,7 +452,7 @@ export class SecurityPage implements OnInit {
         }
       }
     }
-
+    
     // If we have too few capitals, convert some letters to uppercase
     else if (currentCapitals < targetCapitalCount) {
       let toConvert = targetCapitalCount - currentCapitals;
@@ -394,7 +462,7 @@ export class SecurityPage implements OnInit {
           toConvert--;
         }
       }
-
+      
       // If still not enough, replace some characters with random capitals
       if (toConvert > 0) {
         for (let i = 0; i < passwordArray.length && toConvert > 0; i++) {
@@ -406,7 +474,7 @@ export class SecurityPage implements OnInit {
         }
       }
     }
-
+    
     return passwordArray.join('');
   }
 
