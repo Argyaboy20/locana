@@ -8,8 +8,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" id="main-content">
-  <div class="history-container">
+<ion-content id="main-content">
+  <div class="historytrack-container">
     <!-- Mobile View -->
     <div class="mobile-view">
       <!-- Empty state when no history -->
@@ -24,7 +24,7 @@
         <h2 class="section-title">Riwayat Pelacakan</h2>
         
         <!-- Infinite scroll list -->
-        <div class="history-items">
+        <div class="historytrack-items">
           <div 
             *ngFor="let item of displayedHistory; trackBy: trackByHistoryId" 
             class="history-item mobile-item"
@@ -77,10 +77,10 @@
         <h2 class="section-title">Riwayat Pelacakan</h2>
         
         <!-- Desktop grid layout -->
-        <div class="history-items desktop-grid">
+        <div class="historytrack-items desktop-grid">
           <div 
             *ngFor="let item of displayedHistory; trackBy: trackByHistoryId" 
-            class="history-item desktop-item"
+            class="historytrack-item desktop-item"
             (click)="openHistoryDetail(item)">
             
             <!-- Provider as title -->

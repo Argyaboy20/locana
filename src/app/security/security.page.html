@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" id="main-content">
+<ion-content id="main-content">
   <div class="security-container">
     <!-- Mobile View -->
     <div class="mobile-view">
@@ -16,7 +16,7 @@
         <div class="generator-container">
           <!-- Password Type Selection -->
           <div class="option-group">
-            <h3 class="option-title">Jenis Password</h3>
+            <h3 class="option-title">Jenis Password <span class="required">*</span></h3>
             <ion-select [(ngModel)]="passwordType" placeholder="Pilih jenis password" interface="popover"
               class="custom-select">
               <ion-select-option value="no-symbols">Tanpa Simbol</ion-select-option>
@@ -28,7 +28,7 @@
 
           <!-- Capital Count Selection -->
           <div class="option-group">
-            <h3 class="option-title">Jumlah Kapital</h3>
+            <h3 class="option-title">Jumlah Kapital <span class="required">*</span></h3>
             <ion-select [(ngModel)]="capitalCount" placeholder="Pilih jumlah huruf kapital" interface="popover"
               class="custom-select">
               <ion-select-option value="1">1 Huruf Kapital</ion-select-option>
@@ -40,7 +40,7 @@
 
           <!-- Password Length Selection -->
           <div class="option-group">
-            <h3 class="option-title">Panjang Password</h3>
+            <h3 class="option-title">Panjang Password <span class="required">*</span></h3>
             <ion-select [(ngModel)]="passwordLength" placeholder="Pilih panjang password" interface="popover"
               class="custom-select">
               <ion-select-option value="8">8 Karakter</ion-select-option>
@@ -48,11 +48,28 @@
             </ion-select>
           </div>
 
-          <!-- Generate Button -->
+          <!-- User Name Input -->
+          <div class="option-group">
+            <h3 class="option-title">Nama User <span class="required">*</span></h3>
+            <ion-input [(ngModel)]="userName" placeholder="Masukkan nama anda" class="custom-input"
+              (ionInput)="onUserNameChange()" clearInput="true">
+            </ion-input>
+            <small class="input-hint" *ngIf="userName">
+              Terdeteksi: {{ getNameAnalysis() }}
+            </small>
+          </div>
+
+          <!-- Generate Button dengan Loading -->
           <ion-button expand="block" class="generate-button" (click)="generatePassword()"
-            [disabled]="!passwordType || !passwordLength || !capitalCount || isLimited">
-            <ion-icon name="refresh-outline" slot="start"></ion-icon>
-            Generate Password
+            [disabled]="!passwordType || !passwordLength || !capitalCount || !userName || isLimited || isGenerating">
+            <div *ngIf="!isGenerating" class="button-content">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Generate Password
+            </div>
+            <div *ngIf="isGenerating" class="button-content">
+              <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
+              Generating...
+            </div>
           </ion-button>
 
           <!-- Generated Password Display -->
@@ -90,7 +107,7 @@
         <div class="generator-container">
           <!-- Password Type Selection -->
           <div class="option-group">
-            <h3 class="option-title">Jenis Password</h3>
+            <h3 class="option-title">Jenis Password <span class="required">*</span></h3>
             <ion-select [(ngModel)]="passwordType" placeholder="Pilih jenis password" interface="popover"
               class="custom-select">
               <ion-select-option value="no-symbols">Tanpa Simbol</ion-select-option>
@@ -102,7 +119,7 @@
 
           <!-- Capital Count Selection -->
           <div class="option-group">
-            <h3 class="option-title">Jumlah Kapital</h3>
+            <h3 class="option-title">Jumlah Kapital <span class="required">*</span></h3>
             <ion-select [(ngModel)]="capitalCount" placeholder="Pilih jumlah huruf kapital" interface="popover"
               class="custom-select">
               <ion-select-option value="1">1 Huruf Kapital</ion-select-option>
@@ -114,7 +131,7 @@
 
           <!-- Password Length Selection -->
           <div class="option-group">
-            <h3 class="option-title">Panjang Password</h3>
+            <h3 class="option-title">Panjang Password <span class="required">*</span></h3>
             <ion-select [(ngModel)]="passwordLength" placeholder="Pilih panjang password" interface="popover"
               class="custom-select">
               <ion-select-option value="8">8 Karakter</ion-select-option>
@@ -122,11 +139,28 @@
             </ion-select>
           </div>
 
-          <!-- Generate Button -->
+          <!-- User Name Input -->
+          <div class="option-group">
+            <h3 class="option-title">Nama User <span class="required">*</span></h3>
+            <ion-input [(ngModel)]="userName" placeholder="Masukkan nama anda" class="custom-input"
+              (ionInput)="onUserNameChange()" clearInput="true">
+            </ion-input>
+            <small class="input-hint" *ngIf="userName">
+              Terdeteksi: {{ getNameAnalysis() }}
+            </small>
+          </div>
+
+          <!-- Generate Button dengan Loading -->
           <ion-button expand="block" class="generate-button" (click)="generatePassword()"
-            [disabled]="!passwordType || !passwordLength || !capitalCount || isLimited">
-            <ion-icon name="refresh-outline" slot="start"></ion-icon>
-            Generate Password
+            [disabled]="!passwordType || !passwordLength || !capitalCount || !userName || isLimited || isGenerating">
+            <div *ngIf="!isGenerating" class="button-content">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Generate Password
+            </div>
+            <div *ngIf="isGenerating" class="button-content">
+              <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
+              Generating...
+            </div>
           </ion-button>
 
           <!-- Generated Password Display -->

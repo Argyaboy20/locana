@@ -32,7 +32,7 @@ ion-content {
 }
 
 /* Main container for history content */
-.history-container {
+.historytrack-container {
   padding: 20px;
   min-height: 100vh;
 }
@@ -89,7 +89,7 @@ ion-content {
 
 /* History list container with infinite scroll support */
 .history-list-container {
-  .history-items {
+  .historytrack-items {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -118,7 +118,7 @@ ion-content {
 }
 
 /* Individual history item styles */
-.history-item {
+.historytrack-item {
   background: white;
   border-radius: 12px;
   padding: 16px;
@@ -349,7 +349,7 @@ ion-content {
   }
   
   /* Adjust container padding for desktop */
-  .history-container {
+  .historytrack-container {
     padding: 40px;
     max-width: 1200px;
     margin: 0 auto;
@@ -399,7 +399,7 @@ ion-content {
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   }
   
-  .history-container {
+  .historytrack-container {
     padding: 60px;
   }
 }

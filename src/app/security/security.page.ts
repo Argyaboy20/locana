@@ -33,6 +33,15 @@ export class SecurityPage implements OnInit {
     length: string;
     capitals: string;
   }> = [];
+  userName: string = '';
+  isGenerating: boolean = false;
+  private nameAnalysis = {
+    hasUpperCase: false,
+    hasLowerCase: false,
+    hasNumbers: false,
+    hasSymbols: false,
+    length: 0
+  };
 
   /* Character sets for password generation */
   private readonly characterSets = {
@@ -105,43 +114,300 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
-   * Generate random password based on selected options
-   */
-  generatePassword() {
+  /* Analyze user name input and auto-adjust settings */
+  onUserNameChange() {
+    if (!this.userName) {
+      this.resetNameAnalysis();
+      return;
+    }
+
+    // Analyze the name
+    this.analyzeUserName();
+
+    // Auto-adjust capital count based on name
+    this.autoAdjustCapitalCount();
+  }
+
+  /* Analyze the characteristics of user name */
+  private analyzeUserName() {
+    this.nameAnalysis = {
+      hasUpperCase: /[A-Z]/.test(this.userName),
+      hasLowerCase: /[a-z]/.test(this.userName),
+      hasNumbers: /[0-9]/.test(this.userName),
+      hasSymbols: /[^a-zA-Z0-9\s]/.test(this.userName),
+      length: this.userName.length
+    };
+  }
+
+  /* Auto-adjust capital count based on name analysis */
+  private autoAdjustCapitalCount() {
+    if (this.nameAnalysis.hasUpperCase) {
+      const upperCaseCount = (this.userName.match(/[A-Z]/g) || []).length;
+
+      // Set capital count based on detected uppercase letters, max 4
+      if (upperCaseCount >= 4) {
+        this.capitalCount = '4';
+      } else if (upperCaseCount >= 3) {
+        this.capitalCount = '3';
+      } else if (upperCaseCount >= 2) {
+        this.capitalCount = '2';
+      } else {
+        this.capitalCount = '1';
+      }
+    } else if (!this.capitalCount) {
+      // Default to 1 if no uppercase detected and no selection made
+      this.capitalCount = '1';
+    }
+  }
+
+  /* Get analysis description for display */
+  getNameAnalysis(): string {
+    if (!this.userName) return '';
+
+    const features = [];
+    if (this.nameAnalysis.hasUpperCase) {
+      const count = (this.userName.match(/[A-Z]/g) || []).length;
+      features.push(`${count} huruf kapital`);
+    }
+    if (this.nameAnalysis.hasNumbers) {
+      features.push('mengandung angka');
+    }
+    if (this.nameAnalysis.hasSymbols) {
+      features.push('mengandung simbol');
+    }
+
+    return features.length > 0 ? features.join(', ') : 'huruf kecil semua';
+  }
+
+  /* Reset name analysis */
+  private resetNameAnalysis() {
+    this.nameAnalysis = {
+      hasUpperCase: false,
+      hasLowerCase: false,
+      hasNumbers: false,
+      hasSymbols: false,
+      length: 0
+    };
+  }
+
+  /* Generate random password based on selected options */
+  async generatePassword() {
     // Check rate limit
     if (this.isLimited) {
       this.showToast('Anda telah mencapai batas generate password (5x per jam)', 'warning');
       return;
     }
 
-    // Validate that all options are selected
-    if (!this.passwordType || !this.passwordLength || !this.capitalCount) {
-      this.showToast('Pilih semua opsi terlebih dahulu', 'warning');
+    // Validate that all options are selected including userName
+    if (!this.passwordType || !this.passwordLength || !this.capitalCount || !this.userName.trim()) {
+      this.showToast('Pilih semua opsi dan isi nama user terlebih dahulu', 'warning');
       return;
     }
 
-    // Get character set based on password type
-    const characters = this.getCharacterSet();
+    // Start loading
+    this.isGenerating = true;
 
-    // Generate password with specified length and capital count
-    const length = parseInt(this.passwordLength);
-    const capitals = parseInt(this.capitalCount);
-    this.generatedPassword = this.createRandomPasswordWithCapitals(characters, length, capitals);
+    try {
+      // Simulate processing delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Update generate count and timestamp
-    this.generateCount++;
-    this.lastGenerateTime = Date.now();
-    this.saveGenerateHistory();
+      // Get character set based on password type
+      const characters = this.getCharacterSet();
 
-    // Check if limit reached
-    if (this.generateCount >= 5) {
-      this.isLimited = true;
-      this.startCountdown();
+      // Generate password with specified length, capital count, and user name influence
+      const length = parseInt(this.passwordLength);
+      const capitals = parseInt(this.capitalCount);
+      this.generatedPassword = this.createSmartPasswordWithUserName(characters, length, capitals);
+
+      // Update generate count and timestamp
+      this.generateCount++;
+      this.lastGenerateTime = Date.now();
+      this.saveGenerateHistory();
+
+      // Check if limit reached
+      if (this.generateCount >= 5) {
+        this.isLimited = true;
+        this.startCountdown();
+      }
+
+      // Show success message
+      this.showToast('Password berhasil di-generate!', 'success');
+    } catch (error) {
+      this.showToast('Gagal generate password', 'danger');
+    } finally {
+      // Stop loading
+      this.isGenerating = false;
+    }
+  }
+
+  /* Create smart password incorporating user name characteristics */
+  private createSmartPasswordWithUserName(characters: string, length: number, capitalCount: number): string {
+    const userName = this.userName.trim();
+    let processedUserName = '';
+
+    // Process user name based on password type restrictions
+    for (let char of userName) {
+      if (char === ' ') {
+        // Skip spaces
+        continue;
+      }
+
+      // Apply character filtering based on password type
+      const processedChar = this.processCharacterByType(char);
+      if (processedChar) {
+        processedUserName += processedChar;
+      }
     }
 
-    // Show success message
-    this.showToast('Password berhasil di-generate!', 'success');
+    // If processed name is longer than desired length, truncate it
+    if (processedUserName.length >= length) {
+      processedUserName = processedUserName.substring(0, length);
+      return this.adjustCapitalCount(processedUserName, capitalCount);
+    }
+
+    // If processed name is shorter, fill remaining with random characters
+    const remainingLength = length - processedUserName.length;
+    const randomPart = this.generateRandomPart(characters, remainingLength);
+
+    // Combine user name with random part
+    let finalPassword = '';
+
+    // Randomly distribute user name characters and random characters
+    const userNameChars = processedUserName.split('');
+    const randomChars = randomPart.split('');
+    const allChars = [...userNameChars, ...randomChars];
+
+    // Shuffle all characters
+    for (let i = allChars.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allChars[i], allChars[j]] = [allChars[j], allChars[i]];
+    }
+
+    finalPassword = allChars.join('');
+
+    // Ensure we have the right number of capitals
+    finalPassword = this.adjustCapitalCount(finalPassword, capitalCount);
+
+    return finalPassword;
+  }
+
+  /* Process character based on password type restrictions */
+  private processCharacterByType(char: string): string {
+    const isLetter = /[a-zA-Z]/.test(char);
+    const isNumber = /[0-9]/.test(char);
+    const isSymbol = /[^a-zA-Z0-9\s]/.test(char);
+
+    switch (this.passwordType) {
+      case 'no-symbols':
+        if (isSymbol) {
+          // Replace symbol with random letter or number
+          return Math.random() > 0.5 ?
+            this.getRandomChar(this.characterSets.letters) :
+            this.getRandomChar(this.characterSets.numbers);
+        }
+        return char;
+
+      case 'no-numbers':
+        if (isNumber) {
+          // Replace number with random letter or symbol
+          return Math.random() > 0.5 ?
+            this.getRandomChar(this.characterSets.letters) :
+            this.getRandomChar(this.characterSets.symbols);
+        }
+        return char;
+
+      case 'no-letters':
+        if (isLetter) {
+          // Replace letter with random number or symbol
+          return Math.random() > 0.5 ?
+            this.getRandomChar(this.characterSets.numbers) :
+            this.getRandomChar(this.characterSets.symbols);
+        }
+        return char;
+
+      case 'mixed':
+        // Allow all characters
+        return char;
+
+      default:
+        return char;
+    }
+  }
+
+  /* Get random character from character set */
+  private getRandomChar(charSet: string): string {
+    return charSet[Math.floor(Math.random() * charSet.length)];
+  }
+
+  /* Get similar character from allowed character set */
+  private getSimilarCharacter(char: string, characters: string): string {
+    const lowerChar = char.toLowerCase();
+    const upperChar = char.toUpperCase();
+
+    if (characters.includes(lowerChar)) {
+      return lowerChar;
+    } else if (characters.includes(upperChar)) {
+      return upperChar;
+    } else {
+      // Return random character from allowed set
+      return characters[Math.floor(Math.random() * characters.length)];
+    }
+  }
+
+  /* Generate random part of password */
+  private generateRandomPart(characters: string, length: number): string {
+    let randomPart = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomPart += characters[randomIndex];
+    }
+
+    return randomPart;
+  }
+
+  /* Adjust capital count in final password */
+  private adjustCapitalCount(password: string, targetCapitalCount: number): string {
+    const capitalLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let passwordArray = password.split('');
+
+    // Count existing capitals
+    let currentCapitals = passwordArray.filter(char => /[A-Z]/.test(char)).length;
+
+    // If we have too many capitals, convert some to lowercase
+    if (currentCapitals > targetCapitalCount) {
+      let toConvert = currentCapitals - targetCapitalCount;
+      for (let i = 0; i < passwordArray.length && toConvert > 0; i++) {
+        if (/[A-Z]/.test(passwordArray[i])) {
+          passwordArray[i] = passwordArray[i].toLowerCase();
+          toConvert--;
+        }
+      }
+    }
+
+    // If we have too few capitals, convert some letters to uppercase
+    else if (currentCapitals < targetCapitalCount) {
+      let toConvert = targetCapitalCount - currentCapitals;
+      for (let i = 0; i < passwordArray.length && toConvert > 0; i++) {
+        if (/[a-z]/.test(passwordArray[i])) {
+          passwordArray[i] = passwordArray[i].toUpperCase();
+          toConvert--;
+        }
+      }
+
+      // If still not enough, replace some characters with random capitals
+      if (toConvert > 0) {
+        for (let i = 0; i < passwordArray.length && toConvert > 0; i++) {
+          if (!/[A-Z]/.test(passwordArray[i])) {
+            const randomCapital = capitalLetters[Math.floor(Math.random() * capitalLetters.length)];
+            passwordArray[i] = randomCapital;
+            toConvert--;
+          }
+        }
+      }
+    }
+
+    return passwordArray.join('');
   }
 
   /**
@@ -238,9 +504,7 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
-   * Copy generated password to clipboard
-   */
+  /* Copy generated password to clipboard */
   async copyToClipboard() {
     if (!this.generatedPassword) {
       this.showToast('Tidak ada password untuk disalin', 'warning');
@@ -297,9 +561,7 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
- * Load generate history from localStorage
- */
+  /* Load generate history from localStorage */
   private loadGenerateHistory() {
     const history = localStorage.getItem('passwordGenerateHistory');
     if (history) {
@@ -309,9 +571,7 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
-   * Save generate history to localStorage
-   */
+  /* Save generate history to localStorage */
   private saveGenerateHistory() {
     const history = {
       count: this.generateCount,
@@ -320,14 +580,12 @@ export class SecurityPage implements OnInit {
     localStorage.setItem('passwordGenerateHistory', JSON.stringify(history));
   }
 
-  /**
-   * Check if user has reached rate limit
-   */
+  /* Check if user has reached rate limit */
   private checkRateLimit() {
     const now = Date.now();
     const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
 
-    // Reset count if more than 1 hour has passed
+    /* Reset count if more than 1 hour has passed */
     if (now - this.lastGenerateTime > oneHour) {
       this.generateCount = 0;
       this.isLimited = false;
@@ -338,9 +596,7 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
-   * Start countdown for rate limit
-   */
+  /* Start countdown for rate limit */
   private startCountdown() {
     this.clearCountdown();
 
@@ -359,9 +615,7 @@ export class SecurityPage implements OnInit {
     }, 1000);
   }
 
-  /**
-   * Clear countdown interval
-   */
+  /* Clear countdown interval */
   private clearCountdown() {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
@@ -369,18 +623,14 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
-   * Format remaining time for display
-   */
+  /*Format remaining time for display */
   getRemainingTimeString(): string {
     const minutes = Math.floor(this.remainingTime / (60 * 1000));
     const seconds = Math.floor((this.remainingTime % (60 * 1000)) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
-  /**
- * Load password history from localStorage
- */
+  /* Load password history from localStorage */
   private loadPasswordHistory() {
     const history = localStorage.getItem('passwordCopyHistory');
     if (history) {
@@ -397,9 +647,7 @@ export class SecurityPage implements OnInit {
     }
   }
 
-  /**
-   * Save password history to localStorage
-   */
+  /*Save password history to localStorage */
   private savePasswordHistory() {
     localStorage.setItem('passwordCopyHistory', JSON.stringify(this.passwordHistory));
   }
@@ -432,25 +680,19 @@ export class SecurityPage implements OnInit {
     this.showHistoryButton = true;
   }
 
-  /**
-   * Open history modal
-   */
+  /* Open history modal */
   openHistoryModal() {
     /* Clean expired entries before opening */
     this.cleanExpiredHistory();
     this.isHistoryModalOpen = true;
   }
 
-  /**
-   * Close history modal
-   */
+  /* Close history modal */
   closeHistoryModal() {
     this.isHistoryModalOpen = false;
   }
 
-  /**
-   * Clean expired history entries (older than 12 hours)
-   */
+  /* Clean expired history entries (older than 12 hours) */
   private cleanExpiredHistory() {
     const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
     const initialLength = this.passwordHistory.length;
